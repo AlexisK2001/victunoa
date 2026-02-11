@@ -23,8 +23,6 @@ export default function Home() {
                     <Button variant="secondary">Contactar un asesor</Button>
                 </a>
             </Hero>
-
-
             {/* Quiénes Somos */}
             <section id="quienes-somos" className="section">
                 <div className="container">
