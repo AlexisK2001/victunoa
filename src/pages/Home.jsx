@@ -24,6 +24,7 @@ export default function Home() {
                 </a>
             </Hero>
 
+
             {/* Quiénes Somos */}
             <section id="quienes-somos" className="section">
                 <div className="container">
