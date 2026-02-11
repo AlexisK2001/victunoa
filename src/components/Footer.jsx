@@ -1,5 +1,10 @@
 import styles from './Footer.module.css';
 
+import whatsappIcon from '../assets/icons/whatsapp.svg?raw';
+import emailIcon from '../assets/icons/email.svg?raw';
+import instagram from '../assets/icons/instagram.svg?raw';
+
+
 export default function Footer() {
     return (
         <footer className={styles.footer}>
@@ -13,20 +18,26 @@ export default function Footer() {
                     </div>
                     <div className={styles.footerColumn}>
                         <h4 className={styles.footerTitle}>Contacto</h4>
-                        <p className={styles.footerText}>☎️ Tel: 381 6542124</p>
-                        <p className={styles.footerText}>📧 Email: gvictunoa@gmail.com</p>
 
+                        <div className={styles.footerItem}>
+                            <div className={styles.footerIcon} dangerouslySetInnerHTML={{ __html: whatsappIcon }} />
+                            <span>381 6542124</span>
+                        </div>
+
+                        <div className={styles.footerItem}>
+                            <div className={styles.footerIcon} dangerouslySetInnerHTML={{ __html: emailIcon }} />
+                            <span>faqndosuarez@gmail.com</span>
+                        </div>
 
                         <a
                             href="https://www.instagram.com/victunoa"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.footerText}
-                            style={{ textDecoration: 'none' }}
+                            className={styles.footerItem}
                         >
-                            📸 Instagram: @victunoa
+                            <div className={styles.footerIcon} dangerouslySetInnerHTML={{ __html: instagram }} />
+                            <span>@victunoa</span>
                         </a>
-
                     </div>
                     <div className={styles.footerColumn}>
                         <h4 className={styles.footerTitle}>Cobertura</h4>
