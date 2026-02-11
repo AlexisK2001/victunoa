@@ -41,3 +41,31 @@
     color: var(--color-gray-300);
     font-size: var(--font-size-sm);
 }
+
+.footerItem {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-gray-300);
+    text-decoration: none;
+    margin-bottom: var(--spacing-xs);
+    transition: color var(--transition-base);
+}
+
+.footerItem:hover {
+    color: var(--color-white);
+}
+
+.footerIcon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+}
+
+.footerIcon svg {
+    width: 100%;
+    height: 100%;
+}
