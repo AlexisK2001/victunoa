@@ -1,7 +1,7 @@
 export const products = [
     {
         id: 'biosal-autoconsumo',
-        name: 'Biosal A',
+        name: 'Biosal Autoconsumo',
         slug: 'biosal-autoconsumo',
         category: 'cria',
         subtitle: 'Autoconsumo',
@@ -45,100 +45,10 @@ export const products = [
         ]
     },
     {
-        id: 'biosal-mix',
-        name: 'Biosal Mix',
-        slug: 'biosal-mix',
-        category: 'recria',
-        subtitle: 'Mezclas',
-        image: '/images/biosalmix.png',
-        description: 'Biosal Mix es un suplemento balanceado diseñado para optimizar la recría, mejorando la conversión alimenticia y el desarrollo corporal en esta etapa crítica.',
-        specs: {
-            composition: [
-                'Bioenzymix avanzado',
-                'Mezcla de macrominerales',
-                'Vitaminas A, D, E',
-                'Oligoelementos'
-            ],
-            application: [
-                'Recría intensiva',
-                'Desarrollo corporal',
-                'Mejora de conversión',
-                'Pastoreo y suplementación'
-            ],
-            usage: [
-                'Mezcla con alimento',
-                'Dosificación controlada',
-                'Monitoreo de consumo'
-            ]
-        },
-        benefits: [
-            {
-                title: 'Conversión Mejorada',
-                description: 'Optimiza la conversión alimenticia en etapa de recría.',
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
-            },
-            {
-                title: 'Desarrollo Corporal',
-                description: 'Favorece el desarrollo muscular y esquelético.',
-                icon: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`
-            },
-            {
-                title: 'Salud Metabólica',
-                description: 'Mejora la salud ruminal y metabólica general.',
-                icon: `<path d="M12 2L2 7l10 5 10-5-10-5z" />`
-            }
-        ]
-    },
-    {
-        id: 'biosal-pr',
-        name: 'Biosal PR',
-        slug: 'biosal-pr',
-        category: 'recria',
-        subtitle: 'Pequeños Rumiantes',
-        image: '/images/biosalpr.png',
-        description: 'Biosal PR está formulado para maximizar el rendimiento en la etapa de recría, con un balance específico de nutrientes para lograr ganancias diarias óptimas.',
-        specs: {
-            composition: [
-                'Bioenzymix concentrado',
-                'Proteína bypass',
-                'Energía metabolizable',
-                'Antioxidantes naturales'
-            ],
-            application: [
-                'Recría de alto rendimiento',
-                'Feedlot de recría',
-                'Sistemas intensivos',
-                'Terminación temprana'
-            ],
-            usage: [
-                'Incorporación en dieta total',
-                'Dosificación según peso',
-                'Ajuste por objetivo'
-            ]
-        },
-        benefits: [
-            {
-                title: 'Ganancias Diarias',
-                description: 'Maximiza las ganancias de peso diarias.',
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
-            },
-            {
-                title: 'Eficiencia Económica',
-                description: 'Reduce el costo por kilo de ganancia.',
-                icon: `<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />`
-            },
-            {
-                title: 'Adaptabilidad',
-                description: 'Se adapta a diferentes sistemas productivos.',
-                icon: `<path d="M12 2L2 7l10 5 10-5-10-5z" />`
-            }
-        ]
-    },
-    {
         id: 'biosal-max',
         name: 'Biosal Max',
         slug: 'biosal-max',
-        category: 'engorde',
+        category: 'recria',
         subtitle: 'Autoconsumo',
         image: '/images/biosalmax.png',
         description: 'Biosal Max es el suplemento premium para sistemas de engorde intensivo, diseñado para maximizar la eficiencia de conversión y acelerar la terminación en feedlot.',
@@ -180,10 +90,55 @@ export const products = [
         ]
     },
     {
-        id: 'rbr',
-        name: 'RBR',
-        slug: 'rbr',
+        id: 'biosal-mix',
+        name: 'Biosal Mix',
+        slug: 'biosal-mix',
         category: 'engorde',
+        subtitle: 'Mezclas',
+        image: '/images/biosalmix.png',
+        description: 'Biosal Mix es un suplemento balanceado diseñado para optimizar la recría, mejorando la conversión alimenticia y el desarrollo corporal en esta etapa crítica.',
+        specs: {
+            composition: [
+                'Bioenzymix avanzado',
+                'Mezcla de macrominerales',
+                'Vitaminas A, D, E',
+                'Oligoelementos'
+            ],
+            application: [
+                'Recría intensiva',
+                'Desarrollo corporal',
+                'Mejora de conversión',
+                'Pastoreo y suplementación'
+            ],
+            usage: [
+                'Mezcla con alimento',
+                'Dosificación controlada',
+                'Monitoreo de consumo'
+            ]
+        },
+        benefits: [
+            {
+                title: 'Conversión Mejorada',
+                description: 'Optimiza la conversión alimenticia en etapa de recría.',
+                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
+            },
+            {
+                title: 'Desarrollo Corporal',
+                description: 'Favorece el desarrollo muscular y esquelético.',
+                icon: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`
+            },
+            {
+                title: 'Salud Metabólica',
+                description: 'Mejora la salud ruminal y metabólica general.',
+                icon: `<path d="M12 2L2 7l10 5 10-5-10-5z" />`
+            }
+        ]
+    },
+    {
+        id: 'rbr',
+        name: 'Regulador Biológico Ruminal',
+        slug: 'rbr',
+        category: 'tambo',
         subtitle: 'Regulador Biológico Ruminal',
         image: '/images/rbr.png',
         description: 'RBR es el suplemento de referencia para engorde bovino, combinando bionutrición y balance mineral para resultados consistentes en feedlot.',

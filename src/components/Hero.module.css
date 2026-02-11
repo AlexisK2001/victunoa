@@ -9,6 +9,13 @@
     margin-top: 75px;
 }
 
+@media (max-width: 768px) {
+    .hero {
+        background-attachment: scroll;
+        background-position: center center;
+    }
+}
+
 .hero.small {
     min-height: 50vh;
 }

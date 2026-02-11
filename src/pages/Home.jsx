@@ -14,7 +14,7 @@ export default function Home() {
             {/* Hero Section */}
             <Hero
                 title="Alimentación inteligente para la ganadería del NOA"
-                subtitle="En VICTU acercamos la bionutrición y los alimentos balanceados de alta performance a productores del NOA, como representación oficial de Suplefeed."
+                subtitle="En VICTU acercamos la bionutrición y los alimentos balanceados de alta performance a productores del NOA y NEA, como representación oficial de Suplefeed SA."
             >
                 <a href="#productos">
                     <Button variant="primary">Ver línea de productos</Button>
@@ -32,14 +32,18 @@ export default function Home() {
                         <div className="title-underline"></div>
                     </div>
                     <div>
-                        <p className="lead-text">
-                            En VICTU trabajamos para que los productores del NOA tengan acceso a soluciones de
-                            bionutrición y alimentos balanceados con respaldo técnico y logístico.
+                        <p className="lead-text" style={{ textAlign: 'justify' }}>
+                            En VICTU trabajamos para que los productores del NOA y NEA tengan acceso a soluciones de bionutrición por medio de biosales de autoconsumo, premezclas, concentrados y alimentos balanceados con respaldo técnico y logístico.
                         </p>
-                        <p className="body-text">
-                            Somos la representación oficial de Suplefeed en la región, acercando productos
-                            diseñados para mejorar la eficiencia en carne y leche, con soporte cercano y visitas a campo.
-                        </p>
+                        <div className="body-text" style={{ textAlign: 'justify' }}>
+                            <h4 style={{ color: '#000000', marginBottom: '1rem' }}>Somos representantes oficiales de la empresa Suplefeed SA.</h4>
+                            <p>
+                                Los productos de SUPLEFEED son una biotecnología desarrollada en EEUU, se trata de microbióticos que se activan en el rumen para desarmar en forma progresiva y secuencial la celulosa y hemicelulosa que se encuentran en las pasturas secas o diferidas y transformarlas en hidratos de carbonos (azúcares) utilizables, ésta en lo que respecta a digestar fibras en pastoreo o en TMR, por otro lado, contamos con biotecnología para dietas híper-energéticas que nos permiten eficientizar la síntesis del almidón presente en el maíz y otros cereales.
+                            </p>
+                            <p style={{ marginTop: '1rem' }}>
+                                El objetivo de uso de estas biotecnologías, es de utilizar el menor contenido de grano o concentrados y mayor cantidad de pasturas y o subproductos de baja calidad y costo para obtener resultados iguales a los obtenidos con la utilización de dietas convencionales hasta ahora utilizadas por todos.
+                            </p>
+                        </div>
                     </div>
 
                     <div className={styles.valueProps}>
@@ -51,7 +55,10 @@ export default function Home() {
                                 </svg>
                             </div>
                             <h3 className={styles.valueTitle}>Cobertura regional</h3>
-                            <p className={styles.valueText}>Presencia en Tucumán, Salta, Jujuy y provincias aledañas.</p>
+                            <h4 className={styles.valueText}>Region NOA</h4>
+                            <p className={styles.valueText}>Tucuman, Salta, Jujuy, Santiago del Estero y Catamarca</p>
+                            <h4 className={styles.valueText}>Region NEA</h4>
+                            <p className={styles.valueText}>Chaco y Formosa</p>
                         </div>
                         <div className={styles.valueCard}>
                             <div className={styles.valueIcon}>
@@ -215,11 +222,13 @@ export default function Home() {
             <section id="contacto" className="section section-alt">
                 <div className="container">
                     <div className="section-header">
-                        <h2 className="section-title">Representación NOA</h2>
+                        <h2 className="section-title">Representación NOA y NEA</h2>
                         <div className="title-underline"></div>
                         <p className="section-intro">
-                            Atendemos productores de Tucumán, Salta, Jujuy y zonas vecinas, combinando
-                            productos de alta tecnología con presencia real en tu campo.
+                            Atendemos productores de <h4 className={styles.valueText}>Region NOA</h4>
+                            <p className={styles.valueText}>Tucuman, Salta, Jujuy, Santiago del Estero y Catamarca</p>
+                            <h4 className={styles.valueText}>Region NEA</h4>
+                            <p className={styles.valueText}>Chaco y Formosa</p>
                         </p>
                     </div>
 
@@ -227,7 +236,7 @@ export default function Home() {
                         <div className={styles.contactInfo}>
                             <div className={styles.infoCard}>
                                 <h3 className={styles.infoTitle}>VICTU</h3>
-                                <p className={styles.infoSubtitle}>Representación NOA</p>
+                                <p className={styles.infoSubtitle}>Representación NOA y NEA</p>
                                 <div className={styles.infoDetails}>
                                     <div className={styles.infoItem}>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -247,7 +256,7 @@ export default function Home() {
                                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                                             <polyline points="22,6 12,13 2,6" />
                                         </svg>
-                                        <a href="mailto:gvictunoa@gmail.com">gvictunoa@gmail.com</a>
+                                        <a href="mailto:gvictunoa@gmail.com">ejemplo@ejemplo.com</a>
                                     </div>
                                 </div>
                                 <div className={styles.contactButtons}>
@@ -282,7 +291,7 @@ export default function Home() {
                     </div>
                     <div>
                         <p className="lead-text">
-                            Como representantes de Suplefeed en el NOA, trabajamos con una línea de productos
+                            Como representantes de Suplefeed SA en el NOA y NEA, trabajamos con una línea de productos
                             desarrollados específicamente para potenciar la eficiencia en la producción de carne y leche.
                         </p>
                         <p className="body-text">

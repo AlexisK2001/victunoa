@@ -31,7 +31,7 @@ export default function Footer() {
                     <div className={styles.footerColumn}>
                         <h4 className={styles.footerTitle}>Cobertura</h4>
                         <p className={styles.footerText}>
-                            Tucumán, Salta, Jujuy y zonas aledañas
+                            Zonas NOA y NEA
                         </p>
                     </div>
                 </div>

@@ -80,6 +80,12 @@
     padding: var(--spacing-3xl) 0;
 }
 
+@media (max-width: 768px) {
+    .section {
+        padding: var(--spacing-xl) 0;
+    }
+}
+
 .section-alt {
     background-color: var(--color-gray-50);
 }
