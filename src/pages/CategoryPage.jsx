@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
 import { categories } from '../data/categories';
@@ -16,6 +17,10 @@ export default function CategoryPage() {
 
     return (
         <div>
+            <Helmet>
+                <title>{`${category.name} | VICTU - Nutrición Animal`}</title>
+                <meta name="description" content={`Soluciones de nutrición animal para ${category.name}. ${category.description}`} />
+            </Helmet>
             <Hero
                 title={`Productos para ${category.name}`}
                 subtitle={category.description}

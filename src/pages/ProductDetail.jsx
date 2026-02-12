@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Button from '../components/Button';
 import { getProductById } from '../data/products';
 import { categories } from '../data/categories';
@@ -16,6 +17,13 @@ export default function ProductDetail() {
 
     return (
         <div className={styles.productDetailPage}>
+            <Helmet>
+                <title>{`${product.name} | VICTU`}</title>
+                <meta name="description" content={`${product.name}: ${product.subtitle}. ${product.description.substring(0, 150)}...`} />
+                <meta property="og:title" content={`${product.name} | VICTU`} />
+                <meta property="og:description" content={product.subtitle} />
+                <meta property="og:image" content={product.image} />
+            </Helmet>
             {/* Product Detail Hero */}
             <section className={styles.productDetailHero}>
                 <div className="container">
