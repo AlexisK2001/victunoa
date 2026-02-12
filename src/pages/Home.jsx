@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import Button from '../components/Button';
 import CategoryCard from '../components/CategoryCard';
@@ -29,11 +28,6 @@ import whatsappIcon from '../assets/icons/whatsapp.svg?raw';
 export default function Home() {
     return (
         <div>
-            <Helmet>
-                <title>VICTU - Biosales y Nutrición Animal | Representante Suplefeed NOA/NEA</title>
-                <meta name="description" content="Potencia tu producción ganadera con biosales y alimentos balanceados de alta performance. Representantes oficiales de Suplefeed en NOA y NEA." />
-                <link rel="canonical" href="https://victunoa.com/" />
-            </Helmet>
             {/* Hero Section */}
             <Hero
                 title="Alimentación inteligente para la ganadería del NOA"
