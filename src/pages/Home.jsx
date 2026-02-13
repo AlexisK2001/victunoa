@@ -232,7 +232,7 @@ export default function Home() {
                         <div className="title-underline"></div>
                         <p className="section-intro">
                             Atendemos productores de <h4 className={styles.valueText}>Region NOA</h4>
-                            <p className={styles.valueText}>Tucuman, Salta, Jujuy, Santiago del Estero y Catamarca</p>
+                            <p className={styles.valueText}>Tucuman, Salta, Jujuy, Santiago del Estero, Catamarca y La Rioja</p>
                             <h4 className={styles.valueText}>Region NEA</h4>
                             <p className={styles.valueText}>Chaco y Formosa</p>
                         </p>
