@@ -5,10 +5,18 @@ import { categories } from '../data/categories';
 import { getProductsByCategory } from '../data/products';
 import styles from './CategoryPage.module.css';
 
+import { useSEO } from '../hooks/useSEO';
+
 export default function CategoryPage() {
     const { categorySlug } = useParams();
     const category = categories.find(c => c.slug === categorySlug);
     const products = getProductsByCategory(categorySlug);
+
+    useSEO({
+        title: category ? category.name : 'Categoría no encontrada',
+        description: category ? category.description : 'Explora nuestros productos de bionutrición.',
+        url: category ? `/${categorySlug}` : ''
+    });
 
     if (!category) {
         return <div>Categoría no encontrada</div>;

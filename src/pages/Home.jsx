@@ -25,7 +25,16 @@ import phoneIcon from '../assets/icons/phone.svg?raw';
 import emailIcon from '../assets/icons/email.svg?raw';
 import whatsappIcon from '../assets/icons/whatsapp.svg?raw';
 
+import { useSEO } from '../hooks/useSEO';
+
 export default function Home() {
+    useSEO({
+        title: '', // Uses default title
+        description: 'Potencia tu producción ganadera con biosales y alimentos balanceados de alta performance. Representantes oficiales de Suplefeed en NOA y NEA.',
+        keywords: 'biosales, bionutricion, nutricion animal, suplefeed, ganaderia, NOA, NEA, alimento balanceado, engorde, feedlot, cria, recria, tambo',
+        url: '/'
+    });
+
     return (
         <div>
             {/* Hero Section */}

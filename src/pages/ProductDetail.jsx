@@ -4,9 +4,31 @@ import { getProductById } from '../data/products';
 import { categories } from '../data/categories';
 import styles from './ProductDetail.module.css';
 
+import { useSEO } from '../hooks/useSEO';
+
 export default function ProductDetail() {
     const { productSlug } = useParams();
     const product = getProductById(productSlug);
+
+    useSEO({
+        title: product ? product.name : 'Producto no encontrado',
+        description: product ? product.description : 'Detalles del producto.',
+        image: product ? product.image : null,
+        url: product ? `/productos/${productSlug}` : '',
+        structuredData: product ? {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": product.name,
+            "image": [
+                window.location.origin + product.image
+            ],
+            "description": product.description,
+            "brand": {
+                "@type": "Brand",
+                "name": "Victu"
+            }
+        } : null
+    });
 
     if (!product) {
         return <div>Producto no encontrado</div>;

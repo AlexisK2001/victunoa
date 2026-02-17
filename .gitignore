@@ -32,3 +32,18 @@ dist-ssr
 
 # Testing
 coverage
+
+# Netlify
+.netlify
+.env
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Deployment
+dist
+build
