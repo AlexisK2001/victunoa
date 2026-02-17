@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://victunoa.com/sitemap.xml
