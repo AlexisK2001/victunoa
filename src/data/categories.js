@@ -1,7 +1,7 @@
-import img_2628 from '../assets/icons/img_2628.png';
-import img_2629 from '../assets/icons/img_2629.png';
-import img_2630 from '../assets/icons/img_2630.png';
-import imgg_2631 from '../assets/icons/img_2631.png';
+import img_2628 from '../assets/icons/IMG_2628.PNG';
+import img_2629 from '../assets/icons/IMG_2629.PNG';
+import img_2630 from '../assets/icons/IMG_2630.PNG';
+import imgg_2631 from '../assets/icons/IMG_2631.PNG';
 export const categories = [
     {
         id: 'cria',
