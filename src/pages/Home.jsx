@@ -9,7 +9,6 @@ import { testimonials } from '../data/testimonials';
 import styles from './Home.module.css';
 
 // Value Props Icons
-import regionIcon from '../assets/icons/region.svg?raw';
 import logisticsIcon from '../assets/icons/logistics.svg?raw';
 import supportIcon from '../assets/icons/technical-support.svg?raw';
 
@@ -24,6 +23,9 @@ import userIcon from '../assets/icons/user.svg?raw';
 import phoneIcon from '../assets/icons/phone.svg?raw';
 import emailIcon from '../assets/icons/email.svg?raw';
 import whatsappIcon from '../assets/icons/whatsapp.svg?raw';
+import IMG_2632 from '../assets/icons/IMG_2632.PNG';
+import IMG_2633 from '../assets/icons/IMG_2633.PNG';
+import IMG_2634 from '../assets/icons/IMG_2634.PNG';
 
 import { useSEO } from '../hooks/useSEO';
 
@@ -74,9 +76,10 @@ export default function Home() {
                     <div className={styles.valueProps}>
                         <div className={styles.valueCard}>
                             <div className={styles.valueIcon}>
-                                <div
-                                    className={styles.valueIcon}
-                                    dangerouslySetInnerHTML={{ __html: regionIcon }}
+                                <img
+                                    src={IMG_2633}
+                                    alt="Cobertura Regional"
+                                    style={{ width: '165%', height: '165%', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
                                 />
                             </div>
                             <h3 className={styles.valueTitle}>Cobertura regional</h3>
@@ -87,9 +90,10 @@ export default function Home() {
                         </div>
                         <div className={styles.valueCard}>
                             <div className={styles.valueIcon}>
-                                <div
-                                    className={styles.valueIcon}
-                                    dangerouslySetInnerHTML={{ __html: logisticsIcon }}
+                                <img
+                                    src={IMG_2632}
+                                    alt="Logistica a campo"
+                                    style={{ width: '175%', height: '175%', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
                                 />
                             </div>
                             <h3 className={styles.valueTitle}>Logística a campo</h3>
@@ -97,9 +101,10 @@ export default function Home() {
                         </div>
                         <div className={styles.valueCard}>
                             <div className={styles.valueIcon}>
-                                <div
-                                    className={styles.valueIcon}
-                                    dangerouslySetInnerHTML={{ __html: supportIcon }}
+                                <img
+                                    src={IMG_2634}
+                                    alt="Acompañamiento técnico"
+                                    style={{ width: '175%', height: '175%', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
                                 />
                             </div>
                             <h3 className={styles.valueTitle}>Acompañamiento técnico</h3>

@@ -9,7 +9,7 @@ export const testimonials = [
     {
         id: 2,
         text: 'Con el apoyo técnico de VICTU ajustamos la dieta del feedlot y logramos mejor conversión sin aumentar el costo por cabeza.',
-        author: 'Establecimiento Kviatkovski',
+        author: 'Javier Kviatkovski',
         role: 'Feedlot mediano',
         location: 'Chaco'
     },
@@ -20,11 +20,4 @@ export const testimonials = [
         role: 'Recría',
         location: 'Jujuy'
     },
-    {
-        id: 4,
-        text: 'Un ejemplo inventado de produ.',
-        author: 'Alberto Gomez',
-        role: 'Recría',
-        location: 'Tucuman'
-    }
 ];
