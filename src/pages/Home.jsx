@@ -8,9 +8,6 @@ import { categories } from '../data/categories';
 import { testimonials } from '../data/testimonials';
 import styles from './Home.module.css';
 
-// Value Props Icons
-import logisticsIcon from '../assets/icons/logistics.svg?raw';
-import supportIcon from '../assets/icons/technical-support.svg?raw';
 
 // Benefits Icons
 import benefitConsumption from '../assets/icons/benefit-consumption.svg?raw';

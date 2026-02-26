@@ -1,7 +1,3 @@
-import criaIcon from '../assets/icons/cria.svg?raw';
-import recriaIcon from '../assets/icons/recria.svg?raw';
-import engordeIcon from '../assets/icons/engorde.svg?raw';
-
 import img_2628 from '../assets/icons/img_2628.png';
 import img_2629 from '../assets/icons/img_2629.png';
 import img_2630 from '../assets/icons/img_2630.png';
