@@ -76,7 +76,7 @@ export default function Home() {
                                 <img
                                     src={IMG_2633}
                                     alt="Cobertura Regional"
-                                    style={{ width: '165%', height: '165%', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+                                    style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'brightness(0) invert(1)', transform: 'scale(1.65)' }}
                                 />
                             </div>
                             <h3 className={styles.valueTitle}>Cobertura regional</h3>
@@ -90,7 +90,7 @@ export default function Home() {
                                 <img
                                     src={IMG_2632}
                                     alt="Logistica a campo"
-                                    style={{ width: '175%', height: '175%', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+                                    style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'brightness(0) invert(1)', transform: 'scale(1.75)' }}
                                 />
                             </div>
                             <h3 className={styles.valueTitle}>Logística a campo</h3>
@@ -101,7 +101,7 @@ export default function Home() {
                                 <img
                                     src={IMG_2634}
                                     alt="Acompañamiento técnico"
-                                    style={{ width: '175%', height: '175%', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+                                    style={{ width: '100%', height: '100%', objectFit: 'contain', filter: 'brightness(0) invert(1)', transform: 'scale(1.75)' }}
                                 />
                             </div>
                             <h3 className={styles.valueTitle}>Acompañamiento técnico</h3>
