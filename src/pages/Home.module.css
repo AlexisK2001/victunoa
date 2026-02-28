@@ -52,10 +52,72 @@
 
 /* Product Categories */
 .productCategories {
+    /* Kept for fallback or removed if completely unused, let's keep it just in case */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(1, 1fr);
     gap: var(--spacing-xl);
-    margin-top: var(--spacing-2xl);
+}
+
+@media (min-width: 768px) {
+    .productCategories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===================================
+   PRODUCTS CAROUSEL (Vertical)
+   =================================== */
+.productsCarouselContainer {
+    height: 400vh;
+    position: relative;
+    padding-bottom: 0;
+}
+
+.productsStickyWrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Guarantee title stays anchored at the top visible area */
+    padding-top: var(--spacing-3xl);
+    /* Push just below navbar */
+    overflow: hidden;
+}
+
+.productsStickyWrapper :global(.container) {
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.productsTrackContainer {
+    width: 100%;
+    flex-grow: 1;
+    /* take up remaining space after header */
+    position: relative;
+    overflow: hidden;
+}
+
+.productsTrack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 400%;
+    /* 4 items * 100% of container height */
+}
+
+.productCardWrapper {
+    width: 100%;
+    height: 25%;
+    /* 1/4 of the 400% track */
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Center the card perfectly inside its 1/4th track space */
+    padding: var(--spacing-md);
 }
 
 /* Service Steps */
@@ -103,25 +165,88 @@
     line-height: 1.6;
 }
 
-/* Benefits */
-.benefitsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-xl);
-    margin-top: var(--spacing-2xl);
+/* Benefits Carousel */
+.benefitsCarouselContainer {
+    height: 400vh;
+    position: relative;
+    /* We'll use absolute positioned anchors inside this to snap the scroll */
+}
+
+.snapAnchor {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start;
+    pointer-events: none;
+    /* so they don't block clicks */
+}
+
+.benefitsStickyWrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centering vertically */
+    overflow: hidden;
+}
+
+.benefitsStickyWrapper :global(.container) {
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.benefitsTitle {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-black);
+    margin: 0 auto;
+    line-height: 1.2;
+    padding: 0 var(--spacing-md);
+}
+
+.benefitsTrackContainer {
+    width: 100%;
+    overflow: hidden;
+    padding: var(--spacing-xl) 0;
+}
+
+.benefitsTrack {
+    display: flex;
+    flex-direction: row;
+    width: 400%;
+    /* 4 items * 100vw each */
+    align-items: center;
+}
+
+.benefitCardWrapper {
+    width: 25%;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
 }
 
 .benefitCard {
     background: var(--color-white);
-    padding: var(--spacing-xl);
+    padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--radius-xl);
-    border-left: 4px solid var(--color-primary);
+    border-top: 2px solid var(--color-primary);
     box-shadow: var(--shadow-md);
     transition: all var(--transition-base);
+    width: 100%;
+    max-width: 420px;
+    /* Slightly wider to fit the larger icon */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    gap: var(--spacing-lg);
 }
 
-.benefitCard:nth-child(even) {
-    border-left-color: var(--color-secondary);
+.benefitCardWrapper:nth-child(even) .benefitCard {
+    border-top-color: var(--color-secondary);
 }
 
 .benefitCard:hover {
@@ -130,26 +255,32 @@
 }
 
 .benefitIcon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: var(--spacing-md);
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
     color: var(--color-primary);
 }
 
-.benefitCard:nth-child(even) .benefitIcon {
+.benefitCardWrapper:nth-child(even) .benefitIcon {
     color: var(--color-secondary);
 }
 
-.benefitIcon svg {
+.benefitIcon svg,
+.benefitIcon img {
     width: 100%;
     height: 100%;
+    object-fit: contain;
+}
+
+.benefitContent {
+    flex-grow: 1;
 }
 
 .benefitTitle {
     font-size: var(--font-size-xl);
     font-weight: 600;
     color: var(--color-black);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .benefitText {
@@ -259,4 +390,30 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+}
+
+@media (max-width: 768px) {
+
+    /* Make the track longer on mobile to give cards more width */
+    .benefitsTrack {
+        width: 350%;
+    }
+
+    /* Stack icon and text vertically to save horizontal space */
+    .benefitCard {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: var(--spacing-lg) var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .benefitTitle {
+        font-size: var(--font-size-lg);
+    }
+
+    /* On vertical products track, we can reduce the height gap a bit if needed, but the main issue is the overall padding */
+    .productsStickyWrapper {
+        padding-top: var(--spacing-xl);
+    }
 }
