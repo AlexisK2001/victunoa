@@ -313,16 +313,31 @@
     color: var(--color-gray-600);
 }
 
+.videoGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-2xl);
+    width: 100%;
+}
+
 .videoContainer {
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: var(--shadow-xl);
+    display: flex;
+    background: var(--color-white);
+    /* Light green background to blend exactly with section background */
+    align-items: center;
+    justify-content: center;
 }
 
 .videoContainer video {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Prevents cropping on fullscreen or mismatched ratios */
     display: block;
 }
 
@@ -394,6 +409,11 @@
 
 @media (max-width: 768px) {
 
+    /* Disable CSS snap anchors to prevent clash with Framer Motion on mobile */
+    .snapAnchor {
+        display: none;
+    }
+
     /* Make the track longer on mobile to give cards more width */
     .benefitsTrack {
         width: 350%;
@@ -415,5 +435,10 @@
     /* On vertical products track, we can reduce the height gap a bit if needed, but the main issue is the overall padding */
     .productsStickyWrapper {
         padding-top: var(--spacing-xl);
+    }
+
+    /* Ensure videos stack cleanly on mobile */
+    .videoGrid {
+        grid-template-columns: 1fr;
     }
 }
