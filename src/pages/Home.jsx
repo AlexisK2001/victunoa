@@ -336,11 +336,19 @@ export default function Home() {
                                 Descubre cómo nuestros productos de bionutrición transforman la producción ganadera.
                             </p>
                         </div>
-                        <div className={styles.videoContainer}>
-                            <video controls>
-                                <source src="/videos/video-presentacion-suplefeed.mp4" type="video/mp4" />
-                                Tu navegador no soporta la reproducción de videos HTML5.
-                            </video>
+                        <div className={styles.videoGrid}>
+                            <div className={styles.videoContainer}>
+                                <video controls>
+                                    <source src="/videos/video-presentacion-suplefeed.mp4" type="video/mp4" />
+                                    Tu navegador no soporta la reproducción de videos HTML5.
+                                </video>
+                            </div>
+                            <div className={styles.videoContainer}>
+                                <video controls>
+                                    <source src="/videos/Anweg.mp4" type="video/mp4" />
+                                    Tu navegador no soporta la reproducción de videos HTML5.
+                                </video>
+                            </div>
                         </div>
                     </div>
                 </div>
