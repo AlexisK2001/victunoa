@@ -505,9 +505,9 @@
     }
 
     .benefitIcon {
-        width: 60px;
-        /* Reduced from 80px */
-        height: 60px;
+        width: 100px;
+        /* Enlarged from 60px for better visibility on mobile */
+        height: 100px;
     }
 
     .benefitTitle {
