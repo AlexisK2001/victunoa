@@ -1,4 +1,7 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Hero from '../components/Hero';
 import Button from '../components/Button';
 import CategoryCard from '../components/CategoryCard';
@@ -10,10 +13,10 @@ import styles from './Home.module.css';
 
 
 // Benefits Icons
-import benefitConsumption from '../assets/icons/benefit-consumption.svg?raw';
-import benefitCost from '../assets/icons/benefit-cost.svg?raw';
-import benefitYield from '../assets/icons/benefit-yield.svg?raw';
-import benefitEfficiency from '../assets/icons/benefit-efficiency.svg?raw';
+import menorConsumo from '../assets/icons/menorConsumo.PNG';
+import menorCosto from '../assets/icons/menorCosto.PNG';
+import mayorRendimiento from '../assets/icons/mayorRendimiento.PNG';
+import mayorEficiencia from '../assets/icons/mayorEficiencia.PNG';
 
 // Contact Icons
 import userIcon from '../assets/icons/user.svg?raw';
@@ -26,6 +29,49 @@ import IMG_2634 from '../assets/icons/IMG_2634.PNG';
 
 import { useSEO } from '../hooks/useSEO';
 
+const BenefitAnimatedCard = ({ benefit }) => {
+    const cardRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: cardRef,
+        offset: ["start end", "center center"]
+    });
+
+    // Animate from 70% scale to 100% scale
+    const scale = useTransform(scrollYProgress, [0, 1], [0.7, 1]);
+    // Animate from 0 opacity to 1
+    const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+    return (
+        <motion.div
+            ref={cardRef}
+            style={{ scale, opacity }}
+            className={styles.benefitCardWrapper}
+        >
+            <div className={styles.benefitCard}>
+                <div className={styles.benefitIcon}>
+                    <div
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'currentColor',
+                            WebkitMaskImage: `url(${benefit.icon})`,
+                            WebkitMaskSize: 'contain',
+                            WebkitMaskRepeat: 'no-repeat',
+                            WebkitMaskPosition: 'center',
+                            maskImage: `url(${benefit.icon})`,
+                            maskSize: 'contain',
+                            maskRepeat: 'no-repeat',
+                            maskPosition: 'center'
+                        }}
+                    />
+                </div>
+                <h3 className={styles.benefitTitle}>{benefit.title}</h3>
+                <p className={styles.benefitText}>{benefit.text}</p>
+            </div>
+        </motion.div>
+    );
+};
+
 export default function Home() {
     useSEO({
         title: '', // Uses default title
@@ -33,6 +79,36 @@ export default function Home() {
         keywords: 'biosales, bionutricion, nutricion animal, suplefeed, ganaderia, NOA, NEA, alimento balanceado, engorde, feedlot, cria, recria, tambo',
         url: '/'
     });
+    const targetRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: targetRef,
+    });
+
+    // As we scroll horizontally, map 0->1 to 0% -> -75% horizontal shift (to reveal all 4 cards)
+    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
+
+    // Array of dynamic scale and opacity transforms for each of the 4 cards based on scroll position
+    const scales = [
+        useTransform(scrollYProgress, [0, 0.33, 0.66], [1.15, 0.85, 0.85]),
+        useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [0.85, 1.15, 0.85, 0.85]),
+        useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [0.85, 0.85, 1.15, 0.85]),
+        useTransform(scrollYProgress, [0.33, 0.66, 1], [0.85, 0.85, 1.15])
+    ];
+
+    const opacities = [
+        useTransform(scrollYProgress, [0, 0.33, 0.66], [1, 0.5, 0.5]),
+        useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [0.5, 1, 0.5, 0.5]),
+        useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [0.5, 0.5, 1, 0.5]),
+        useTransform(scrollYProgress, [0.33, 0.66, 1], [0.5, 0.5, 1])
+    ];
+
+    // Scroll Logic for Products (Vertical Carousel)
+    const productsRef = useRef(null);
+    const { scrollYProgress: productsScrollY } = useScroll({
+        target: productsRef,
+    });
+    // With track at 400% height, translating it by -75% of its own 400% height means 3 items
+    const productY = useTransform(productsScrollY, [0, 1], ["0%", "-75%"]);
 
     return (
         <div>
@@ -111,22 +187,36 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Productos */}
-            <section id="productos" className="section section-alt">
-                <div className="container">
-                    <div className="section-header">
-                        <h2 className="section-title">Líneas de productos</h2>
-                        <div className="title-underline"></div>
-                        <p className="section-intro">
-                            Ofrecemos una línea completa de bionutrición y alimentos balanceados para
-                            diferentes etapas y sistemas productivos, apoyados en la tecnología de Suplefeed.
-                        </p>
-                    </div>
+            {/* Productos - Vertical Scroll Carousel */}
+            <section id="productos" className="section section-alt" style={{ paddingBottom: 0 }}>
+                <div ref={productsRef} className={styles.productsCarouselContainer}>
+                    {/* Snap anchors for products */}
+                    <div className={styles.snapAnchor} style={{ top: '0%' }}></div>
+                    <div className={styles.snapAnchor} style={{ top: '25%' }}></div>
+                    <div className={styles.snapAnchor} style={{ top: '50%' }}></div>
+                    <div className={styles.snapAnchor} style={{ top: '75%' }}></div>
 
-                    <div className={styles.productCategories}>
-                        {categories.map(category => (
-                            <CategoryCard key={category.id} category={category} />
-                        ))}
+                    <div className={styles.productsStickyWrapper}>
+                        <div className="container">
+                            <div className="section-header" style={{ textAlign: 'center', margin: 0 }}>
+                                <h2 className={styles.benefitsTitle} style={{ marginBottom: '1rem' }}>Líneas de productos</h2>
+                                <div className="title-underline" style={{ margin: '0 auto' }}></div>
+                                <p className="section-intro" style={{ marginTop: '1rem', fontSize: '1rem' }}>
+                                    Ofrecemos una línea completa de bionutrición y alimentos balanceados para
+                                    diferentes etapas y sistemas productivos, apoyados en la tecnología de Suplefeed.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className={styles.productsTrackContainer}>
+                            <motion.div style={{ y: productY }} className={styles.productsTrack}>
+                                {categories.map(category => (
+                                    <div key={category.id} className={styles.productCardWrapper}>
+                                        <CategoryCard category={category} />
+                                    </div>
+                                ))}
+                            </motion.div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -162,51 +252,83 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Beneficios */}
-            <section id="beneficios" className="section section-green">
-                <div className="container">
-                    <div className="section-header">
-                        <h2 className="section-title">Beneficios para tu producción</h2>
-                        <div className="title-underline"></div>
-                    </div>
+            {/* Beneficios - Scroll Carousel */}
+            <section id="beneficios" className="section section-green" style={{ paddingBottom: 0 }}>
+                <div ref={targetRef} className={styles.benefitsCarouselContainer}>
+                    {/* Snap anchors to perfectly pause the scroll when swiping down */}
+                    <div className={styles.snapAnchor} style={{ top: '0%' }}></div>
+                    <div className={styles.snapAnchor} style={{ top: '25%' }}></div>
+                    <div className={styles.snapAnchor} style={{ top: '50%' }}></div>
+                    <div className={styles.snapAnchor} style={{ top: '75%' }}></div>
 
-                    <div className={styles.benefitsGrid}>
-                        {[
-                            {
-                                title: 'Menor consumo',
-                                text: 'Mejor resultado con menor consumo, gracias al aprovechamiento óptimo de proteínas, carbohidratos y grasas presentes en la dieta.',
-                                icon: benefitConsumption
-                            },
-                            {
-                                title: 'Menor costo',
-                                text: 'Reducción de costo por kilo producido, optimizando la relación entre inversión en alimento y output de carne o leche.',
-                                icon: benefitCost
-                            },
-                            {
-                                title: 'Mayor rendimiento',
-                                text: 'Mayor rendimiento de carga por hectárea, mejorando el uso de la fibra disponible en pasturas y reservas.',
-                                icon: benefitYield
-                            },
-                            {
-                                title: 'Mayor eficiencia',
-                                text: 'Mejora en conversión alimenticia, reduciendo desbalances y pérdidas en el proceso digestivo.',
-                                icon: benefitEfficiency
-                            }
-                        ].map((benefit, index) => (
-                            <div key={index} className={styles.benefitCard}>
-                                <div className={styles.benefitIcon}>
-                                    <div
-                                        className={styles.benefitIcon}
-                                        dangerouslySetInnerHTML={{ __html: benefit.icon }}
-                                    />
-                                </div>
-                                <h3 className={styles.benefitTitle}>{benefit.title}</h3>
-                                <p className={styles.benefitText}>{benefit.text}</p>
+                    <div className={styles.benefitsStickyWrapper}>
+                        <div className="container">
+                            <div className="section-header" style={{ textAlign: 'center' }}>
+                                <h2 className={styles.benefitsTitle} style={{ marginBottom: 'var(--spacing-2xl)' }}>Beneficios para tu producción</h2>
+                                <div className="title-underline" style={{ margin: '0 auto' }}></div>
                             </div>
-                        ))}
-                    </div>
+                        </div>
 
-                    {/* Video Section */}
+                        <div className={styles.benefitsTrackContainer}>
+                            <motion.div style={{ x }} className={styles.benefitsTrack}>
+                                {[
+                                    {
+                                        title: 'Menor consumo',
+                                        text: 'Mejor resultado con menor consumo, gracias al aprovechamiento óptimo de proteínas, carbohidratos y grasas presentes en la dieta.',
+                                        icon: menorConsumo
+                                    },
+                                    {
+                                        title: 'Menor costo',
+                                        text: 'Reducción de costo por kilo producido, optimizando la relación entre inversión en alimento y output de carne o leche.',
+                                        icon: menorCosto
+                                    },
+                                    {
+                                        title: 'Mayor rendimiento',
+                                        text: 'Mayor rendimiento de carga por hectárea, mejorando el uso de la fibra disponible en pasturas y reservas.',
+                                        icon: mayorRendimiento
+                                    },
+                                    {
+                                        title: 'Mayor eficiencia',
+                                        text: 'Mejora en conversión alimenticia, reduciendo desbalances y pérdidas en el proceso digestivo.',
+                                        icon: mayorEficiencia
+                                    }
+                                ].map((benefit, index) => (
+                                    <div key={index} className={styles.benefitCardWrapper}>
+                                        <motion.div
+                                            className={styles.benefitCard}
+                                            style={{ scale: scales[index], opacity: opacities[index] }}
+                                        >
+                                            <div className={styles.benefitIcon}>
+                                                <div
+                                                    style={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        backgroundColor: 'currentColor',
+                                                        WebkitMaskImage: `url(${benefit.icon})`,
+                                                        WebkitMaskSize: 'contain',
+                                                        WebkitMaskRepeat: 'no-repeat',
+                                                        WebkitMaskPosition: 'center',
+                                                        maskImage: `url(${benefit.icon})`,
+                                                        maskSize: 'contain',
+                                                        maskRepeat: 'no-repeat',
+                                                        maskPosition: 'center'
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className={styles.benefitContent}>
+                                                <h3 className={styles.benefitTitle}>{benefit.title}</h3>
+                                                <p className={styles.benefitText}>{benefit.text}</p>
+                                            </div>
+                                        </motion.div>
+                                    </div>
+                                ))}
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Video Section (Moved outside of sticky area, back to normal flow but still in section-green) */}
+                <div className="container">
                     <div className={styles.videoSection}>
                         <div className={styles.videoHeader}>
                             <h3 className={styles.videoTitle}>Conoce nuestros productos en acción</h3>

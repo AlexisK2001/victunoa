@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
+import { categories } from '../data/categories';
+import { products } from '../data/products';
+import logoImg from '../assets/icons/IMG_2636.PNG';
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -62,7 +65,7 @@ export default function Navbar() {
                     }}
                 >
                     <div className={styles.logoImage}>
-                        <img src="/images/logo3.jpg" alt="VICTU Bio Nutrición" />
+                        <img src={logoImg} alt="VICTU Bio Nutrición" />
                     </div>
                 </Link>
 
@@ -86,7 +89,7 @@ export default function Navbar() {
                             Quiénes somos
                         </a>
                     </li>
-                    <li>
+                    <li className={styles.navItemDropdown}>
                         <a
                             href="#productos"
                             className={styles.navLink}
@@ -94,6 +97,32 @@ export default function Navbar() {
                         >
                             Productos
                         </a>
+                        <ul className={styles.dropdownMenu}>
+                            {categories.map(category => (
+                                <li key={category.id} className={styles.dropdownItem}>
+                                    <Link
+                                        to={`/${category.slug}`}
+                                        className={styles.dropdownLink}
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        {category.name}
+                                    </Link>
+                                    <ul className={styles.nestedDropdownMenu}>
+                                        {products.filter(p => p.category === category.slug).map(product => (
+                                            <li key={product.id}>
+                                                <Link
+                                                    to={`/productos/${product.slug}`}
+                                                    className={styles.nestedDropdownLink}
+                                                    onClick={() => setIsMenuOpen(false)}
+                                                >
+                                                    {product.name}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
                     </li>
                     <li>
                         <a
