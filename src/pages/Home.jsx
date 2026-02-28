@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -31,15 +31,16 @@ import { useSEO } from '../hooks/useSEO';
 
 const BenefitAnimatedCard = ({ benefit }) => {
     const cardRef = useRef(null);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
     const { scrollYProgress } = useScroll({
         target: cardRef,
         offset: ["start end", "center center"]
     });
 
-    // Animate from 70% scale to 100% scale
-    const scale = useTransform(scrollYProgress, [0, 1], [0.7, 1]);
-    // Animate from 0 opacity to 1
-    const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+    // On mobile use no animation (native scroll is used instead of Framer)
+    const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1] : [0.7, 1]);
+    const opacity = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1] : [0, 1]);
 
     return (
         <motion.div
@@ -79,6 +80,13 @@ export default function Home() {
         keywords: 'biosales, bionutricion, nutricion animal, suplefeed, ganaderia, NOA, NEA, alimento balanceado, engorde, feedlot, cria, recria, tambo',
         url: '/'
     });
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth <= 768);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
     const targetRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: targetRef,
@@ -270,39 +278,36 @@ export default function Home() {
                         </div>
 
                         <div className={styles.benefitsTrackContainer}>
-                            <motion.div style={{ x }} className={styles.benefitsTrack}>
-                                {[
-                                    {
-                                        title: 'Menor consumo',
-                                        text: 'Mejor resultado con menor consumo, gracias al aprovechamiento óptimo de proteínas, carbohidratos y grasas presentes en la dieta.',
-                                        icon: menorConsumo
-                                    },
-                                    {
-                                        title: 'Menor costo',
-                                        text: 'Reducción de costo por kilo producido, optimizando la relación entre inversión en alimento y output de carne o leche.',
-                                        icon: menorCosto
-                                    },
-                                    {
-                                        title: 'Mayor rendimiento',
-                                        text: 'Mayor rendimiento de carga por hectárea, mejorando el uso de la fibra disponible en pasturas y reservas.',
-                                        icon: mayorRendimiento
-                                    },
-                                    {
-                                        title: 'Mayor eficiencia',
-                                        text: 'Mejora en conversión alimenticia, reduciendo desbalances y pérdidas en el proceso digestivo.',
-                                        icon: mayorEficiencia
-                                    }
-                                ].map((benefit, index) => (
-                                    <div key={index} className={styles.benefitCardWrapper}>
-                                        <motion.div
-                                            className={styles.benefitCard}
-                                            style={{ scale: scales[index], opacity: opacities[index] }}
-                                        >
-                                            <div className={styles.benefitIcon}>
-                                                <div
-                                                    style={{
-                                                        width: '100%',
-                                                        height: '100%',
+                            {/* Mobile: plain CSS swipe carousel without any Framer Motion */}
+                            {isMobile ? (
+                                <div className={styles.benefitsTrack}>
+                                    {[
+                                        {
+                                            title: 'Menor consumo',
+                                            text: 'Mejor resultado con menor consumo, gracias al aprovechamiento óptimo de proteínas, carbohidratos y grasas presentes en la dieta.',
+                                            icon: menorConsumo
+                                        },
+                                        {
+                                            title: 'Menor costo',
+                                            text: 'Reducción de costo por kilo producido, optimizando la relación entre inversión en alimento y output de carne o leche.',
+                                            icon: menorCosto
+                                        },
+                                        {
+                                            title: 'Mayor rendimiento',
+                                            text: 'Mayor rendimiento de carga por hectárea, mejorando el uso de la fibra disponible en pasturas y reservas.',
+                                            icon: mayorRendimiento
+                                        },
+                                        {
+                                            title: 'Mayor eficiencia',
+                                            text: 'Mejora en conversión alimenticia, reduciendo desbalances y pérdidas en el proceso digestivo.',
+                                            icon: mayorEficiencia
+                                        }
+                                    ].map((benefit, index) => (
+                                        <div key={index} className={styles.benefitCardWrapper}>
+                                            <div className={styles.benefitCard}>
+                                                <div className={styles.benefitIcon}>
+                                                    <div style={{
+                                                        width: '100%', height: '100%',
                                                         backgroundColor: 'currentColor',
                                                         WebkitMaskImage: `url(${benefit.icon})`,
                                                         WebkitMaskSize: 'contain',
@@ -312,17 +317,80 @@ export default function Home() {
                                                         maskSize: 'contain',
                                                         maskRepeat: 'no-repeat',
                                                         maskPosition: 'center'
-                                                    }}
-                                                />
+                                                    }} />
+                                                </div>
+                                                <div className={styles.benefitContent}>
+                                                    <h3 className={styles.benefitTitle}>{benefit.title}</h3>
+                                                    <p className={styles.benefitText}>{benefit.text}</p>
+                                                </div>
                                             </div>
-                                            <div className={styles.benefitContent}>
-                                                <h3 className={styles.benefitTitle}>{benefit.title}</h3>
-                                                <p className={styles.benefitText}>{benefit.text}</p>
-                                            </div>
-                                        </motion.div>
-                                    </div>
-                                ))}
-                            </motion.div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                /* Desktop: Framer Motion animated horizontal track */
+                                <motion.div style={{ x }} className={styles.benefitsTrack}>
+                                    {[
+                                        {
+                                            title: 'Menor consumo',
+                                            text: 'Mejor resultado con menor consumo, gracias al aprovechamiento óptimo de proteínas, carbohidratos y grasas presentes en la dieta.',
+                                            icon: menorConsumo
+                                        },
+                                        {
+                                            title: 'Menor costo',
+                                            text: 'Reducción de costo por kilo producido, optimizando la relación entre inversión en alimento y output de carne o leche.',
+                                            icon: menorCosto
+                                        },
+                                        {
+                                            title: 'Mayor rendimiento',
+                                            text: 'Mayor rendimiento de carga por hectárea, mejorando el uso de la fibra disponible en pasturas y reservas.',
+                                            icon: mayorRendimiento
+                                        },
+                                        {
+                                            title: 'Mayor eficiencia',
+                                            text: 'Mejora en conversión alimenticia, reduciendo desbalances y pérdidas en el proceso digestivo.',
+                                            icon: mayorEficiencia
+                                        }
+                                    ].map((benefit, index) => (
+                                        <div key={index} className={styles.benefitCardWrapper}>
+                                            <motion.div
+                                                className={styles.benefitCard}
+                                                style={{ scale: scales[index], opacity: opacities[index] }}
+                                            >
+                                                <div className={styles.benefitIcon}>
+                                                    <div
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            backgroundColor: 'currentColor',
+                                                            WebkitMaskImage: `url(${benefit.icon})`,
+                                                            WebkitMaskSize: 'contain',
+                                                            WebkitMaskRepeat: 'no-repeat',
+                                                            WebkitMaskPosition: 'center',
+                                                            maskImage: `url(${benefit.icon})`,
+                                                            maskSize: 'contain',
+                                                            maskRepeat: 'no-repeat',
+                                                            maskPosition: 'center'
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className={styles.benefitContent}>
+                                                    <h3 className={styles.benefitTitle}>{benefit.title}</h3>
+                                                    <p className={styles.benefitText}>{benefit.text}</p>
+                                                </div>
+                                            </motion.div>
+                                        </div>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </div>
+                        {/* Swipe indicator - only visible on mobile via CSS */}
+                        <div className={styles.swipeHint}>
+                            <span>Deslizá para ver más</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
                         </div>
                     </div>
                 </div>
