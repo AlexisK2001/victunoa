@@ -407,37 +407,140 @@
     gap: var(--spacing-sm);
 }
 
+/* Swipe hint arrow - hidden by default, shows only on mobile */
+.swipeHint {
+    display: none;
+}
+
+@keyframes swipePulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes swipeArrow {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+}
+
 @media (max-width: 768px) {
 
-    /* Disable CSS snap anchors to prevent clash with Framer Motion on mobile */
-    .snapAnchor {
-        display: none;
+    /* 1. COMPLETELY DISABLE JS SCROLL ON MOBILE: Restores 60fps native scroll performance */
+    .benefitsCarouselContainer,
+    .productsCarouselContainer {
+        height: auto !important;
+        /* Removes 400vh simulated scroll */
     }
 
-    /* Make the track longer on mobile to give cards more width */
+    .benefitsStickyWrapper,
+    .productsStickyWrapper {
+        position: static !important;
+        /* Stops sticky behavior */
+        height: auto !important;
+        padding-top: var(--spacing-xl);
+    }
+
+    /* Swipe hint - shown on mobile */
+    .swipeHint {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+        color: var(--color-primary);
+        font-size: 0.9rem;
+        font-weight: 500;
+        opacity: 0.8;
+        animation: swipePulse 1.6s ease-in-out infinite;
+    }
+
+    .swipeHint svg {
+        width: 20px;
+        height: 20px;
+        animation: swipeArrow 1.6s ease-in-out infinite;
+    }
+
+    /* 2. ENABLE FAST NATIVE HORIZONTAL SCROLL FOR BENEFITS */
+    .benefitsTrackContainer {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: var(--spacing-md);
+        display: block;
+    }
+
     .benefitsTrack {
-        width: 350%;
+        width: max-content !important;
+        transform: none !important;
+        /* Overrides Framer Motion translate style */
+        gap: var(--spacing-md);
+        padding: 0 var(--spacing-md);
     }
 
-    /* Stack icon and text vertically to save horizontal space */
+    /* 3. SHRINK BENEFITS CARDS: User said they were too large */
+    .benefitCardWrapper {
+        width: 80vw !important;
+        /* Cards are comfortably narrower */
+        scroll-snap-align: center;
+    }
+
     .benefitCard {
         flex-direction: column;
         justify-content: center;
         text-align: center;
-        padding: var(--spacing-lg) var(--spacing-md);
-        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+
+    .benefitIcon {
+        width: 60px;
+        /* Reduced from 80px */
+        height: 60px;
     }
 
     .benefitTitle {
-        font-size: var(--font-size-lg);
+        font-size: 1.1rem;
     }
 
-    /* On vertical products track, we can reduce the height gap a bit if needed, but the main issue is the overall padding */
-    .productsStickyWrapper {
-        padding-top: var(--spacing-xl);
+    .benefitText {
+        font-size: 0.95rem;
     }
 
-    /* Ensure videos stack cleanly on mobile */
+    /* 4. ENABLE FAST NATIVE VERTICAL SCROLL FOR PRODUCTS */
+    .productsTrackContainer {
+        overflow: visible;
+    }
+
+    .productsTrack {
+        height: auto !important;
+        /* Removes 400% height */
+        transform: none !important;
+        /* Overrides Framer Motion translate style */
+        gap: var(--spacing-xl);
+        padding-top: var(--spacing-lg);
+    }
+
+    .productCardWrapper {
+        height: auto !important;
+    }
+
+    /* 5. CLEANUPS */
+    .snapAnchor {
+        display: none;
+    }
+
     .videoGrid {
         grid-template-columns: 1fr;
     }
