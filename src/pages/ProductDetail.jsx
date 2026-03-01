@@ -36,6 +36,13 @@ export default function ProductDetail() {
 
     const category = categories.find(c => c.id === product.category);
 
+    const categoryColors = {
+        cria: { bg: '#e8f5e9' },
+        recria: { bg: '#e0f2f1' },
+        engorde: { bg: '#fff3e0' },
+        tambo: { bg: '#e3f2fd' },
+    };
+
     return (
         <div className={styles.productDetailPage}>
             {/* Product Detail Hero */}
@@ -110,10 +117,15 @@ export default function ProductDetail() {
                     <div className={styles.benefitsGrid}>
                         {product.benefits.map((benefit, index) => (
                             <div key={index} className={styles.benefitCard}>
-                                <div className={styles.benefitIcon}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <g dangerouslySetInnerHTML={{ __html: benefit.icon }} />
-                                    </svg>
+                                <div
+                                    className={styles.benefitIcon}
+                                    style={{ backgroundColor: categoryColors[product.category]?.bg }}
+                                >
+                                    <img
+                                        src={benefit.icon}
+                                        alt={benefit.title}
+                                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                    />
                                 </div>
                                 <h3 className={styles.benefitTitle}>{benefit.title}</h3>
                                 <p className={styles.benefitText}>{benefit.description}</p>

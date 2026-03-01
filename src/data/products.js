@@ -30,17 +30,17 @@ export const products = [
             {
                 title: 'Fácil Implementación',
                 description: 'Sistema de bateas de acceso fácil para el ganado a campo.',
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
+                icon: '/icons/palatalabilidad.PNG'
             },
             {
                 title: 'Aporte Mineral Completo',
                 description: 'Macrominerales esenciales para salud y producción óptima.',
-                icon: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`
+                icon: '/icons/aporteMineralCompleto.PNG'
             },
             {
                 title: 'Palatabilidad',
                 description: 'Palatabilizantes naturales aseguran buen consumo voluntario.',
-                icon: `<path d="M12 2L2 7l10 5 10-5-10-5z" />`
+                icon: '/icons/facilImplementacion_1.PNG'
             }
         ]
     },
@@ -75,17 +75,17 @@ export const products = [
             {
                 title: 'Conversión Óptima',
                 description: 'Mejor conversión alimenticia del mercado.',
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
+                icon: '/icons/conversion optima.PNG'
             },
             {
                 title: 'Terminación Rápida',
                 description: 'Reduce el tiempo a faena significativamente.',
-                icon: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`
+                icon: '/icons/terminacionRapida.PNG'
             },
             {
                 title: 'Marmoleo Mejorado',
                 description: 'Mejora la calidad de la carne producida.',
-                icon: `<path d="M12 2L2 7l10 5 10-5-10-5z" />`
+                icon: '/icons/marmoleoMejorado.PNG'
             }
         ]
     },
@@ -120,17 +120,17 @@ export const products = [
             {
                 title: 'Conversión Mejorada',
                 description: 'Optimiza la conversión alimenticia en etapa de recría.',
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
+                icon: '/icons/conversionMejorada.PNG'
             },
             {
                 title: 'Desarrollo Corporal',
                 description: 'Favorece el desarrollo muscular y esquelético.',
-                icon: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`
+                icon: '/icons/desarrolloCorporal.PNG'
             },
             {
                 title: 'Salud Metabólica',
                 description: 'Mejora la salud ruminal y metabólica general.',
-                icon: `<path d="M12 2L2 7l10 5 10-5-10-5z" />`
+                icon: '/icons/saludMetabolica.PNG'
             }
         ]
     },
@@ -165,17 +165,17 @@ export const products = [
             {
                 title: 'Resultados Consistentes',
                 description: 'Performance predecible y replicable.',
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
+                icon: '/icons/resultadoConsistente.PNG'
             },
             {
                 title: 'Adaptación Ruminal',
                 description: 'Favorece adaptación a dietas de alta energía.',
-                icon: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`
+                icon: '/icons/adaptacionRuminal.PNG'
             },
             {
                 title: 'Relación Costo-Beneficio',
                 description: 'Excelente balance entre inversión y retorno.',
-                icon: `<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />`
+                icon: '/icons/relacionCosto-Beneficio.PNG'
             }
         ]
     },
@@ -210,17 +210,17 @@ export const products = [
             {
                 title: 'Mayor Producción',
                 description: 'Incrementa litros de leche por vaca por día.',
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" />`
+                icon: '/icons/mayorProduccion.PNG'
             },
             {
                 title: 'Calidad de Leche',
                 description: 'Mejora sólidos totales y componentes.',
-                icon: `<polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />`
+                icon: '/icons/calidadDeLeche.PNG'
             },
             {
                 title: 'Salud Reproductiva',
                 description: 'Favorece la fertilidad y estado corporal.',
-                icon: `<path d="M12 2L2 7l10 5 10-5-10-5z" />`
+                icon: '/icons/saludReproductiva.PNG'
             }
         ]
     }
