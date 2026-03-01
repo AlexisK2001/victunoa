@@ -147,15 +147,28 @@
 }
 
 .benefitIcon {
-    width: 56px;
-    height: 56px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
     margin: 0 auto var(--spacing-md);
-    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    transition: transform var(--transition-base);
+    box-sizing: border-box;
+    overflow: visible;
 }
 
-.benefitIcon svg {
-    width: 100%;
-    height: 100%;
+.benefitCard:hover .benefitIcon {
+    transform: scale(1.1);
+}
+
+.benefitIcon img {
+    width: 175%;
+    height: 175%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
 }
 
 .benefitTitle {
