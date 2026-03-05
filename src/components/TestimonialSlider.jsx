@@ -24,24 +24,26 @@ export default function TestimonialSlider({ testimonials }) {
 
     return (
         <div className={styles.testimonialSlider}>
-            {testimonials.map((testimonial, index) => (
-                <div
-                    key={testimonial.id}
-                    className={`${styles.testimonialCard} ${index === currentIndex ? styles.active : ''
-                        }`}
-                    onMouseEnter={() => setIsPaused(true)}
-                    onMouseLeave={() => setIsPaused(false)}
-                >
-                    <div className={styles.testimonialQuote}>"</div>
-                    <p className={styles.testimonialText}>{testimonial.text}</p>
-                    <div className={styles.testimonialAuthor}>
-                        <p className={styles.authorName}>{testimonial.author}</p>
-                        <p className={styles.authorInfo}>
-                            {testimonial.role} • {testimonial.location}
-                        </p>
+            <div className={styles.cardsContainer}>
+                {testimonials.map((testimonial, index) => (
+                    <div
+                        key={testimonial.id}
+                        className={`${styles.testimonialCard} ${index === currentIndex ? styles.active : ''
+                            }`}
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
+                    >
+                        <div className={styles.testimonialQuote}>"</div>
+                        <p className={styles.testimonialText}>{testimonial.text}</p>
+                        <div className={styles.testimonialAuthor}>
+                            <p className={styles.authorName}>{testimonial.author}</p>
+                            <p className={styles.authorInfo}>
+                                {testimonial.role} • {testimonial.location}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
 
             {/* Navigation Dots */}
             <div className={styles.dotsContainer}>
