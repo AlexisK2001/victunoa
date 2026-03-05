@@ -1,23 +1,16 @@
 export const testimonials = [
     {
         id: 1,
-        text: 'Desde que incorporamos la línea bionutricional, mejoramos la condición corporal del rodeo y estabilizamos el consumo en épocas críticas.',
-        author: 'Juan Carlos Méndez',
-        role: 'Productor de cría',
+        text: 'Trabajando con VICTU logramos una carne de excelente calidad. Sabemos que es una carne sin antibióticos, con la terneza del corral pero con el verdadero sabor de la carne a pasto. Además, obtenemos una grasa óptima y un producto más limpio, sin sabores indeseados. Los resultados en el campo y en la calidad final de la carne se notan.',
+        author: 'Vaca Roja',
+        role: 'Carnicería',
         location: 'Tucumán'
     },
     {
         id: 2,
-        text: 'Con el apoyo técnico de VICTU ajustamos la dieta del feedlot y logramos mejor conversión sin aumentar el costo por cabeza.',
-        author: 'Javier Kviatkovski',
-        role: 'Feedlot mediano',
+        text: 'Desde que implementamos estas soluciones con VICTU, mejoró mucho el resultado final. Logramos una carne tierna, con buen sabor y una grasa equilibrada, manteniendo un sistema más natural de producción.',
+        author: 'Don juan',
+        role: 'Carnicería',
         location: 'Chaco'
-    },
-    {
-        id: 3,
-        text: 'La combinación de producto de calidad y logística confiable nos permite planificar mejor nuestro tambo.',
-        author: 'Pedro Gomez',
-        role: 'Recría',
-        location: 'Jujuy'
     },
 ];
