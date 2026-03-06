@@ -9,7 +9,7 @@ export const testimonials = [
     {
         id: 2,
         text: 'Desde que implementamos estas soluciones con VICTU, mejoró mucho el resultado final. Logramos una carne tierna, con buen sabor y una grasa equilibrada, manteniendo un sistema más natural de producción.',
-        author: 'Don juan',
+        author: 'Don Juan',
         role: 'Carnicería',
         location: 'Chaco'
     },
