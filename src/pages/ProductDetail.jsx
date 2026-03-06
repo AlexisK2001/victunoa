@@ -9,32 +9,7 @@ import { useSEO } from '../hooks/useSEO';
 export default function ProductDetail() {
     const { productSlug } = useParams();
     const product = getProductById(productSlug);
-
-    useSEO({
-        title: product ? product.name : 'Producto no encontrado',
-        description: product ? product.description : 'Detalles del producto.',
-        image: product ? product.image : null,
-        url: product ? `/productos/${productSlug}` : '',
-        structuredData: product ? {
-            "@context": "https://schema.org/",
-            "@type": "Product",
-            "name": product.name,
-            "image": [
-                window.location.origin + product.image
-            ],
-            "description": product.description,
-            "brand": {
-                "@type": "Brand",
-                "name": "Victu"
-            }
-        } : null
-    });
-
-    if (!product) {
-        return <div>Producto no encontrado</div>;
-    }
-
-    const category = categories.find(c => c.id === product.category);
+    const category = categories.find(c => c.id === product?.category);
 
     const categoryColors = {
         cria: { bg: '#e8f5e9' },
@@ -42,6 +17,56 @@ export default function ProductDetail() {
         engorde: { bg: '#fff3e0' },
         tambo: { bg: '#e3f2fd' },
     };
+
+    useSEO({
+        title: product ? product.name : 'Producto no encontrado',
+        description: product ? product.description : 'Detalles del producto.',
+        image: product ? product.image : null,
+        url: product ? `/productos/${productSlug}` : '',
+        structuredData: product ? [
+            {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": product.name,
+                "image": [
+                    'https://victunoa.com' + product.image
+                ],
+                "description": product.description,
+                "brand": {
+                    "@type": "Brand",
+                    "name": "Victu"
+                }
+            },
+            {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Inicio",
+                        "item": "https://victunoa.com/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": category?.name || product.category,
+                        "item": `https://victunoa.com/${product.category}`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": product.name,
+                        "item": `https://victunoa.com/productos/${productSlug}`
+                    }
+                ]
+            }
+        ] : null
+    });
+
+    if (!product) {
+        return <div>Producto no encontrado</div>;
+    }
 
     return (
         <div className={styles.productDetailPage}>
@@ -55,7 +80,7 @@ export default function ProductDetail() {
                     </div>
                     <div className={styles.productDetailContainer}>
                         <div className={styles.productDetailImage}>
-                            <img src={product.image} alt={product.name} />
+                            <img src={product.image} alt={product.name} loading="lazy" width="500" height="500" />
                         </div>
                         <div className={styles.productDetailInfo}>
                             <h1 className={styles.productDetailTitle}>{product.name}</h1>
@@ -124,6 +149,9 @@ export default function ProductDetail() {
                                     <img
                                         src={benefit.icon}
                                         alt={benefit.title}
+                                        loading="lazy"
+                                        width="64"
+                                        height="64"
                                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                                     />
                                 </div>
