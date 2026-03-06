@@ -12,12 +12,20 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        let rafId = null;
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 100);
+            if (rafId) return;
+            rafId = requestAnimationFrame(() => {
+                setIsScrolled(window.scrollY > 100);
+                rafId = null;
+            });
         };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     }, []);
 
     // Close menu on route change
@@ -82,11 +90,11 @@ export default function Navbar() {
                 <ul className={`${styles.navMenu} ${isMenuOpen ? styles.active : ''}`}>
                     <li>
                         <a
-                            href="#quienes-somos"
+                            href="#como-trabajamos"
                             className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'quienes-somos')}
+                            onClick={(e) => handleSmoothScroll(e, 'como-trabajamos')}
                         >
-                            Quiénes somos
+                            Nosotros
                         </a>
                     </li>
                     <li className={styles.navItemDropdown}>
@@ -123,15 +131,6 @@ export default function Navbar() {
                                 </li>
                             ))}
                         </ul>
-                    </li>
-                    <li>
-                        <a
-                            href="#servicios"
-                            className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'servicios')}
-                        >
-                            Servicio técnico
-                        </a>
                     </li>
                     <li>
                         <a

@@ -3,7 +3,8 @@
     border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    will-change: transform;
     text-decoration: none;
     display: block;
     color: inherit;

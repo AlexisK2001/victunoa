@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
 
+const SITE_URL = 'https://victunoa.com';
+const DEFAULT_IMAGE = SITE_URL + '/images/logo3.jpg';
+
 export function useSEO({ title, description, keywords, image, url, type = 'website', structuredData }) {
     useEffect(() => {
-        // Update Title
         if (title) {
             document.title = `${title} | Victu`;
         } else {
             document.title = 'Victu - Biosales y Nutrición Animal';
         }
 
-        // Helper to update meta tags
         const setMetaTag = (name, content) => {
             let element = document.querySelector(`meta[name="${name}"]`);
             if (!element) {
@@ -30,29 +31,33 @@ export function useSEO({ title, description, keywords, image, url, type = 'websi
             element.setAttribute('content', content);
         };
 
-        // Update Meta Tags
+        const fullTitle = title ? `${title} | Victu` : 'Victu - Biosales y Nutrición Animal';
+
         if (description) {
             setMetaTag('description', description);
             setOgTag('og:description', description);
+            setMetaTag('twitter:description', description);
         }
 
         if (keywords) {
             setMetaTag('keywords', keywords);
         }
 
-        if (title) {
-            setOgTag('og:title', title);
-        }
+        setOgTag('og:title', fullTitle);
+        setMetaTag('twitter:title', fullTitle);
+        setMetaTag('twitter:card', 'summary_large_image');
 
-        // Handle Image
-        const imageUrl = image ? (image.startsWith('http') ? image : window.location.origin + image) : '/images/logo3.jpg';
+        const imageUrl = image
+            ? (image.startsWith('http') ? image : SITE_URL + image)
+            : DEFAULT_IMAGE;
         setOgTag('og:image', imageUrl);
+        setMetaTag('twitter:image', imageUrl);
 
-        // Handle URL
-        const currentUrl = url ? (url.startsWith('http') ? url : window.location.origin + url) : window.location.href;
+        const currentUrl = url
+            ? (url.startsWith('http') ? url : SITE_URL + url)
+            : window.location.href;
         setOgTag('og:url', currentUrl);
 
-        // Canonical URL
         let link = document.querySelector('link[rel="canonical"]');
         if (!link) {
             link = document.createElement('link');
@@ -63,20 +68,17 @@ export function useSEO({ title, description, keywords, image, url, type = 'websi
 
         setOgTag('og:type', type);
 
-        // Structured Data (JSON-LD)
-        if (structuredData) {
-            let script = document.querySelector('#dynamic-json-ld');
-            if (!script) {
-                script = document.createElement('script');
-                script.setAttribute('type', 'application/ld+json');
-                script.setAttribute('id', 'dynamic-json-ld');
-                document.head.appendChild(script);
-            }
-            script.textContent = JSON.stringify(structuredData);
-        } else {
-            let script = document.querySelector('#dynamic-json-ld');
-            if (script) script.remove();
-        }
+        const existingScripts = document.querySelectorAll('script[data-seo-jsonld]');
+        existingScripts.forEach(s => s.remove());
+
+        const schemas = Array.isArray(structuredData) ? structuredData : (structuredData ? [structuredData] : []);
+        schemas.forEach((schema, i) => {
+            const script = document.createElement('script');
+            script.setAttribute('type', 'application/ld+json');
+            script.setAttribute('data-seo-jsonld', `schema-${i}`);
+            script.textContent = JSON.stringify(schema);
+            document.head.appendChild(script);
+        });
 
     }, [title, description, keywords, image, url, type, structuredData]);
 }

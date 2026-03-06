@@ -4,7 +4,8 @@
     border-radius: var(--radius-xl);
     text-align: center;
     box-shadow: var(--shadow-md);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    will-change: transform;
     text-decoration: none;
     display: flex;
     flex-direction: column;
@@ -29,7 +30,8 @@
     align-items: center;
     justify-content: center;
     color: var(--color-white);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base);
+    will-change: transform;
 }
 
 .categoryCard:hover .categoryIcon {
@@ -60,7 +62,7 @@
     font-size: var(--font-size-base);
     font-weight: 600;
     color: var(--color-primary);
-    transition: all var(--transition-base);
+    transition: color var(--transition-base), transform var(--transition-base);
 }
 
 .categoryCard:hover .categoryLink {

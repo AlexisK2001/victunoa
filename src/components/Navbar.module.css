@@ -10,7 +10,8 @@
     backdrop-filter: blur(10px);
     box-shadow: var(--shadow-sm);
     z-index: 1000;
-    transition: all var(--transition-base);
+    transition: box-shadow var(--transition-base);
+    will-change: box-shadow;
 }
 
 .navbar.scrolled {
@@ -126,7 +127,7 @@
     box-shadow: var(--shadow-lg);
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-base);
+    transition: opacity var(--transition-base), visibility var(--transition-base), transform var(--transition-base);
     list-style: none;
     padding: var(--spacing-sm) 0;
     z-index: 1000;
@@ -191,7 +192,7 @@
     opacity: 0;
     visibility: hidden;
     transform: translateX(10px);
-    transition: all var(--transition-base);
+    transition: opacity var(--transition-base), visibility var(--transition-base), transform var(--transition-base);
     list-style: none;
     padding: var(--spacing-sm) 0;
     z-index: 1001;
@@ -218,7 +219,7 @@
     color: var(--color-gray-700);
     text-decoration: none;
     font-size: 0.95rem;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast), padding-left var(--transition-fast);
 }
 
 .nestedDropdownLink:hover {

@@ -13,9 +13,27 @@ export default function CategoryPage() {
     const products = getProductsByCategory(categorySlug);
 
     useSEO({
-        title: category ? category.name : 'Categoría no encontrada',
-        description: category ? category.description : 'Explora nuestros productos de bionutrición.',
-        url: category ? `/${categorySlug}` : ''
+        title: category ? `Productos para ${category.name}` : 'Categoría no encontrada',
+        description: category ? (category.seoDescription || category.description) : 'Explora nuestros productos de bionutrición.',
+        url: category ? `/${categorySlug}` : '',
+        structuredData: category ? {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Inicio",
+                    "item": "https://victunoa.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": category.name,
+                    "item": `https://victunoa.com/${categorySlug}`
+                }
+            ]
+        } : null
     });
 
     if (!category) {

@@ -6,7 +6,7 @@ export default function ProductCard({ product }) {
     return (
         <div className={styles.productCard}>
             <div className={styles.productImage}>
-                <img src={product.image} alt={product.name} />
+                <img src={product.image} alt={product.name} loading="lazy" width="400" height="400" />
             </div>
             <div className={styles.productContent}>
                 <h3 className={styles.productTitle}>{product.name}</h3>
