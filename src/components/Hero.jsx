@@ -43,16 +43,19 @@ export default function Hero({
                     <div className={styles.heroImgCard}>
                         <div className={styles.heroImgBadge}>Producto Destacado</div>
                         <img
-                            src="/images/biosal-autoconsumo-new.png"
+                            src="/images/biosal-autoconsumo-new.webp"
                             alt="Biosal Autoconsumo - Suplemento mineral para bovinos"
                             className={styles.heroProductImg}
+                            fetchpriority="high"
+                            loading="eager"
                         />
                     </div>
                     <div className={styles.heroImgCard2}>
                         <img
-                            src="/images/afi-balde.png"
+                            src="/images/afi-balde.webp"
                             alt="AFI - Activador Flora Intestinal"
                             className={styles.heroProductImg2}
+                            loading="lazy"
                         />
                     </div>
                 </div>

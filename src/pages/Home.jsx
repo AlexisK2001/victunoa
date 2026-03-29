@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { useSEO } from '../hooks/useSEO';
 import Button from '../components/Button';
 import styles from './Home.module.css';
-import iconMayor from '../assets/icons/mayor.PNG';
-import iconMenor from '../assets/icons/menor.PNG';
-import iconSanos from '../assets/icons/animales_mas_sanos.PNG';
-import iconSoporteTecnico from '../assets/icons/soporte_tecnico.PNG';
-import iconMayorRendimiento from '../assets/icons/mayor_rendimiento.PNG';
-import iconReduccionCostos from '../assets/icons/reduccion_de_costo.PNG';
-import iconSaludAnimalSostenida from '../assets/icons/salud_animal_sostenida.PNG';
+import iconMayor from '../assets/icons/mayor.webp';
+import iconMenor from '../assets/icons/menor.webp';
+import iconSanos from '../assets/icons/animales_mas_sanos.webp';
+import iconSoporteTecnico from '../assets/icons/soporte_tecnico.webp';
+import iconMayorRendimiento from '../assets/icons/mayor_rendimiento.webp';
+import iconReduccionCostos from '../assets/icons/reduccion_de_costo.webp';
+import iconSaludAnimalSostenida from '../assets/icons/salud_animal_sostenida.webp';
 
 
 /* ──────────────────────────────────────
@@ -46,7 +46,7 @@ const PRODUCT_CARDS = [
         label: 'CRÍA',
         title: 'Cría',
         desc: 'Suplementación mineral y probiótica para vacas de cría y terneros. Mejora la eficiencia reproductiva y el desarrollo temprano.',
-        fieldImg: '/images/vaca_cria.jpeg',
+        fieldImg: '/images/vaca_cria.webp',
     },
     {
         id: 'recria',
@@ -54,7 +54,7 @@ const PRODUCT_CARDS = [
         label: 'RECRÍA',
         title: 'Recría',
         desc: 'Soluciones nutricionales para maximizar el crecimiento entre el destete y el inicio del engorde.',
-        fieldImg: '/images/vacas_recria.jpeg',
+        fieldImg: '/images/vacas_recria.webp',
     },
     {
         id: 'engorde',
@@ -62,7 +62,7 @@ const PRODUCT_CARDS = [
         label: 'ENGORDE',
         title: 'Engorde',
         desc: 'Formulaciones de alta performance para feedlot y sistemas de engorde intensivo en pasturas.',
-        fieldImg: '/images/vacas_engorde.jpeg',
+        fieldImg: '/images/vacas_engorde.webp',
     },
     {
         id: 'tambo',
@@ -70,7 +70,7 @@ const PRODUCT_CARDS = [
         label: 'TAMBO',
         title: 'Tambo',
         desc: 'Bionutrición especializada para incrementar la producción láctea y sostener la condición corporal.',
-        fieldImg: '/images/vaca_tambo.jpeg',
+        fieldImg: '/images/vaca_tambo.webp',
     }
 ];
 
@@ -133,49 +133,49 @@ const GALLERY = [
         badge: 'Foto',
         title: 'Rodeo en etapa intermedia',
         desc: 'Animales bajo dieta de recria, con variaciones en el estado corporal',
-        img: '/images/engorde2.jpeg'
+        img: '/images/engorde2.webp'
     },
     {
         badge: 'Foto',
         title: 'Rodeo en etapa intermedia',
         desc: 'Animales en recria, algunos ya presentan buen estado corporal',
-        img: '/images/engorde1.jpeg'
+        img: '/images/engorde1.webp'
     },
     {
         badge: 'Foto',
         title: 'Recorrida del campo',
         desc: 'Analisis del estado corporal y desempeño productivo',
-        img: '/images/engorde3.jpeg'
+        img: '/images/engorde3.webp'
     },
     {
         badge: 'Foto',
         title: 'Lote de cria',
         desc: 'Buen estado corporal de los animales',
-        img: '/images/victu_image.jpeg'
+        img: '/images/victu_image.webp'
     },
     {
         badge: 'Foto',
         title: 'Lote de cria',
         desc: 'Buen estado corporal de los animales',
-        img: '/images/victu_image2.jpeg'
+        img: '/images/victu_image2.webp'
     },
     {
         badge: 'Foto',
         title: 'Recorrida del campo',
         desc: 'Analisis del estado corporal y desempeño productivo',
-        img: '/images/victu_image3.jpeg'
+        img: '/images/victu_image3.webp'
     },
     {
         badge: 'Foto',
         title: 'Manejo del pastoreo',
         desc: 'Pasturas subtropicales (Gatton Panic)',
-        img: '/images/victu_image4.jpeg',
+        img: '/images/victu_image4.webp',
     },
     {
         badge: 'Foto',
         title: 'Recorrida del campo',
         desc: 'Analisis del estado corporal y desempeño productivo',
-        img: '/images/imagen_victu1.jpeg',
+        img: '/images/imagen_victu1.webp',
     },
     {
         badge: 'Video',
@@ -245,7 +245,7 @@ const GALLERY_MEDIA = GALLERY.map(item => ({
    COMPONENT
 ────────────────────────────────────── */
 const CRITICAL_IMAGES = [
-    '/images/hero2.jpeg',
+    '/images/hero2.webp',
     iconMayor,
     iconMenor,
     iconSanos,
@@ -254,6 +254,11 @@ const CRITICAL_IMAGES = [
     iconReduccionCostos,
     iconSaludAnimalSostenida,
 ];
+
+// Detect Instagram in-app browser (IAB).
+// Instagram's WebView ignores fetch() caching for video — it needs a different strategy.
+const isInstagramBrowser =
+    typeof navigator !== 'undefined' && /Instagram/.test(navigator.userAgent);
 
 export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
@@ -344,15 +349,55 @@ export default function Home() {
         return () => { cancelled = true; };
     }, []);
 
-    // After the loading screen, preload videos sequentially in the background
-    // so they are already cached when the user reaches the gallery section.
+    // After the loading screen, preload videos in the background so they are
+    // cached when the user reaches the gallery.
+    //
+    // Strategy A — normal browsers: sequential fetch() calls (browser caches the response).
+    // Strategy B — Instagram IAB: hidden <video preload="auto"> elements, because Instagram's
+    //              WebView does NOT honour fetch() caching for video media.
     useEffect(() => {
-        if (isLoading) return; // wait until the page loading screen is gone
+        if (isLoading) return;
 
         const videoUrls = GALLERY
             .filter(g => g.isVideo)
             .map(g => g.src);
 
+        // ── STRATEGY B: Instagram in-app browser ─────────────────────────────
+        if (isInstagramBrowser) {
+            // Create an off-screen container with hidden <video> elements.
+            // WebViews buffer video reliably when a <video preload="auto"> element exists,
+            // even if it is invisible.
+            const container = document.createElement('div');
+            container.setAttribute('aria-hidden', 'true');
+            container.style.cssText =
+                'position:fixed;width:1px;height:1px;top:-9999px;left:-9999px;' +
+                'overflow:hidden;pointer-events:none;visibility:hidden;';
+            document.body.appendChild(container);
+
+            // Only preload the first 4 videos to avoid killing mobile bandwidth.
+            const PRELOAD_LIMIT = 4;
+            videoUrls.slice(0, PRELOAD_LIMIT).forEach(url => {
+                const v = document.createElement('video');
+                v.preload  = 'auto';
+                v.muted    = true;
+                v.playsInline = true;
+                v.src      = url;
+                v.load();               // explicitly trigger buffering
+                container.appendChild(v);
+            });
+
+            return () => {
+                // Stop buffering and remove all hidden elements on unmount
+                Array.from(container.querySelectorAll('video')).forEach(v => {
+                    v.pause();
+                    v.removeAttribute('src');
+                    v.load();
+                });
+                document.body.removeChild(container);
+            };
+        }
+
+        // ── STRATEGY A: normal browsers ──────────────────────────────────────
         let cancelled = false;
         let index = 0;
         let timeoutId = null;
@@ -366,7 +411,7 @@ export default function Home() {
                 .catch(() => { /* silently ignore network errors */ })
                 .finally(() => {
                     if (!cancelled) {
-                        // Small gap between fetches so we don't saturate the connection
+                        // Small gap between fetches to avoid saturating the connection
                         timeoutId = setTimeout(preloadNext, 300);
                     }
                 });
@@ -501,7 +546,7 @@ export default function Home() {
         <div className={styles.page}>
             {isLoading && (
                 <div className={styles.loadingOverlay} aria-hidden="true">
-                    <img src="/images/logovictu.png" alt="Victu" className={styles.loadingLogo} />
+                    <img src="/images/logovictu.webp" alt="Victu" className={styles.loadingLogo} />
                     <div className={styles.loadingSpinner} />
                 </div>
             )}
@@ -530,9 +575,11 @@ export default function Home() {
                     </div>
                     <div className={styles.heroRight}>
                         <img
-                            src="/images/hero2.jpeg"
+                            src="/images/hero2.webp"
                             alt="Ganado bovino en pastoreo"
                             className={styles.heroImg}
+                            fetchpriority="high"
+                            loading="eager"
                         />
                     </div>
                 </div>
@@ -739,7 +786,7 @@ export default function Home() {
                                                 <div className={styles.galleryMediaVideo}>
                                                     <video
                                                         controls
-                                                        preload={isActive ? 'metadata' : 'none'}
+                                                        preload={isActive ? (isInstagramBrowser ? 'auto' : 'metadata') : 'none'}
                                                         poster={g.img}
                                                         playsInline
                                                         aria-label={`Video ${g.title || 'sin título'}`}
