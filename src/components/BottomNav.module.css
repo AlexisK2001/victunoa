@@ -1,0 +1,75 @@
+/* Bottom navigation bar — visible solo en mobile */
+.bottomNav {
+    display: none; /* oculto en desktop */
+}
+
+@media (max-width: 768px) {
+    .bottomNav {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: calc(12px + env(safe-area-inset-bottom));
+        z-index: 1000;
+        background: linear-gradient(150deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        margin: 0;
+        padding: 8px;
+        border-radius: 999px;
+        box-shadow: 0 18px 38px rgba(20, 25, 20, 0.18), 0 8px 20px rgba(30, 45, 30, 0.12);
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        touch-action: pan-y;
+        transform: translateY(var(--vv-bottom-offset, 0px));
+    }
+
+    .bottomNav::before {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 55%);
+        pointer-events: none;
+    }
+
+    .navItem {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: rgba(248, 250, 248, 0.96);
+        text-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.55),
+            0 2px 6px rgba(0, 0, 0, 0.45),
+            0 0 8px rgba(0, 0, 0, 0.35);
+        -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.6);
+        font-family: 'Poppins', system-ui, sans-serif;
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        padding: 8px 12px;
+        border-radius: 50px;
+        transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        min-width: 64px;
+        justify-content: center;
+    }
+
+    .navItem svg {
+        transition: stroke 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    }
+
+    /* Estado activo — pill oscuro como en la imagen */
+    .navItem.active {
+        background-color: #2B3A2B;
+        color: #FFFFFF;
+    }
+
+    .navItem.active svg {
+        stroke: #FFFFFF;
+    }
+}

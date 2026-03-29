@@ -2,9 +2,9 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import BottomNav from './components/BottomNav';
 import Home from './pages/Home';
 import CategoryPage from './pages/CategoryPage';
-import ProductDetail from './pages/ProductDetail';
 import './styles/global.css';
 import './App.css';
 
@@ -35,14 +35,14 @@ function App() {
       <ScrollToTop />
       <div className="App">
         <Navbar />
-        <main>
+        <main style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/:categorySlug" element={<CategoryPage />} />
-            <Route path="/productos/:productSlug" element={<ProductDetail />} />
           </Routes>
         </main>
         <Footer />
+        <BottomNav />
       </div>
     </Router>
   );

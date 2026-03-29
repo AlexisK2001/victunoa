@@ -29,4 +29,5 @@ body {
   color: #1a1a1a;
   background-color: #ffffff;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
