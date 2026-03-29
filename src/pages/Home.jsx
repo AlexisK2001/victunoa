@@ -253,6 +253,8 @@ const CRITICAL_IMAGES = [
     iconMayorRendimiento,
     iconReduccionCostos,
     iconSaludAnimalSostenida,
+    // Primera imagen de la galería — visible en el viewport inicial
+    '/images/engorde2.webp',
 ];
 
 // Detect Instagram in-app browser (IAB).
@@ -446,6 +448,22 @@ export default function Home() {
             setGalleryIndex(fullscreenIndex);
         };
     }, [isFullscreenOpen, fullscreenIndex]);
+
+    // Precargar imágenes adyacentes en fullscreen para evitar demora al navegar en móvil
+    useEffect(() => {
+        if (!isFullscreenOpen || totalMedia === 0) return;
+        const indices = [
+            (fullscreenIndex - 1 + totalMedia) % totalMedia,
+            (fullscreenIndex + 1) % totalMedia,
+        ];
+        indices.forEach(i => {
+            const item = GALLERY_MEDIA[i];
+            if (item && item.mediaType === 'image' && item.img) {
+                const img = new Image();
+                img.src = item.img;
+            }
+        });
+    }, [isFullscreenOpen, fullscreenIndex, totalMedia]);
 
     useEffect(() => {
         if (!isFullscreenOpen) return;
@@ -802,7 +820,7 @@ export default function Home() {
                                                     onClick={() => openFullscreen(i)}
                                                     aria-label={`Abrir imagen ${g.title} en pantalla completa`}
                                                 >
-                                                    <img src={g.img} alt={g.title} loading="lazy" style={g.imgFit ? { objectFit: g.imgFit } : undefined} />
+                                                    <img src={g.img} alt={g.title} loading={i === 0 ? 'eager' : 'lazy'} style={g.imgFit ? { objectFit: g.imgFit } : undefined} />
                                                 </button>
                                             )}
                                             <span className={`${styles.galleryBadge} ${g.isVideo ? styles.galleryBadgeVideo : ''}`}>
