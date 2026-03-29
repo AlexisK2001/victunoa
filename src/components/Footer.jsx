@@ -1,53 +1,92 @@
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 
-import whatsappIcon from '../assets/icons/whatsapp.svg?raw';
+import instagramIcon from '../assets/icons/instagram.svg?raw';
+import facebookIcon from '../assets/icons/facebook.svg?raw';
 import emailIcon from '../assets/icons/email.svg?raw';
-import instagram from '../assets/icons/instagram.svg?raw';
-
 
 export default function Footer() {
     return (
         <footer className={styles.footer}>
-            <div className="container">
-                <div className={styles.footerContent}>
-                    <div className={styles.footerColumn}>
-                        <h4 className={styles.footerTitle}>VICTU NOA</h4>
-                        <p className={styles.footerText}>
-                            Representación oficial de Suplefeed en el Noroeste Argentino.
-                        </p>
-                    </div>
-                    <div className={styles.footerColumn}>
-                        <h4 className={styles.footerTitle}>Contacto</h4>
-
-                        <div className={styles.footerItem}>
-                            <div className={styles.footerIcon} dangerouslySetInnerHTML={{ __html: whatsappIcon }} />
-                            <span>381 6542124</span>
-                        </div>
-
-                        <div className={styles.footerItem}>
-                            <div className={styles.footerIcon} dangerouslySetInnerHTML={{ __html: emailIcon }} />
-                            <span>faqndosuarez@gmail.com</span>
-                        </div>
-
+            <div className={`container ${styles.footerTop}`}>
+                {/* Col 1 — Brand */}
+                <div className={styles.footerBrand}>
+                    <p className={styles.footerLogo}>VICTU</p>
+                    <p className={styles.footerTagline}>
+                        Alimentación sustentable para la ganadería
+                    </p>
+                    <div className={styles.footerSocials}>
                         <a
                             href="https://www.instagram.com/victunoa"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.footerItem}
-                        >
-                            <div className={styles.footerIcon} dangerouslySetInnerHTML={{ __html: instagram }} />
-                            <span>@victunoa</span>
-                        </a>
-                    </div>
-                    <div className={styles.footerColumn}>
-                        <h4 className={styles.footerTitle}>Cobertura</h4>
-                        <p className={styles.footerText}>
-                            Zonas NOA y NEA
-                        </p>
+                            className={styles.socialIcon}
+                            aria-label="Instagram"
+                            dangerouslySetInnerHTML={{ __html: instagramIcon }}
+                        />
+                        <a
+                            href="https://www.facebook.com/share/1ApR4Kdu5i/?mibextid=wwXIfr"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.socialIcon}
+                            aria-label="Facebook"
+                            dangerouslySetInnerHTML={{ __html: facebookIcon }}
+                        />
+                        <a
+                            href="mailto:faqndosuarez@gmail.com"
+                            className={styles.socialIcon}
+                            aria-label="Email"
+                            dangerouslySetInnerHTML={{ __html: emailIcon }}
+                        />
                     </div>
                 </div>
-                <div className={styles.footerBottom}>
-                    <p>&copy; 2026 VICTU. Todos los derechos reservados.</p>
+
+                {/* Col 2 — Productos */}
+                <div className={styles.footerCol}>
+                    <h4 className={styles.footerColTitle}>PRODUCTOS</h4>
+                    <ul className={styles.footerLinks}>
+                        <li><Link to="/cria#biosal-autoconsumo">Biosal Autoconsumo</Link></li>
+                        <li><Link to="/engorde#biosal-mix">Biosal Mix</Link></li>
+                        <li><Link to="/recria#biosal-max">Biosal Max</Link></li>
+                        <li><Link to="/tambo#rbr">Regulador Biológico Ruminal</Link></li>
+                        <li><Link to="/tambo#afi">AFI</Link></li>
+                    </ul>
+                </div>
+
+                {/* Col 3 — Empresa */}
+                <div className={styles.footerCol}>
+                    <h4 className={styles.footerColTitle}>EMPRESA</h4>
+                    <ul className={styles.footerLinks}>
+                        <li><a href="#como-trabajamos">Quiénes somos</a></li>
+                    </ul>
+                </div>
+
+                {/* Col 4 — Contacto */}
+                <div className={styles.footerCol}>
+                    <h4 className={styles.footerColTitle}>CONTACTO</h4>
+                    <ul className={styles.footerLinks}>
+                        <li>
+                            <a href="https://wa.me/5493816542124" target="_blank" rel="noreferrer">
+                                WhatsApp
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:faqndosuarez@gmail.com">faqndosuarez@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {/* Bottom bar */}
+            <div className={styles.footerBottom}>
+                <div className="container">
+                    <div className={styles.footerBottomInner}>
+                        <p>© 2024 VICTU. Todos los derechos reservados.</p>
+                        <div className={styles.footerLegal}>
+                            <a href="#">Términos y condiciones</a>
+                            <a href="#">Política de privacidad</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>

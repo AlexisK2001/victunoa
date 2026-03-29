@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 
 const SITE_URL = 'https://victunoa.com';
-const DEFAULT_IMAGE = SITE_URL + '/images/logo3.jpg';
+const DEFAULT_IMAGE = SITE_URL + '/images/logo_og.png';
+const DEFAULT_KEYWORDS = 'Victu, victu tucuman, victu biosales, biosales, biosales tucuman, bionutricion, nutricion animal, suplefeed, ganaderia tucuman, NOA, NEA, suplemento ganadero, sales minerales, nutricion bovina';
 
 export function useSEO({ title, description, keywords, image, url, type = 'website', structuredData }) {
     useEffect(() => {
         if (title) {
-            document.title = `${title} | Victu`;
+            document.title = `${title} | Victu - Biosales Tucumán`;
         } else {
-            document.title = 'Victu - Biosales y Nutrición Animal';
+            document.title = 'Victu - Biosales y Nutrición Animal en Tucumán';
         }
 
         const setMetaTag = (name, content) => {
@@ -31,7 +32,7 @@ export function useSEO({ title, description, keywords, image, url, type = 'websi
             element.setAttribute('content', content);
         };
 
-        const fullTitle = title ? `${title} | Victu` : 'Victu - Biosales y Nutrición Animal';
+        const fullTitle = title ? `${title} | Victu - Biosales Tucumán` : 'Victu - Biosales y Nutrición Animal en Tucumán';
 
         if (description) {
             setMetaTag('description', description);
@@ -40,7 +41,9 @@ export function useSEO({ title, description, keywords, image, url, type = 'websi
         }
 
         if (keywords) {
-            setMetaTag('keywords', keywords);
+            setMetaTag('keywords', keywords + ', ' + DEFAULT_KEYWORDS);
+        } else {
+            setMetaTag('keywords', DEFAULT_KEYWORDS);
         }
 
         setOgTag('og:title', fullTitle);

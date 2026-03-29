@@ -1,26 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import { categories } from '../data/categories';
 import { products } from '../data/products';
-import logoImg from '../assets/icons/IMG_2636.PNG';
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownTimeout = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
+
+    const handleDropdownEnter = () => {
+        clearTimeout(dropdownTimeout.current);
+        setIsDropdownOpen(true);
+    };
+
+    const handleDropdownLeave = () => {
+        dropdownTimeout.current = setTimeout(() => {
+            setIsDropdownOpen(false);
+        }, 150);
+    };
 
     useEffect(() => {
         let rafId = null;
         const handleScroll = () => {
             if (rafId) return;
             rafId = requestAnimationFrame(() => {
-                setIsScrolled(window.scrollY > 100);
+                setIsScrolled(window.scrollY > 60);
                 rafId = null;
             });
         };
-
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => {
             window.removeEventListener('scroll', handleScroll);
@@ -28,33 +39,20 @@ export default function Navbar() {
         };
     }, []);
 
-    // Close menu on route change
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setIsMenuOpen(false);
-    }, [location]);
-
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     const handleSmoothScroll = (e, sectionId) => {
         e.preventDefault();
-
-        // If we're not on home page, navigate to home with hash
         if (location.pathname !== '/') {
             navigate(`/#${sectionId}`);
+            setIsMenuOpen(false);
             return;
         }
-
         const element = document.getElementById(sectionId);
         if (element) {
-            const navbarHeight = 75;
+            const navbarHeight = 72;
             const targetPosition = element.offsetTop - navbarHeight;
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
         }
         setIsMenuOpen(false);
     };
@@ -70,11 +68,10 @@ export default function Navbar() {
                             e.preventDefault();
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
+                        setIsMenuOpen(false);
                     }}
                 >
-                    <div className={styles.logoImage}>
-                        <img src={logoImg} alt="VICTU Bio Nutrición" />
-                    </div>
+                    <img src="/images/logovictu.png" alt="Logo" className={styles.logoImg} />
                 </Link>
 
                 <button
@@ -88,70 +85,127 @@ export default function Navbar() {
                 </button>
 
                 <ul className={`${styles.navMenu} ${isMenuOpen ? styles.active : ''}`}>
-                    <li>
-                        <a
-                            href="#como-trabajamos"
-                            className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'como-trabajamos')}
-                        >
-                            Nosotros
-                        </a>
-                    </li>
-                    <li className={styles.navItemDropdown}>
-                        <a
-                            href="#productos"
-                            className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'productos')}
-                        >
+                    <li
+                        className={styles.navItemDropdown}
+                        onMouseEnter={handleDropdownEnter}
+                        onMouseLeave={handleDropdownLeave}
+                    >
+                        <a href="#productos" className={styles.navLink}
+                            onClick={(e) => handleSmoothScroll(e, 'productos')}>
                             Productos
+                            <span className={`${styles.dropdownArrow} ${isDropdownOpen ? styles.dropdownArrowOpen : ''}`}>▾</span>
                         </a>
-                        <ul className={styles.dropdownMenu}>
-                            {categories.map(category => (
-                                <li key={category.id} className={styles.dropdownItem}>
-                                    <Link
-                                        to={`/${category.slug}`}
-                                        className={styles.dropdownLink}
-                                        onClick={() => setIsMenuOpen(false)}
-                                    >
-                                        {category.name}
-                                    </Link>
-                                    <ul className={styles.nestedDropdownMenu}>
-                                        {products.filter(p => p.category === category.slug).map(product => (
-                                            <li key={product.id}>
+                        {isDropdownOpen && (
+                            <div
+                                className={styles.dropdown}
+                                onMouseEnter={handleDropdownEnter}
+                                onMouseLeave={handleDropdownLeave}
+                            >
+                                <div className={styles.dropdownGrid}>
+                                    {categories.map(cat => {
+                                        const catProducts = products.filter(p => p.category === cat.id);
+                                        return (
+                                            <div key={cat.id} className={styles.dropdownColumn}>
                                                 <Link
-                                                    to={`/productos/${product.slug}`}
-                                                    className={styles.nestedDropdownLink}
-                                                    onClick={() => setIsMenuOpen(false)}
+                                                    to={`/${cat.slug}`}
+                                                    className={styles.dropdownCategoryTitle}
+                                                    onClick={() => setIsDropdownOpen(false)}
                                                 >
-                                                    {product.name}
+                                                    {cat.name}
                                                 </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </li>
-                            ))}
-                        </ul>
+                                                <ul className={styles.dropdownProductList}>
+                                                    {catProducts.map(product => (
+                                                        <li key={product.id}>
+                                                            <Link
+                                                                to={`/${cat.slug}#${product.id}`}
+                                                                className={styles.dropdownProductLink}
+                                                                onClick={() => setIsDropdownOpen(false)}
+                                                            >
+                                                                <span className={styles.dropdownProductName}>{product.name}</span>
+                                                                <span className={styles.dropdownProductSubtitle}>{product.subtitle}</span>
+                                                            </Link>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
                     </li>
                     <li>
-                        <a
-                            href="#beneficios"
-                            className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'beneficios')}
-                        >
+                        <a href="#beneficios" className={styles.navLink}
+                            onClick={(e) => handleSmoothScroll(e, 'beneficios')}>
                             Beneficios
                         </a>
                     </li>
                     <li>
+                        <a href="#galeria" className={styles.navLink}
+                            onClick={(e) => handleSmoothScroll(e, 'galeria')}>
+                            Galería
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#como-trabajamos" className={styles.navLink}
+                            onClick={(e) => handleSmoothScroll(e, 'como-trabajamos')}>
+                            Nosotros
+                        </a>
+                    </li>
+                    <li>
                         <a
-                            href="#contacto"
-                            className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'contacto')}
+                            href="https://wa.me/5493816542124"
+                            target="_blank"
+                            rel="noreferrer"
+                            className={styles.navCTA}
                         >
-                            Contacto
+                            WhatsApp
                         </a>
                     </li>
                 </ul>
             </div>
+
+            {/* Mobile dropdown menu */}
+            {isMenuOpen && (
+                <div className={styles.mobileMenu}>
+                    <a href="#productos" className={styles.mobileLink}
+                        onClick={(e) => handleSmoothScroll(e, 'productos')}>Productos</a>
+                    <a href="#beneficios" className={styles.mobileLink}
+                        onClick={(e) => handleSmoothScroll(e, 'beneficios')}>Beneficios</a>
+                    <a href="#galeria" className={styles.mobileLink}
+                        onClick={(e) => handleSmoothScroll(e, 'galeria')}>Galería</a>
+                    <a href="#como-trabajamos" className={styles.mobileLink}
+                        onClick={(e) => handleSmoothScroll(e, 'como-trabajamos')}>Nosotros</a>
+                    <a href="https://wa.me/5493816542124" target="_blank" rel="noreferrer"
+                        className={styles.mobileCTA}>WhatsApp</a>
+                    <div className={styles.mobileCategories}>
+                        {categories.map(cat => {
+                            const catProducts = products.filter(p => p.category === cat.id);
+                            return (
+                                <div key={cat.id} className={styles.mobileCategoryGroup}>
+                                    <Link
+                                        to={`/${cat.slug}`}
+                                        className={styles.mobileCatTitle}
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        {cat.name}
+                                    </Link>
+                                    {catProducts.map(product => (
+                                        <Link
+                                            key={product.id}
+                                            to={`/${cat.slug}#${product.id}`}
+                                            className={styles.mobileCatLink}
+                                            onClick={() => setIsMenuOpen(false)}
+                                        >
+                                            {product.name}
+                                        </Link>
+                                    ))}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
         </nav>
     );
 }

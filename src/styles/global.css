@@ -2,22 +2,36 @@
    CSS VARIABLES & DESIGN TOKENS
    =================================== */
 :root {
-    /* Colors */
-    --color-primary: #ff8c42;
-    --color-primary-dark: #e67a32;
-    --color-primary-light: #ffb882;
-    --color-secondary: #4caf50;
-    --color-secondary-dark: #388e3c;
-    --color-secondary-light: #81c784;
-    --color-white: #ffffff;
-    --color-black: #1a1a1a;
-    --color-gray-50: #fafafa;
-    --color-gray-100: #f5f5f5;
-    --color-gray-200: #eeeeee;
-    --color-gray-300: #e0e0e0;
-    --color-gray-600: #757575;
-    --color-gray-800: #424242;
-    --color-green-tint: #f0f9f1;
+    /* === NEW PALETTE (Penpot Design) === */
+    --color-bg: #FAFAF7;
+    --color-dark: #2B3A2B;
+    --color-dark-hover: #3a4e3a;
+    --color-gold: #C9A96E;
+    --color-gold-light: #e8ccaa;
+    --color-green-mid: #6B8C6B;
+    --color-green-light: #A8C5A0;
+    --color-black: #1A1A1A;
+    --color-gray-text: #6B6560;
+    --color-gray-sub: #5A5A5A;
+    --color-white: #FFFFFF;
+    --color-surface: #FFFFFF;
+    --color-sand: #E8E0CF;
+    --color-border: #E0DDD6;
+
+    /* Legacy aliases (keep for backwards compatibility) */
+    --color-primary: #2B3A2B;
+    --color-primary-dark: #1e2a1e;
+    --color-primary-light: #6B8C6B;
+    --color-secondary: #C9A96E;
+    --color-secondary-dark: #b38a4a;
+    --color-secondary-light: #e8ccaa;
+    --color-gray-50: #FAFAF7;
+    --color-gray-100: #f5f3ef;
+    --color-gray-200: #E0DDD6;
+    --color-gray-300: #d0ccc6;
+    --color-gray-600: #6B6560;
+    --color-gray-800: #3A3A3A;
+    --color-green-tint: #f3f7f3;
     --color-success: #22c55e;
     --color-error: #ef4444;
 
@@ -31,6 +45,8 @@
     --spacing-3xl: 4.5rem;
 
     /* Typography */
+    --font-display: 'Poppins', system-ui, -apple-system, sans-serif;
+    --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
     --font-size-base: 1rem;
@@ -42,16 +58,17 @@
     --font-size-5xl: 3rem;
 
     /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 2px 16px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.10);
+    --shadow-xl: 0 20px 40px rgba(0,0,0,0.12);
 
     /* Border Radius */
     --radius-sm: 0.375rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
+    --radius-2xl: 1.25rem;
     --radius-full: 9999px;
 
     /* Transitions */
@@ -63,6 +80,32 @@
 /* ===================================
    GLOBAL STYLES
    =================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-black);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    line-height: 1.2;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -87,11 +130,11 @@
 }
 
 .section-alt {
-    background-color: var(--color-gray-50);
+    background-color: var(--color-white);
 }
 
 .section-green {
-    background-color: var(--color-green-tint);
+    background-color: var(--color-dark);
 }
 
 .section-header {
@@ -99,26 +142,37 @@
     margin-bottom: var(--spacing-xl);
 }
 
+.section-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-green-mid);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
 .section-title {
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
     color: var(--color-black);
     margin-bottom: var(--spacing-sm);
     line-height: 1.2;
+    font-family: var(--font-display);
+}
+
+.section-title-light {
+    color: var(--color-white);
 }
 
 .title-underline {
     display: none;
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-    margin: 0 auto var(--spacing-md);
-    border-radius: var(--radius-full);
 }
 
 .section-intro {
     font-size: var(--font-size-lg);
-    color: var(--color-gray-600);
+    color: var(--color-gray-text);
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.7;
@@ -137,7 +191,7 @@
 
 .body-text {
     font-size: var(--font-size-lg);
-    color: var(--color-gray-600);
+    color: var(--color-gray-text);
     line-height: 1.8;
     margin-bottom: var(--spacing-lg);
     max-width: 700px;
@@ -145,7 +199,9 @@
     margin-right: auto;
 }
 
-/* Scroll reveal animations */
+/* ===================================
+   SCROLL REVEAL ANIMATIONS
+   =================================== */
 .scroll-reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -157,47 +213,23 @@
     transform: translateY(0);
 }
 
-/* Fade in animations */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-.fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
-}
-
-.fade-in-delay {
-    animation: fadeIn 0.6s ease-out 0.2s forwards;
-    opacity: 0;
-}
-
-.fade-in-delay-2 {
-    animation: fadeIn 0.6s ease-out 0.4s forwards;
-    opacity: 0;
-}
+.fade-in         { animation: fadeIn 0.6s ease-out forwards; }
+.fade-in-delay   { animation: fadeIn 0.6s ease-out 0.2s forwards; opacity: 0; }
+.fade-in-delay-2 { animation: fadeIn 0.6s ease-out 0.4s forwards; opacity: 0; }
 
 /* ===================================
    ACCESSIBILITY: Reduced Motion
    =================================== */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-    }
-
-    html {
-        scroll-behavior: auto;
     }
 }
