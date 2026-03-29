@@ -344,6 +344,43 @@ export default function Home() {
         return () => { cancelled = true; };
     }, []);
 
+    // After the loading screen, preload videos sequentially in the background
+    // so they are already cached when the user reaches the gallery section.
+    useEffect(() => {
+        if (isLoading) return; // wait until the page loading screen is gone
+
+        const videoUrls = GALLERY
+            .filter(g => g.isVideo)
+            .map(g => g.src);
+
+        let cancelled = false;
+        let index = 0;
+        let timeoutId = null;
+
+        const preloadNext = () => {
+            if (cancelled || index >= videoUrls.length) return;
+            const url = videoUrls[index];
+            index += 1;
+
+            fetch(url, { cache: 'force-cache' })
+                .catch(() => { /* silently ignore network errors */ })
+                .finally(() => {
+                    if (!cancelled) {
+                        // Small gap between fetches so we don't saturate the connection
+                        timeoutId = setTimeout(preloadNext, 300);
+                    }
+                });
+        };
+
+        // Give the browser ~1s to settle after the page paints before starting
+        timeoutId = setTimeout(preloadNext, 1000);
+
+        return () => {
+            cancelled = true;
+            clearTimeout(timeoutId);
+        };
+    }, [isLoading]);
+
     // Register non-passive touchmove to allow preventDefault (needed for swipe-right)
     useEffect(() => {
         const el = carouselRef.current;
@@ -688,11 +725,11 @@ export default function Home() {
                             style={{ transform: `translateX(-${galleryIndex * 100}%)` }}
                         >
                             {GALLERY.map((g, i) => {
-                                // Only load video src for the active slide and its immediate neighbours
-                                // This prevents mobile browsers from downloading all MP4s at once
-                                const distFromActive = Math.abs(i - galleryIndex);
-                                const isNearActive = distFromActive <= 1;
-                                const shouldLoadVideoSrc = g.isVideo && isNearActive;
+                                // The video src is always injected because the background preloader
+                                // (useEffect) has already fetched and cached the file.
+                                // preload="none" for non-active slides so the <video> element doesn't
+                                // make its own network request — the cache does the work.
+                                const isActive = i === galleryIndex;
 
                                 return (
                                 <div key={i} className={styles.gallerySlide}>
@@ -702,14 +739,13 @@ export default function Home() {
                                                 <div className={styles.galleryMediaVideo}>
                                                     <video
                                                         controls
-                                                        preload={i === galleryIndex ? 'metadata' : 'none'}
+                                                        preload={isActive ? 'metadata' : 'none'}
                                                         poster={g.img}
                                                         playsInline
                                                         aria-label={`Video ${g.title || 'sin título'}`}
                                                     >
-                                                        {shouldLoadVideoSrc && (
-                                                            <source src={g.src} type="video/mp4" />
-                                                        )}
+                                                        {/* src always present — browser reads from cache */}
+                                                        <source src={g.src} type="video/mp4" />
                                                     </video>
                                                 </div>
                                             ) : (
