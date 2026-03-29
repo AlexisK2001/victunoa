@@ -255,6 +255,25 @@ const CRITICAL_IMAGES = [
     iconSaludAnimalSostenida,
     // Primera imagen de la galería — visible en el viewport inicial
     '/images/engorde2.webp',
+    // Imágenes hero de cada categoría — se precargan para navegación instantánea
+    '/images/vaca_cria.webp',
+    '/images/vacas_recria.webp',
+    '/images/vacas_engorde.webp',
+    '/images/vaca_tambo.webp',
+    // Imágenes de productos — se precargan para que aparezcan al instante al entrar a una categoría
+    '/images/biosala.webp',
+    '/images/biosalmax.webp',
+    '/images/biosalmix.webp',
+    '/images/rbr.webp',
+    '/images/afi.webp',
+    // Imágenes de galería — se precargan para que el fullscreen abra al instante
+    '/images/engorde1.webp',
+    '/images/engorde3.webp',
+    '/images/victu_image.webp',
+    '/images/victu_image2.webp',
+    '/images/victu_image3.webp',
+    '/images/victu_image4.webp',
+    '/images/imagen_victu1.webp',
 ];
 
 // Detect Instagram in-app browser (IAB).
@@ -267,6 +286,7 @@ export default function Home() {
     const [galleryIndex, setGalleryIndex] = useState(0);
     const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
     const [fullscreenIndex, setFullscreenIndex] = useState(0);
+    const [fullscreenImgLoaded, setFullscreenImgLoaded] = useState(false);
     const touchStartX = useRef(null);
     const touchStartY = useRef(null);
     const carouselRef = useRef(null);
@@ -444,6 +464,7 @@ export default function Home() {
 
     useEffect(() => {
         if (!isFullscreenOpen) return undefined;
+        setFullscreenImgLoaded(false);
         return () => {
             setGalleryIndex(fullscreenIndex);
         };
@@ -908,7 +929,7 @@ export default function Home() {
                                 <path d="M15 18l-6-6 6-6" />
                             </svg>
                         </button>
-                        {fullscreenItem.mediaType === 'video' ? (
+                                        {fullscreenItem.mediaType === 'video' ? (
                             <video
                                 key={fullscreenItem.src}
                                 className={styles.galleryFullscreenMedia}
@@ -920,11 +941,23 @@ export default function Home() {
                                 poster={fullscreenItem.img}
                             />
                         ) : (
-                            <img
-                                src={fullscreenItem.img}
-                                alt={fullscreenItem.title}
-                                className={styles.galleryFullscreenMedia}
-                            />
+                            <>
+                                {!fullscreenImgLoaded && (
+                                    <div className={styles.galleryFullscreenSpinner} aria-hidden="true">
+                                        <div className={styles.gallerySpinnerRing} />
+                                    </div>
+                                )}
+                                <img
+                                    key={fullscreenItem.img}
+                                    src={fullscreenItem.img}
+                                    alt={fullscreenItem.title}
+                                    className={styles.galleryFullscreenMedia}
+                                    loading="eager"
+                                    fetchpriority="high"
+                                    onLoad={() => setFullscreenImgLoaded(true)}
+                                    style={fullscreenImgLoaded ? undefined : { opacity: 0 }}
+                                />
+                            </>
                         )}
                         <button
                             type="button"

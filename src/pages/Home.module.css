@@ -1082,6 +1082,31 @@
 
 
 /* ============================================================
+   FULLSCREEN SPINNER
+   ============================================================ */
+.galleryFullscreenSpinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.gallerySpinnerRing {
+    width: 44px;
+    height: 44px;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    border-top-color: #C9A96E;
+    border-radius: 50%;
+    animation: spinnerRotate 0.7s linear infinite;
+}
+
+@keyframes spinnerRotate {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================================
    CTA BANNER
    ============================================================ */
 .ctaBanner {

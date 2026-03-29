@@ -150,6 +150,7 @@ export default function CategoryPage() {
                         alt={`Ganado bovino para ${category.name.toLowerCase()} - Victu Biosales`}
                         className={styles.heroImage}
                         loading="eager"
+                        fetchpriority="high"
                     />
                 </div>
             </section>
@@ -168,7 +169,8 @@ export default function CategoryPage() {
                                     src={product.image}
                                     alt={`${product.name} - Suplemento para ${category.name} | Victu`}
                                     className={styles.productImg}
-                                    loading="lazy"
+                                    loading="eager"
+                                    fetchpriority="high"
                                 />
                             </div>
                             <div className={styles.productInfoCol}>
