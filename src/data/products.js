@@ -5,7 +5,7 @@ export const products = [
         slug: 'biosal-autoconsumo',
         category: 'cria',
         subtitle: 'Autoconsumo',
-        image: '/images/biosala.png',
+        image: '/images/biosala.webp',
         shortDescription: 'Suplemento nutricional formulado con Bioenzymix (núcleo enzimático) y enriquecido con macrominerales cruciales. Diseñado para bateas de acceso fácil como suplementación a campo.',
         features: [
             'Bioenzymix — núcleo enzimático de alta biodisponibilidad',
@@ -37,22 +37,22 @@ export const products = [
             {
                 title: 'Sin mano de obra',
                 description: 'Suministro libre en batea, sin intervención diaria',
-                icon: '/icons/facilImplementacion_1.PNG'
+                icon: '/icons/facilImplementacion_1.webp'
             },
             {
                 title: 'Bioenzymix activo',
                 description: 'Núcleo enzimático para mayor digestión y absorción de nutrientes',
-                icon: '/icons/aporteMineralCompleto.PNG'
+                icon: '/icons/aporteMineralCompleto.webp'
             },
             {
                 title: 'Minerales esenciales',
                 description: 'Ca, P, Mg, Na, S para hueso sano, crecimiento y desarrollo óptimo',
-                icon: '/icons/aporteMineralCompleto.PNG'
+                icon: '/icons/aporteMineralCompleto.webp'
             },
             {
                 title: 'Palatabilidad natural',
                 description: 'Consumo voluntario consistente gracias a palatabilizantes naturales',
-                icon: '/icons/palatalabilidad.PNG'
+                icon: '/icons/palatalabilidad.webp'
             }
         ]
     },
@@ -62,7 +62,7 @@ export const products = [
         slug: 'biosal-max',
         category: 'recria',
         subtitle: 'Autoconsumo',
-        image: '/images/biosalmax.png',
+        image: '/images/biosalmax.webp',
         shortDescription: 'Suplemento premium para sistemas de recría, diseñado para maximizar la eficiencia de conversión y acelerar el desarrollo corporal.',
         features: [
             'Bioenzymix ultra concentrado para máxima digestibilidad',
@@ -94,17 +94,17 @@ export const products = [
             {
                 title: 'Conversión Mejorada',
                 description: 'Optimiza la conversión alimenticia en etapa de recría.',
-                icon: '/icons/conversionMejorada.PNG'
+                icon: '/icons/conversionMejorada.webp'
             },
             {
                 title: 'Desarrollo Corporal',
                 description: 'Favorece el desarrollo muscular y esquelético.',
-                icon: '/icons/desarrolloCorporal.PNG'
+                icon: '/icons/desarrolloCorporal.webp'
             },
             {
                 title: 'Salud Metabólica',
                 description: 'Mejora la salud ruminal y metabólica general.',
-                icon: '/icons/saludMetabolica.PNG'
+                icon: '/icons/saludMetabolica.webp'
             }
         ]
     },
@@ -114,7 +114,7 @@ export const products = [
         slug: 'biosal-mix',
         category: 'engorde',
         subtitle: 'Premezclas',
-        image: '/images/biosalmix.png',
+        image: '/images/biosalmix.webp',
         shortDescription: 'Suplemento balanceado para optimizar el engorde, mejorando la conversión alimenticia y el desarrollo muscular en sistemas intensivos.',
         features: [
             'Bioenzymix avanzado para máxima eficiencia ruminal',
@@ -146,17 +146,17 @@ export const products = [
             {
                 title: 'Conversión Óptima',
                 description: 'Mejor conversión alimenticia para feedlot intensivo.',
-                icon: '/icons/conversion optima.PNG'
+                icon: '/icons/conversion optima.webp'
             },
             {
                 title: 'Terminación Rápida',
                 description: 'Reduce el tiempo a faena significativamente.',
-                icon: '/icons/terminacionRapida.PNG'
+                icon: '/icons/terminacionRapida.webp'
             },
             {
                 title: 'Marmoleo Mejorado',
                 description: 'Mejora la calidad de la carne producida.',
-                icon: '/icons/marmoleoMejorado.PNG'
+                icon: '/icons/marmoleoMejorado.webp'
             }
         ]
     },
@@ -166,7 +166,7 @@ export const products = [
         slug: 'rbr',
         category: 'tambo',
         subtitle: 'Regulador Biológico Ruminal',
-        image: '/images/rbr.png',
+        image: '/images/rbr.webp',
         shortDescription: 'Suplemento de referencia para tambo bovino, combinando bionutrición y balance mineral para resultados consistentes en producción láctea.',
         features: [
             'Bioenzymix balanceado para microflora ruminal óptima',
@@ -198,17 +198,17 @@ export const products = [
             {
                 title: 'Resultados Consistentes',
                 description: 'Performance predecible y replicable.',
-                icon: '/icons/resultadoConsistente.PNG'
+                icon: '/icons/resultadoConsistente.webp'
             },
             {
                 title: 'Adaptación Ruminal',
                 description: 'Favorece adaptación a dietas de alta energía.',
-                icon: '/icons/adaptacionRuminal.PNG'
+                icon: '/icons/adaptacionRuminal.webp'
             },
             {
                 title: 'Relación Costo-Beneficio',
                 description: 'Excelente balance entre inversión y retorno.',
-                icon: '/icons/relacionCosto-Beneficio.PNG'
+                icon: '/icons/relacionCosto-Beneficio.webp'
             }
         ]
     },
@@ -218,7 +218,7 @@ export const products = [
         slug: 'afi',
         category: 'tambo',
         subtitle: 'Activador Flora Intestinal',
-        image: '/images/afi.png',
+        image: '/images/afi.webp',
         shortDescription: 'Alimento funcional integral para vacas lecheras, optimizando la producción de leche, la calidad de sólidos y la salud del rodeo.',
         features: [
             'Bioenzymix para tambo con perfil enzimático específico',
@@ -250,17 +250,17 @@ export const products = [
             {
                 title: 'Mayor Producción',
                 description: 'Incrementa litros de leche por vaca por día.',
-                icon: '/icons/mayorProduccion.PNG'
+                icon: '/icons/mayorProduccion.webp'
             },
             {
                 title: 'Calidad de Leche',
                 description: 'Mejora sólidos totales y componentes.',
-                icon: '/icons/calidadDeLeche.PNG'
+                icon: '/icons/calidadDeLeche.webp'
             },
             {
                 title: 'Salud Reproductiva',
                 description: 'Favorece la fertilidad y estado corporal.',
-                icon: '/icons/saludReproductiva.PNG'
+                icon: '/icons/saludReproductiva.webp'
             }
         ]
     }
