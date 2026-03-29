@@ -687,7 +687,14 @@ export default function Home() {
                             className={styles.galleryTrack}
                             style={{ transform: `translateX(-${galleryIndex * 100}%)` }}
                         >
-                            {GALLERY.map((g, i) => (
+                            {GALLERY.map((g, i) => {
+                                // Only load video src for the active slide and its immediate neighbours
+                                // This prevents mobile browsers from downloading all MP4s at once
+                                const distFromActive = Math.abs(i - galleryIndex);
+                                const isNearActive = distFromActive <= 1;
+                                const shouldLoadVideoSrc = g.isVideo && isNearActive;
+
+                                return (
                                 <div key={i} className={styles.gallerySlide}>
                                     <div className={styles.galleryCard}>
                                         <div className={styles.galleryMedia}>
@@ -695,12 +702,14 @@ export default function Home() {
                                                 <div className={styles.galleryMediaVideo}>
                                                     <video
                                                         controls
-                                                        preload="metadata"
+                                                        preload={i === galleryIndex ? 'metadata' : 'none'}
                                                         poster={g.img}
                                                         playsInline
-                                                        aria-label={`Video ${g.title}`}
+                                                        aria-label={`Video ${g.title || 'sin título'}`}
                                                     >
-                                                        <source src={g.src} type="video/mp4" />
+                                                        {shouldLoadVideoSrc && (
+                                                            <source src={g.src} type="video/mp4" />
+                                                        )}
                                                     </video>
                                                 </div>
                                             ) : (
@@ -723,7 +732,8 @@ export default function Home() {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
