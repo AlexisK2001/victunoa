@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-AR">
 
 <head>
   <meta charset="UTF-8" />
@@ -8,6 +8,15 @@
   <!-- Preload LCP images -->
   <link rel="preload" as="image" href="/images/logovictu.webp" />
   <link rel="preload" as="image" href="/images/hero2.webp" />
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5X5R1XZD1X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5X5R1XZD1X');
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -17,12 +26,13 @@
   <!-- Primary SEO -->
   <title>VICTU - Biosales y Nutrición Animal en Tucumán | NOA y NEA</title>
   <meta name="description"
-    content="Victu: biosales y nutrición animal en Tucumán. Representantes de Suplefeed para NOA y NEA. Productos para cría, recría, engorde y tambo bovino. Consultá por biosales en Zonas NEA y NOA" />
+    content="Victu: biosales y nutrición animal en Tucumán. Representantes oficiales de Suplefeed en NOA y NEA. Soluciones para cría, recría, engorde y tambo bovino." />
   <meta name="keywords"
     content="Victu, victu tucuman, victu biosales, biosales, biosales tucuman, bionutricion, nutricion animal, suplefeed, suplefeed tucuman, ganaderia tucuman, NOA, NEA, alimento balanceado, engorde, feedlot, cria, recria, tambo, suplementacion, sales minerales, suplemento ganadero tucuman, nutricion bovina tucuman, biosales argentina" />
-  <meta name="author" content="Victu" />
+  <meta name="author" content="Alexis Kviatkovski" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://victunoa.com/" />
+  <link rel="alternate" type="text/plain" title="AI/LLM site description" href="/llms.txt" />
 
   <!-- Geo tags para búsquedas locales -->
   <meta name="geo.region" content="AR-T" />
@@ -36,12 +46,12 @@
   <meta property="og:title" content="VICTU - Biosales y Nutrición Animal en Tucumán" />
   <meta property="og:description"
     content="Victu: biosales y nutrición animal en Tucumán, NOA y NEA. Representantes oficiales de Suplefeed. Mejorá la producción ganadera con tecnología de bionutrición." />
-  <meta property="og:image" content="https://victunoa.com/images/logo_og.png" />
-  <meta property="og:image:secure_url" content="https://victunoa.com/images/logo_og.png" />
-  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image" content="https://victunoa.com/images/hero2.webp" />
+  <meta property="og:image:secure_url" content="https://victunoa.com/images/hero2.webp" />
+  <meta property="og:image:type" content="image/webp" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Victu - Biosales y Nutrición Animal Tucumán" />
+  <meta property="og:image:alt" content="Ganado bovino en pastoreo - Victu Biosales Tucumán" />
   <meta property="og:site_name" content="Victu" />
   <meta property="og:locale" content="es_AR" />
 
@@ -50,7 +60,7 @@
   <meta name="twitter:title" content="VICTU - Biosales y Nutrición Animal en Tucumán" />
   <meta name="twitter:description"
     content="Victu: biosales y nutrición animal en Tucumán, NOA y NEA. Representantes oficiales de Suplefeed." />
-  <meta name="twitter:image" content="https://victunoa.com/images/logo_og.png" />
+  <meta name="twitter:image" content="https://victunoa.com/images/hero2.webp" />
 
   <!-- JSON-LD: Organization -->
   <script type="application/ld+json">
@@ -69,7 +79,10 @@
       "availableLanguage": "Spanish",
       "areaServed": ["Tucumán", "Salta", "Jujuy", "Santiago del Estero", "Catamarca", "La Rioja", "Chaco", "Formosa"]
     },
-    "sameAs": []
+    "sameAs": [
+      "https://www.instagram.com/victunoa",
+      "https://www.facebook.com/share/1ApR4Kdu5i/"
+    ]
   }
   </script>
 
@@ -78,6 +91,7 @@
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": "https://victunoa.com/#localbusiness",
     "name": "Victu - Biosales y Nutrición Animal",
     "image": "https://victunoa.com/images/logo_og.png",
     "url": "https://victunoa.com",
@@ -85,7 +99,7 @@
     "description": "Biosales y nutrición animal en Tucumán. Victu es tu proveedor de confianza en NOA y NEA para suplementos ganaderos, biosales y productos Suplefeed.",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Tucumán",
+      "addressLocality": "San Miguel de Tucumán",
       "addressRegion": "Tucumán",
       "addressCountry": "AR"
     },
@@ -130,7 +144,7 @@
   }
   </script>
 
-  <!-- JSON-LD: WebSite con SearchAction -->
+  <!-- JSON-LD: WebSite -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
