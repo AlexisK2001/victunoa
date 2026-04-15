@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Fragment } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useSEO } from '../hooks/useSEO';
 import Button from '../components/Button';
@@ -177,69 +177,23 @@ const GALLERY = [
         desc: 'Analisis del estado corporal y desempeño productivo',
         img: '/images/imagen_victu1.webp',
     },
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/video_victu6.mp4'
-    },
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/victu_video8.mp4'
-    },
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/victu_video9.mp4'
-    },
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/victu_video7.mp4'
-    },
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/victu_video10.mp4'
-    },
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/video_victu1.mp4'
-    },
-
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/video_victu3.mp4'
-    },
-    {
-        badge: 'Video',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/victu_video5.mp4'
-    },
-    {
-        badge: 'Video',
-        title: 'Manejo del pastoreo',
-        desc: 'Pasturas subtropicales (Gatton Panic)',
-        img: '/images/logo_og.png',
-        isVideo: true,
-        src: '/videos/video_victu4.mp4'
-    }
 ];
 
 const GALLERY_MEDIA = GALLERY.map(item => ({
     ...item,
     mediaType: item.isVideo ? 'video' : 'image'
 }));
+
+// ── YouTube ───────────────────────────
+// Reemplazá cada id con el ID real del video de YouTube (lo encontrás en la URL: ?v=AQUI)
+const YOUTUBE_VIDEOS = [
+    { id: 'U8t8V8fmE_0', title: 'Propuesta de manejo del pastoreo en pasturas megatérmicas', isShort: true },
+    { id: 'rbXfvVn8HBw', title: 'Suplementacion en base a pasturas megatérmicas', isShort: true },
+    { id: 'YzLiOxQ-wS8', title: 'Señales de alerta: Mortandad animal y el mal olor en corrales', isShort: true },
+    { id: '6iP3YwQi0wQ', title: 'Visitando campos de productores que trabajan con nosotros', isShort: true },
+    { id: 'xcD5Vv3yYxw', title: 'Visitando campos de productores que trabajan con nosotros', isShort: true },
+    { id: 'Bt9HRueIjF0', title: 'Visitando campos de productores que trabajan con nosotros', isShort: true },
+];
 
 /* ──────────────────────────────────────
    COMPONENT
@@ -310,30 +264,36 @@ export default function Home() {
 
     const openFullscreen = (index) => {
         if (index === null || index === undefined || index < 0 || index >= totalMedia) return;
+        setFullscreenImgLoaded(false);
         setFullscreenIndex(index);
         setIsFullscreenOpen(true);
     };
 
-    const closeFullscreen = () => setIsFullscreenOpen(false);
+    const closeFullscreen = () => {
+        setGalleryIndex(fullscreenIndex);
+        setIsFullscreenOpen(false);
+    };
 
     const handleFullscreenClose = (event) => {
         event.currentTarget.blur();
         closeFullscreen();
     };
 
-    const prevFullscreen = () => {
+    const prevFullscreen = useCallback(() => {
+        setFullscreenImgLoaded(false);
         setFullscreenIndex(current => {
             if (totalMedia === 0) return 0;
             return (current - 1 + totalMedia) % totalMedia;
         });
-    };
+    }, [totalMedia]);
 
-    const nextFullscreen = () => {
+    const nextFullscreen = useCallback(() => {
+        setFullscreenImgLoaded(false);
         setFullscreenIndex(current => {
             if (totalMedia === 0) return 0;
             return (current + 1) % totalMedia;
         });
-    };
+    }, [totalMedia]);
 
     const handlePrevFullscreen = (event) => {
         event.currentTarget.blur();
@@ -400,10 +360,10 @@ export default function Home() {
             const PRELOAD_LIMIT = 4;
             videoUrls.slice(0, PRELOAD_LIMIT).forEach(url => {
                 const v = document.createElement('video');
-                v.preload  = 'auto';
-                v.muted    = true;
+                v.preload = 'auto';
+                v.muted = true;
                 v.playsInline = true;
-                v.src      = url;
+                v.src = url;
                 v.load();               // explicitly trigger buffering
                 container.appendChild(v);
             });
@@ -462,14 +422,6 @@ export default function Home() {
         return () => el.removeEventListener('touchmove', onMove);
     }, []);
 
-    useEffect(() => {
-        if (!isFullscreenOpen) return undefined;
-        setFullscreenImgLoaded(false);
-        return () => {
-            setGalleryIndex(fullscreenIndex);
-        };
-    }, [isFullscreenOpen, fullscreenIndex]);
-
     // Precargar imágenes adyacentes en fullscreen para evitar demora al navegar en móvil
     useEffect(() => {
         if (!isFullscreenOpen || totalMedia === 0) return;
@@ -506,12 +458,12 @@ export default function Home() {
             }
             if (event.key === 'ArrowLeft') {
                 event.preventDefault();
-                setFullscreenIndex(current => (current - 1 + totalMedia) % totalMedia);
+                prevFullscreen();
                 return;
             }
             if (event.key === 'ArrowRight') {
                 event.preventDefault();
-                setFullscreenIndex(current => (current + 1) % totalMedia);
+                nextFullscreen();
                 return;
             }
             if (event.key === 'Tab') {
@@ -541,7 +493,7 @@ export default function Home() {
                 lastFocusedElement.current.focus();
             }
         };
-    }, [isFullscreenOpen, totalMedia]);
+    }, [isFullscreenOpen, totalMedia, nextFullscreen, prevFullscreen]);
 
     const fullscreenItem = GALLERY_MEDIA[fullscreenIndex];
     useSEO({
@@ -598,7 +550,7 @@ export default function Home() {
                     <div className={styles.heroLeft}>
                         <span className={styles.heroLabel}>NUTRICIÓN ANIMAL TÉCNICA</span>
                         <h1 className={styles.heroTitle}>
-                            Alimentación sustentable para la ganadería
+                            Alimentación <em>sustentable</em> para la ganadería
                         </h1>
                         <p className={styles.heroSub}>
                             Soluciones técnicas para mejorar digestión, rendimiento y rentabilidad en bovinos, ovinos y sistemas a campo.
@@ -607,9 +559,16 @@ export default function Home() {
                             <a href="https://wa.me/5493816542124" target="_blank" rel="noreferrer">
                                 <Button variant="primary">Consultar por WhatsApp</Button>
                             </a>
-                            <a href="#productos">
-                                <Button variant="secondary">Ver productos</Button>
+                            <a href="#categorias">
+                                <Button variant="secondary">Ver categorías</Button>
                             </a>
+                        </div>
+                        <div className={styles.heroDataPills}>
+                            <span className={styles.heroDataPill}>8+ años</span>
+                            <span className={styles.heroDataPillDot} />
+                            <span className={styles.heroDataPill}>200+ clientes</span>
+                            <span className={styles.heroDataPillDot} />
+                            <span className={styles.heroDataPill}>NOA · NEA</span>
                         </div>
                     </div>
                     <div className={styles.heroRight}>
@@ -617,7 +576,7 @@ export default function Home() {
                             src="/images/hero2.webp"
                             alt="Ganado bovino en pastoreo"
                             className={styles.heroImg}
-                            fetchpriority="high"
+                            fetchPriority="high"
                             loading="eager"
                         />
                     </div>
@@ -643,13 +602,38 @@ export default function Home() {
             </section>
 
             {/* ══════════════════════════════════════
+                BIOENZYMIX — Technology strip
+            ══════════════════════════════════════ */}
+            <section className={styles.bioSection}>
+                <div className="container">
+                    <div className={styles.bioInner}>
+                        <p className={styles.bioName}>
+                            <span>Bio</span>enzymix™
+                        </p>
+                        <p className={styles.bioSub}>
+                            Nuestra fórmula de probióticos y enzimas activa la microbiota ruminal para transformar el aprovechamiento de fibra y proteína en más kilos y menos costos.
+                        </p>
+                        <div className={styles.bioFlow}>
+                            <span className={styles.bioFlowItem}>Microbiota</span>
+                            <span className={styles.bioFlowArrow}>→</span>
+                            <span className={styles.bioFlowItem}>Rumen</span>
+                            <span className={styles.bioFlowArrow}>→</span>
+                            <span className={styles.bioFlowItem}>Conversión</span>
+                            <span className={styles.bioFlowArrow}>→</span>
+                            <span className={styles.bioFlowItem}>Rentabilidad</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ══════════════════════════════════════
                 PRODUCTS — 2x2 grid con fotos reales
             ══════════════════════════════════════ */}
-            <section id="productos" className={styles.productsSection}>
+            <section id="categorias" className={styles.productsSection}>
                 <div className="container">
                     <div className={styles.secHeader}>
                         <span className={styles.secLabel}>SOLUCIONES POR ETAPA PRODUCTIVA</span>
-                        <h2 className={styles.secTitle}>Nuestros Productos</h2>
+                        <h2 className={styles.secTitle}>Nuestras Categorías</h2>
                         <p className={styles.secSub}>Soluciones nutricionales diseñadas para cada etapa productiva</p>
                     </div>
                     <div className={styles.productGrid}>
@@ -657,12 +641,13 @@ export default function Home() {
                             <Link key={p.id} to={`/${p.slug}`} className={styles.productCard}>
                                 <div className={styles.productCardMedia}>
                                     <img src={p.fieldImg} alt={p.title} loading="lazy" />
+                                    <div className={styles.productCardOverlay} />
                                     <span className={styles.productCardBadge}>{p.label}</span>
-                                </div>
-                                <div className={styles.productCardBody}>
-                                    <h3 className={styles.productCardTitle}>{p.title}</h3>
-                                    <p className={styles.productCardDesc}>{p.desc}</p>
-                                    <span className={styles.productCardLink}>Ver más →</span>
+                                    <div className={styles.productCardBody}>
+                                        <h3 className={styles.productCardTitle}>{p.title}</h3>
+                                        <p className={styles.productCardDesc}>{p.desc}</p>
+                                        <span className={styles.productCardLink}>Ver productos →</span>
+                                    </div>
                                 </div>
                             </Link>
                         ))}
@@ -727,6 +712,7 @@ export default function Home() {
                             <span className={styles.statLabelLight}>Asesoramiento técnico especializado</span>
                         </div>
                     </div>
+
                 </div>
             </section>
 
@@ -741,18 +727,20 @@ export default function Home() {
                         <p className={styles.secSub}>Desde el diagnóstico hasta el seguimiento, acompañamos cada etapa de tu sistema productivo.</p>
                     </div>
                     <div className={styles.stepsRow}>
-                        {STEPS.map((s, i) => (
-                            <Fragment key={s.num}>
-                                <div className={styles.stepItem}>
-                                    <div className={styles.stepCircle} style={{ backgroundColor: s.color, color: s.textColor }}>{s.num}</div>
-                                    <h3 className={styles.stepTitle}>{s.title}</h3>
-                                    <p className={styles.stepText}>{s.text}</p>
+                        {STEPS.map((s) => {
+                            const isLightCard = s.textColor === '#2B3A2B';
+                            return (
+                                <div
+                                    key={s.num}
+                                    className={styles.stepItem}
+                                    style={{ backgroundColor: s.color }}
+                                >
+                                    <p className={styles.stepNum} style={{ color: s.textColor }}>{s.num}</p>
+                                    <h3 className={styles.stepTitle} style={{ color: isLightCard ? '#2B3A2B' : '#FFFFFF' }}>{s.title}</h3>
+                                    <p className={styles.stepText} style={{ color: isLightCard ? 'rgba(43,58,43,0.72)' : 'rgba(255,255,255,0.72)' }}>{s.text}</p>
                                 </div>
-                                {i < STEPS.length - 1 && (
-                                    <div className={styles.stepArrow}>→</div>
-                                )}
-                            </Fragment>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -818,42 +806,42 @@ export default function Home() {
                                 const isActive = i === galleryIndex;
 
                                 return (
-                                <div key={i} className={styles.gallerySlide}>
-                                    <div className={styles.galleryCard}>
-                                        <div className={styles.galleryMedia}>
-                                            {g.isVideo ? (
-                                                <div className={styles.galleryMediaVideo}>
-                                                    <video
-                                                        controls
-                                                        preload={isActive ? (isInstagramBrowser ? 'auto' : 'metadata') : 'none'}
-                                                        poster={g.img}
-                                                        playsInline
-                                                        aria-label={`Video ${g.title || 'sin título'}`}
+                                    <div key={i} className={styles.gallerySlide}>
+                                        <div className={styles.galleryCard}>
+                                            <div className={styles.galleryMedia}>
+                                                {g.isVideo ? (
+                                                    <div className={styles.galleryMediaVideo}>
+                                                        <video
+                                                            controls
+                                                            preload={isActive ? (isInstagramBrowser ? 'auto' : 'metadata') : 'none'}
+                                                            poster={g.img}
+                                                            playsInline
+                                                            aria-label={`Video ${g.title || 'sin título'}`}
+                                                        >
+                                                            {/* src always present — browser reads from cache */}
+                                                            <source src={g.src} type="video/mp4" />
+                                                        </video>
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        className={styles.galleryMediaButton}
+                                                        onClick={() => openFullscreen(i)}
+                                                        aria-label={`Abrir imagen ${g.title} en pantalla completa`}
                                                     >
-                                                        {/* src always present — browser reads from cache */}
-                                                        <source src={g.src} type="video/mp4" />
-                                                    </video>
-                                                </div>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    className={styles.galleryMediaButton}
-                                                    onClick={() => openFullscreen(i)}
-                                                    aria-label={`Abrir imagen ${g.title} en pantalla completa`}
-                                                >
-                                                    <img src={g.img} alt={g.title} loading={i === 0 ? 'eager' : 'lazy'} style={g.imgFit ? { objectFit: g.imgFit } : undefined} />
-                                                </button>
-                                            )}
-                                            <span className={`${styles.galleryBadge} ${g.isVideo ? styles.galleryBadgeVideo : ''}`}>
-                                                {g.badge}
-                                            </span>
-                                        </div>
-                                        <div className={styles.galleryInfo}>
-                                            <p className={styles.galleryTitle}>{g.title}</p>
-                                            <p className={styles.galleryDesc}>{g.desc}</p>
+                                                        <img src={g.img} alt={g.title} loading={i === 0 ? 'eager' : 'lazy'} style={g.imgFit ? { objectFit: g.imgFit } : undefined} />
+                                                    </button>
+                                                )}
+                                                <span className={`${styles.galleryBadge} ${g.isVideo ? styles.galleryBadgeVideo : ''}`}>
+                                                    {g.badge}
+                                                </span>
+                                            </div>
+                                            <div className={styles.galleryInfo}>
+                                                <p className={styles.galleryTitle}>{g.title}</p>
+                                                <p className={styles.galleryDesc}>{g.desc}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 );
                             })}
                         </div>
@@ -929,7 +917,7 @@ export default function Home() {
                                 <path d="M15 18l-6-6 6-6" />
                             </svg>
                         </button>
-                                        {fullscreenItem.mediaType === 'video' ? (
+                        {fullscreenItem.mediaType === 'video' ? (
                             <video
                                 key={fullscreenItem.src}
                                 className={styles.galleryFullscreenMedia}
@@ -977,6 +965,61 @@ export default function Home() {
                     </div>
                 </div>
             )}
+
+            {/* ══════════════════════════════════════
+                YOUTUBE VIDEOS
+            ══════════════════════════════════════ */}
+            <section className={styles.ytSection}>
+                <div className="container">
+                    <div className={styles.secHeader}>
+                        <span className={styles.secLabel}>VIDEOS EN YOUTUBE</span>
+                        <h2 className={styles.secTitle}>Canal de YouTube VICTU</h2>
+                        <p className={styles.secSub}>Mirá nuestro contenido directamente en YouTube y conocé más sobre nuestros productos y resultados.</p>
+                    </div>
+                    <div className={styles.ytGrid}>
+                        {YOUTUBE_VIDEOS.map((v) => (
+                            <a
+                                key={v.id}
+                                href={v.isShort ? `https://youtube.com/shorts/${v.id}` : `https://www.youtube.com/watch?v=${v.id}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className={styles.ytCard}
+                            >
+                                <div className={styles.ytThumb}>
+                                    <img
+                                        src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+                                        alt={v.title}
+                                        loading="lazy"
+                                        className={styles.ytThumbImg}
+                                    />
+                                    <div className={styles.ytThumbOverlay} />
+                                    <div className={styles.ytThumbPlay}>
+                                        <svg viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M8 5v14l11-7z" /></svg>
+                                    </div>
+                                </div>
+                                <div className={styles.ytInfo}>
+                                    <p className={styles.ytTitle}>{v.title}</p>
+                                    <span className={styles.ytLink}>
+                                        <svg viewBox="0 0 24 24" fill="#FF0000" width="14" height="14"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.3 5 12 5 12 5s-4.3 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.3 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM10 15V9l5.2 3L10 15z" /></svg>
+                                        Ver en YouTube
+                                    </span>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                    <div className={styles.ytCta}>
+                        <a
+                            href="https://www.youtube.com/channel/UCA-oPHSi4MbbAgAJhHG3d1Q"
+                            target="_blank"
+                            rel="noreferrer"
+                            className={styles.ytCtaBtn}
+                        >
+                            <svg viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.3 5 12 5 12 5s-4.3 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.3 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM10 15V9l5.2 3L10 15z" /></svg>
+                            Ver canal en YouTube
+                        </a>
+                    </div>
+                </div>
+            </section>
 
             {/* ══════════════════════════════════════
                 CTA BANNER
