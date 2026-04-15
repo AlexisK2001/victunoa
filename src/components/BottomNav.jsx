@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './BottomNav.module.css';
 
 const SCROLL_OFFSET = 72;
-const HOME_SECTION_IDS = ['productos', 'beneficios', 'galeria', 'contacto'];
-const NAV_SECTION_IDS = ['inicio', 'productos', 'beneficios', 'galeria', 'contacto'];
+const HOME_SECTION_IDS = ['categorias', 'beneficios', 'galeria', 'contacto'];
+const NAV_SECTION_IDS = ['inicio', 'categorias', 'beneficios', 'galeria', 'contacto'];
 
 const getSectionFromScroll = () => {
     if (typeof window === 'undefined') return 'inicio';
@@ -63,14 +63,40 @@ export default function BottomNav() {
     const location = useLocation();
     const navigate = useNavigate();
     const isHome = location.pathname === '/';
-    const [activeSection, setActiveSection] = useState(() => (isHome ? getSectionFromScroll() : 'productos'));
+    const [activeSection, setActiveSection] = useState(() => (isHome ? getSectionFromScroll() : 'categorias'));
     const [isDragging, setIsDragging] = useState(false);
-    const resolvedActiveSection = isHome || isDragging ? activeSection : 'productos';
+    const resolvedActiveSection = isHome || isDragging ? activeSection : 'categorias';
     const swipeStartRef = useRef(null);
     const swipeSectionRef = useRef(activeSection);
     const pendingSectionRef = useRef(null);
     const isSwipingRef = useRef(false);
     const ignoreClickRef = useRef(false);
+    const autoScrollLockRef = useRef({ locked: false, target: null, targetY: null, timeoutId: null });
+
+    const unlockAutoScroll = useCallback(() => {
+        const lock = autoScrollLockRef.current;
+        lock.locked = false;
+        lock.target = null;
+        lock.targetY = null;
+        if (lock.timeoutId) {
+            clearTimeout(lock.timeoutId);
+            lock.timeoutId = null;
+        }
+    }, []);
+
+    const lockAutoScroll = useCallback((targetSection, targetY) => {
+        const lock = autoScrollLockRef.current;
+        if (lock.timeoutId) clearTimeout(lock.timeoutId);
+        lock.locked = true;
+        lock.target = targetSection;
+        lock.targetY = targetY;
+        lock.timeoutId = setTimeout(() => {
+            lock.locked = false;
+            lock.target = null;
+            lock.targetY = null;
+            lock.timeoutId = null;
+        }, 5000);
+    }, []);
 
     useEffect(() => {
         swipeSectionRef.current = activeSection;
@@ -88,6 +114,7 @@ export default function BottomNav() {
                 navigate('/');
                 return;
             }
+            lockAutoScroll('inicio', 0);
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
@@ -97,16 +124,39 @@ export default function BottomNav() {
         }
         const element = document.getElementById(sectionId);
         if (element) {
-            window.scrollTo({ top: element.offsetTop - SCROLL_OFFSET, behavior: 'smooth' });
+            const targetY = Math.max(0, element.offsetTop - SCROLL_OFFSET);
+            lockAutoScroll(sectionId, targetY);
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
         }
-    }, [location.pathname, navigate, setActiveSectionImmediate]);
+    }, [location.pathname, navigate, setActiveSectionImmediate, lockAutoScroll]);
 
     const updateActiveSection = useCallback(() => {
         if (isDragging) return;
         const nextSection = getSectionFromScroll();
+        const lock = autoScrollLockRef.current;
+
+        if (lock.locked) {
+            const doc = document.documentElement;
+            const maxScrollY = Math.max(0, doc.scrollHeight - window.innerHeight);
+            const targetReached =
+                typeof lock.targetY === 'number' &&
+                (
+                    Math.abs(window.scrollY - lock.targetY) <= 14 ||
+                    (lock.targetY >= maxScrollY - 2 && window.scrollY >= maxScrollY - 2)
+                );
+            const reachedBySection = Boolean(lock.target && nextSection === lock.target);
+
+            if ((targetReached || reachedBySection) && lock.target) {
+                swipeSectionRef.current = lock.target;
+                setActiveSection((prev) => (prev === lock.target ? prev : lock.target));
+                unlockAutoScroll();
+            }
+            return;
+        }
+
         setActiveSection((prev) => (prev === nextSection ? prev : nextSection));
         swipeSectionRef.current = nextSection;
-    }, [isDragging]);
+    }, [isDragging, unlockAutoScroll]);
 
     const updateViewportOffset = useCallback(() => {
         if (typeof window === 'undefined') return;
@@ -143,6 +193,24 @@ export default function BottomNav() {
     }, [isHome, updateActiveSection]);
 
     useEffect(() => {
+        if (!isHome) return undefined;
+
+        const handleUserScrollIntent = () => {
+            if (autoScrollLockRef.current.locked) {
+                unlockAutoScroll();
+            }
+        };
+
+        window.addEventListener('touchstart', handleUserScrollIntent, { passive: true });
+        window.addEventListener('wheel', handleUserScrollIntent, { passive: true });
+
+        return () => {
+            window.removeEventListener('touchstart', handleUserScrollIntent);
+            window.removeEventListener('wheel', handleUserScrollIntent);
+        };
+    }, [isHome, unlockAutoScroll]);
+
+    useEffect(() => {
         updateViewportOffset();
         const viewport = window.visualViewport;
         viewport?.addEventListener('resize', updateViewportOffset);
@@ -156,6 +224,10 @@ export default function BottomNav() {
             window.removeEventListener('orientationchange', updateViewportOffset);
         };
     }, [updateViewportOffset]);
+
+    useEffect(() => () => {
+        unlockAutoScroll();
+    }, [unlockAutoScroll]);
 
     const getSectionFromPoint = useCallback((x, y) => {
         const element = document.elementFromPoint(x, y);
@@ -252,13 +324,13 @@ export default function BottomNav() {
             </Link>
 
             <a
-                href="#productos"
-                data-section="productos"
-                className={`${styles.navItem} ${resolvedActiveSection === 'productos' ? styles.active : ''}`}
-                onClick={(e) => handleNavClick(e, 'productos')}
+                href="#categorias"
+                data-section="categorias"
+                className={`${styles.navItem} ${resolvedActiveSection === 'categorias' ? styles.active : ''}`}
+                onClick={(e) => handleNavClick(e, 'categorias')}
             >
                 <ProductosIcon />
-                <span>PRODUCTOS</span>
+                <span>CATEGORÍAS</span>
             </a>
 
             <a

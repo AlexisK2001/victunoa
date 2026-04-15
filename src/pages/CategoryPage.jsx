@@ -1,4 +1,5 @@
-import { useParams } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { categories } from '../data/categories';
 import { getProductsByCategory } from '../data/products';
 import styles from './CategoryPage.module.css';
@@ -62,8 +63,211 @@ const categoryBenefits = {
     ],
 };
 
+/* ── Hook reutilizable: scroll-driven puro ──────────────────────────────────────────
+   slug: re-ejecuta el effect al navegar entre categorías sin remontar el componente.
+   El hook solo controla el video vía scroll. El autoplay por navegación directa
+   se maneja por separado en CategoryPage para evitar condiciones de carrera.
+
+   Comportamiento post-autoplay:
+   · Video terminó → scroll abajo: congelado en el último frame
+   · Video terminó → scroll arriba: backward scroll-driven (se libera el bloqueo)   */
+function useScrollVideo(scrollRef, videoRef, slug) {
+    useEffect(() => {
+        const scrollEl = scrollRef.current;
+        const videoEl = videoRef.current;
+        if (!scrollEl || !videoEl) return;
+
+        let targetTime = 0, displayTime = 0, rafId = null;
+        let active = false, unlocked = false;
+        // lockedProgress >= 0 → video terminó; guarda el progreso de scroll en ese momento
+        let lockedProgress = -1;
+        const MIN_DELTA = 1 / 30;
+        const getEase = (d) => Math.min(0.5, 0.15 + Math.abs(d) * 0.22);
+
+        const getProgress = () => {
+            const rect = scrollEl.getBoundingClientRect();
+            const h = scrollEl.offsetHeight - window.innerHeight;
+            if (h <= 0) return 0;
+            return Math.max(0, Math.min(1, -rect.top / h));
+        };
+
+        // Llamado cuando el autoplay externo termina
+        const onEnded = () => {
+            lockedProgress = getProgress();   // bloquear en la posición de scroll actual
+            displayTime    = videoEl.duration;
+            targetTime     = videoEl.duration;
+        };
+
+        const updateTarget = () => {
+            if (!videoEl.duration || isNaN(videoEl.duration)) return;
+            // Si el video está reproduciendo (autoplay externo), pausar y tomar control
+            if (!videoEl.paused) {
+                videoEl.pause();
+                displayTime   = videoEl.currentTime;
+                lockedProgress = -1;
+            }
+            const progress = getProgress();
+            if (lockedProgress >= 0) {
+                if (progress >= lockedProgress) {
+                    // Scroll hacia abajo (o en el mismo punto): congelar en el último frame
+                    targetTime = videoEl.duration;
+                    return;
+                }
+                // Scroll hacia arriba pasó el punto de bloqueo → liberar y activar backward
+                lockedProgress = -1;
+                displayTime    = videoEl.duration; // partir desde el final hacia atrás
+            }
+            targetTime = progress * videoEl.duration;
+        };
+
+        // rAF: scroll-driven solo cuando el video está pausado
+        // Sin flag seeking: el browser encola los seeks; sincronizamos displayTime desde onSeeked
+        const loop = () => {
+            if (active && videoEl.paused) {
+                const d = targetTime - displayTime;
+                if (Math.abs(d) >= MIN_DELTA) {
+                    displayTime += d * getEase(d);
+                    videoEl.currentTime = displayTime;
+                }
+            }
+            rafId = requestAnimationFrame(loop);
+        };
+
+        // Sincronizar displayTime con el currentTime real para evitar drift
+        const onSeeked = () => { displayTime = videoEl.currentTime; };
+
+        // Desbloquea seeking en iOS (requiere gesto del usuario)
+        const unlock = () => {
+            if (unlocked) return;
+            unlocked = true;
+            const p = videoEl.play();
+            // No pausar si un autoplay externo ya está corriendo
+            if (p) p.then(() => { if (!videoEl.paused) return; videoEl.pause(); }).catch(() => {});
+            else videoEl.pause();
+        };
+
+        const onReady = () => {
+            displayTime = getProgress() * (videoEl.duration || 0);
+            targetTime  = displayTime;
+            videoEl.currentTime = displayTime;
+            // No llamar unlock() aquí: evita que el video se reproduzca
+            // automáticamente cuando el browser restaura la posición de scroll
+            // en un refresh. El unlock de iOS ocurre en el primer touchstart.
+        };
+
+        const observer = new IntersectionObserver(
+            ([e]) => { active = e.isIntersecting; },
+            { threshold: 0 }
+        );
+        observer.observe(scrollEl);
+
+        rafId = requestAnimationFrame(loop);
+        videoEl.addEventListener('loadedmetadata', onReady);
+        videoEl.addEventListener('seeked',         onSeeked);
+        videoEl.addEventListener('ended',          onEnded);
+        if (videoEl.readyState >= 1) onReady();
+        window.addEventListener('scroll',     updateTarget, { passive: true });
+        window.addEventListener('touchmove',  updateTarget, { passive: true });
+        window.addEventListener('touchstart', unlock,       { passive: true });
+
+        return () => {
+            videoEl.removeEventListener('loadedmetadata', onReady);
+            videoEl.removeEventListener('seeked',         onSeeked);
+            videoEl.removeEventListener('ended',          onEnded);
+            window.removeEventListener('scroll',     updateTarget);
+            window.removeEventListener('touchmove',  updateTarget);
+            window.removeEventListener('touchstart', unlock);
+            observer.disconnect();
+            cancelAnimationFrame(rafId);
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [slug]);
+}
+
 export default function CategoryPage() {
     const { categorySlug } = useParams();
+    const { hash } = useLocation();
+    const directProductId = hash.replace('#', '');
+
+    const rbrScrollRef         = useRef(null);
+    const rbrVideoRef          = useRef(null);
+    const afiScrollRef         = useRef(null);
+    const afiVideoRef          = useRef(null);
+    const biosalMaxScrollRef   = useRef(null);
+    const biosalMaxVideoRef    = useRef(null);
+    const biosalMixScrollRef          = useRef(null);
+    const biosalMixVideoRef           = useRef(null);
+    const biosalAutoconsumoScrollRef  = useRef(null);
+    const biosalAutoconsumoVideoRef   = useRef(null);
+
+    useScrollVideo(rbrScrollRef,              rbrVideoRef,              categorySlug);
+    useScrollVideo(afiScrollRef,              afiVideoRef,              categorySlug);
+    useScrollVideo(biosalMaxScrollRef,        biosalMaxVideoRef,        categorySlug);
+    useScrollVideo(biosalMixScrollRef,        biosalMixVideoRef,        categorySlug);
+    useScrollVideo(biosalAutoconsumoScrollRef, biosalAutoconsumoVideoRef, categorySlug);
+
+    // ── Autoplay por navegación directa (#hash) ──────────────────────────────────
+    // Efecto independiente del scroll-driven: observa la sección del producto
+    // y reproduce el video cuando entra al viewport. useScrollVideo toma el control
+    // cuando el usuario empieza a scrollear (detecta !videoEl.paused en updateTarget).
+    useEffect(() => {
+        if (!directProductId) return;
+
+        const sectionMap = {
+            'rbr':                rbrScrollRef,
+            'afi':                afiScrollRef,
+            'biosal-max':         biosalMaxScrollRef,
+            'biosal-mix':         biosalMixScrollRef,
+            'biosal-autoconsumo': biosalAutoconsumoScrollRef,
+        };
+        const videoMap = {
+            'rbr':                rbrVideoRef,
+            'afi':                afiVideoRef,
+            'biosal-max':         biosalMaxVideoRef,
+            'biosal-mix':         biosalMixVideoRef,
+            'biosal-autoconsumo': biosalAutoconsumoVideoRef,
+        };
+
+        const sectionEl = sectionMap[directProductId]?.current;
+        const videoEl   = videoMap[directProductId]?.current;
+        if (!sectionEl || !videoEl) return;
+
+        let fired = false;
+
+        const playFromStart = () => {
+            if (fired) return;
+            fired = true;
+            videoEl.currentTime = 0;
+            videoEl.play().catch(() => {});
+        };
+
+        const tryPlay = () => {
+            if (videoEl.readyState >= 1) playFromStart();
+            else videoEl.addEventListener('loadedmetadata', playFromStart, { once: true });
+        };
+
+        // Si la sección ya está en el viewport (caso hash directo), reproducir de inmediato
+        const rect = sectionEl.getBoundingClientRect();
+        const alreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+        let obs = null;
+        if (alreadyVisible) {
+            tryPlay();
+        } else {
+            obs = new IntersectionObserver(([entry]) => {
+                if (!entry.isIntersecting) return;
+                obs.disconnect();
+                tryPlay();
+            }, { threshold: 0 });
+            obs.observe(sectionEl);
+        }
+
+        return () => {
+            obs?.disconnect();
+            videoEl.removeEventListener('loadedmetadata', playFromStart);
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [directProductId, categorySlug]);
     const category = categories.find(c => c.slug === categorySlug);
     const products = getProductsByCategory(categorySlug);
     const benefits = categoryBenefits[categorySlug] || [];
@@ -139,9 +343,6 @@ export default function CategoryPage() {
                             {WA_ICON}
                             Consultar por WhatsApp
                         </a>
-                        <a href="#productos" className={styles.heroBtnSecondary}>
-                            Ver todos
-                        </a>
                     </div>
                 </div>
                 <div className={styles.heroImageWrap}>
@@ -155,58 +356,355 @@ export default function CategoryPage() {
                 </div>
             </section>
 
-            <section id="productos" className={styles.productsSection}>
-                <div className={styles.productsSectionHeader}>
-                    <span className={styles.sectionLabel}>NUESTROS PRODUCTOS</span>
-                    <h2 className={styles.sectionTitle}>Nuestros productos para {category.name}</h2>
-                </div>
-
-                <div className={styles.productsList}>
+            {categorySlug === 'cria' ? (
+                /* ── CRÍA: layout scroll-driven con video Biosal Autoconsumo ── */
+                <>
                     {products.map((product) => (
-                        <article key={product.id} id={product.id} className={styles.productCard}>
-                            <div className={styles.productImageCol}>
-                                <img
-                                    src={product.image}
-                                    alt={`${product.name} - Suplemento para ${category.name} | Victu`}
-                                    className={styles.productImg}
-                                    loading="eager"
-                                    fetchpriority="high"
-                                />
-                            </div>
-                            <div className={styles.productInfoCol}>
-                                <div className={styles.productBadgeRow}>
-                                    <span className={styles.productBadge}>
-                                        {category.name.toUpperCase()}
-                                        {product.subtitle && ` / ${product.subtitle.toUpperCase()}`}
-                                    </span>
+                        <div key={product.id} id={product.id}>
+                            <section className={styles.afiScrollSection} ref={biosalAutoconsumoScrollRef}>
+                                <div className={styles.afiStickyWrap}>
+                                    <video
+                                        ref={biosalAutoconsumoVideoRef}
+                                        src="/videos/compressed/biosal_autoconsumo_scrub.mp4"
+                                        className={styles.afiVideo}
+                                        muted playsInline preload="auto"
+                                    />
+                                    <div className={styles.videoHud} aria-hidden="true" />
                                 </div>
-                                <p className={styles.productSubtitleLabel}>{product.id.toUpperCase()}</p>
-                                <h3 className={styles.productName}>{product.name}</h3>
-                                <p className={styles.productDesc}>{product.shortDescription || product.description}</p>
-                                <ul className={styles.productFeatures}>
-                                    {(product.features || product.specs?.composition || []).map((f, i) => (
-                                        <li key={i} className={styles.productFeature}>
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
-                                                <polyline points="20 6 9 17 4 12" />
-                                            </svg>
-                                            {f}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <a
-                                    href={whatsappLink(product.name, category.name)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.productBtn}
-                                >
-                                    {WA_ICON}
-                                    Consultar por WhatsApp
-                                </a>
-                            </div>
-                        </article>
+                            </section>
+
+                            <section className={styles.productDetail}>
+                                <div className={styles.productDetailInner}>
+                                    <div className={styles.productDetailLeft}>
+                                        <span className={styles.productDetailLabel}>
+                                            CRÍA · {product.id.toUpperCase()}
+                                        </span>
+                                        <h2 className={styles.productDetailName}>{product.name}</h2>
+                                        <p className={styles.productDetailSubtitle}>{product.subtitle}</p>
+                                        <p className={styles.productDetailDesc}>
+                                            {product.shortDescription || product.description}
+                                        </p>
+                                        <a
+                                            href={whatsappLink(product.name, category.name)}
+                                            target="_blank" rel="noopener noreferrer"
+                                            className={styles.productDetailBtn}
+                                        >
+                                            {WA_ICON} Consultar por WhatsApp
+                                        </a>
+                                    </div>
+
+                                    <div className={styles.productDetailRight}>
+                                        <ul className={styles.productDetailFeatures}>
+                                            {(product.features || []).map((f, i) => (
+                                                <li key={i} className={styles.productDetailFeature}>
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                                                        <polyline points="20 6 9 17 4 12" />
+                                                    </svg>
+                                                    {f}
+                                                </li>
+                                            ))}
+                                        </ul>
+
+                                        {product.benefits?.length > 0 && (
+                                            <div className={styles.productDetailBenefits}>
+                                                {product.benefits.map((b, i) => (
+                                                    <div key={i} className={styles.productDetailBenefit}>
+                                                        <img src={b.icon} alt={b.title} width="52" height="52" loading="lazy" />
+                                                        <div>
+                                                            <strong>{b.title}</strong>
+                                                            <span>{b.description}</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     ))}
-                </div>
-            </section>
+                </>
+            ) : categorySlug === 'recria' ? (
+                /* ── RECRÍA: layout scroll-driven con video Biosal Max ── */
+                <>
+                    {products.map((product) => {
+                        const scrollRef = biosalMaxScrollRef;
+                        const videoRef  = biosalMaxVideoRef;
+                        const videoSrc  = '/videos/compressed/recria_scrub.mp4';
+
+                        return (
+                            <div key={product.id} id={product.id}>
+                                {/* Video scroll-driven */}
+                                <section className={styles.afiScrollSection} ref={scrollRef}>
+                                    <div className={styles.afiStickyWrap}>
+                                        <video
+                                            ref={videoRef}
+                                            src={videoSrc}
+                                            className={styles.afiVideo}
+                                            muted playsInline preload="auto"
+                                        />
+                                        <div className={styles.videoHud} aria-hidden="true" />
+                                    </div>
+                                </section>
+
+                                {/* Información del producto */}
+                                <section className={styles.productDetail}>
+                                    <div className={styles.productDetailInner}>
+                                        <div className={styles.productDetailLeft}>
+                                            <span className={styles.productDetailLabel}>
+                                                RECRÍA · {product.id.toUpperCase()}
+                                            </span>
+                                            <h2 className={styles.productDetailName}>{product.name}</h2>
+                                            <p className={styles.productDetailSubtitle}>{product.subtitle}</p>
+                                            <p className={styles.productDetailDesc}>
+                                                {product.shortDescription || product.description}
+                                            </p>
+                                            <a
+                                                href={whatsappLink(product.name, category.name)}
+                                                target="_blank" rel="noopener noreferrer"
+                                                className={styles.productDetailBtn}
+                                            >
+                                                {WA_ICON} Consultar por WhatsApp
+                                            </a>
+                                        </div>
+
+                                        <div className={styles.productDetailRight}>
+                                            <ul className={styles.productDetailFeatures}>
+                                                {(product.features || []).map((f, i) => (
+                                                    <li key={i} className={styles.productDetailFeature}>
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                                                            <polyline points="20 6 9 17 4 12" />
+                                                        </svg>
+                                                        {f}
+                                                    </li>
+                                                ))}
+                                            </ul>
+
+                                            {product.benefits?.length > 0 && (
+                                                <div className={styles.productDetailBenefits}>
+                                                    {product.benefits.map((b, i) => (
+                                                        <div key={i} className={styles.productDetailBenefit}>
+                                                            <img src={b.icon} alt={b.title} width="52" height="52" loading="lazy" />
+                                                            <div>
+                                                                <strong>{b.title}</strong>
+                                                                <span>{b.description}</span>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        );
+                    })}
+                </>
+            ) : categorySlug === 'engorde' ? (
+                /* ── ENGORDE: layout scroll-driven con video Biosal Mix ── */
+                <>
+                    {products.map((product) => {
+                        const scrollRef = biosalMixScrollRef;
+                        const videoRef  = biosalMixVideoRef;
+                        const videoSrc  = '/videos/compressed/engorde_scrub.mp4';
+
+                        return (
+                            <div key={product.id} id={product.id}>
+                                <section className={styles.afiScrollSection} ref={scrollRef}>
+                                    <div className={styles.afiStickyWrap}>
+                                        <video
+                                            ref={videoRef}
+                                            src={videoSrc}
+                                            className={styles.afiVideo}
+                                            muted playsInline preload="auto"
+                                        />
+                                        <div className={styles.videoHud} aria-hidden="true" />
+                                    </div>
+                                </section>
+
+                                <section className={styles.productDetail}>
+                                    <div className={styles.productDetailInner}>
+                                        <div className={styles.productDetailLeft}>
+                                            <span className={styles.productDetailLabel}>
+                                                ENGORDE · {product.id.toUpperCase()}
+                                            </span>
+                                            <h2 className={styles.productDetailName}>{product.name}</h2>
+                                            <p className={styles.productDetailSubtitle}>{product.subtitle}</p>
+                                            <p className={styles.productDetailDesc}>
+                                                {product.shortDescription || product.description}
+                                            </p>
+                                            <a
+                                                href={whatsappLink(product.name, category.name)}
+                                                target="_blank" rel="noopener noreferrer"
+                                                className={styles.productDetailBtn}
+                                            >
+                                                {WA_ICON} Consultar por WhatsApp
+                                            </a>
+                                        </div>
+
+                                        <div className={styles.productDetailRight}>
+                                            <ul className={styles.productDetailFeatures}>
+                                                {(product.features || []).map((f, i) => (
+                                                    <li key={i} className={styles.productDetailFeature}>
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                                                            <polyline points="20 6 9 17 4 12" />
+                                                        </svg>
+                                                        {f}
+                                                    </li>
+                                                ))}
+                                            </ul>
+
+                                            {product.benefits?.length > 0 && (
+                                                <div className={styles.productDetailBenefits}>
+                                                    {product.benefits.map((b, i) => (
+                                                        <div key={i} className={styles.productDetailBenefit}>
+                                                            <img src={b.icon} alt={b.title} width="52" height="52" loading="lazy" />
+                                                            <div>
+                                                                <strong>{b.title}</strong>
+                                                                <span>{b.description}</span>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        );
+                    })}
+                </>
+            ) : categorySlug === 'tambo' ? (
+                /* ── TAMBO: layout rediseñado con video scroll-driven por producto ── */
+                <>
+                    {products.map((product) => {
+                        const isRbr = product.id === 'rbr';
+                        const scrollRef = isRbr ? rbrScrollRef : afiScrollRef;
+                        const videoRef  = isRbr ? rbrVideoRef  : afiVideoRef;
+                        const videoSrc  = isRbr
+                            ? '/videos/compressed/rbr_scrub.mp4'
+                            : '/videos/compressed/afi_scrub.mp4';
+
+                        return (
+                            <div key={product.id} id={product.id}>
+                                {/* Video scroll-driven */}
+                                <section className={styles.afiScrollSection} ref={scrollRef}>
+                                    <div className={styles.afiStickyWrap}>
+                                        <video
+                                            ref={videoRef}
+                                            src={videoSrc}
+                                            className={styles.afiVideo}
+                                            muted playsInline preload="auto"
+                                        />
+                                        <div className={styles.videoHud} aria-hidden="true" />
+                                    </div>
+                                </section>
+
+                                {/* Información del producto */}
+                                <section className={styles.productDetail}>
+                                    <div className={styles.productDetailInner}>
+                                        <div className={styles.productDetailLeft}>
+                                            <span className={styles.productDetailLabel}>
+                                                TAMBO · {product.id.toUpperCase()}
+                                            </span>
+                                            <h2 className={styles.productDetailName}>{product.name}</h2>
+                                            <p className={styles.productDetailSubtitle}>{product.subtitle}</p>
+                                            <p className={styles.productDetailDesc}>
+                                                {product.shortDescription || product.description}
+                                            </p>
+                                            <a
+                                                href={whatsappLink(product.name, category.name)}
+                                                target="_blank" rel="noopener noreferrer"
+                                                className={styles.productDetailBtn}
+                                            >
+                                                {WA_ICON} Consultar por WhatsApp
+                                            </a>
+                                        </div>
+
+                                        <div className={styles.productDetailRight}>
+                                            <ul className={styles.productDetailFeatures}>
+                                                {(product.features || []).map((f, i) => (
+                                                    <li key={i} className={styles.productDetailFeature}>
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                                                            <polyline points="20 6 9 17 4 12" />
+                                                        </svg>
+                                                        {f}
+                                                    </li>
+                                                ))}
+                                            </ul>
+
+                                            {product.benefits?.length > 0 && (
+                                                <div className={styles.productDetailBenefits}>
+                                                    {product.benefits.map((b, i) => (
+                                                        <div key={i} className={styles.productDetailBenefit}>
+                                                            <img src={b.icon} alt={b.title} width="52" height="52" loading="lazy" />
+                                                            <div>
+                                                                <strong>{b.title}</strong>
+                                                                <span>{b.description}</span>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        );
+                    })}
+                </>
+            ) : (
+                /* ── Otras categorías: layout original de tarjetas ── */
+                <section id="productos" className={styles.productsSection}>
+                    <div className={styles.productsSectionHeader}>
+                        <span className={styles.sectionLabel}>NUESTROS PRODUCTOS</span>
+                        <h2 className={styles.sectionTitle}>Nuestros productos para {category.name}</h2>
+                    </div>
+                    <div className={styles.productsList}>
+                        {products.map((product) => (
+                            <article key={product.id} id={product.id} className={styles.productCard}>
+                                <div className={styles.productImageCol}>
+                                    <img
+                                        src={product.image}
+                                        alt={`${product.name} - Suplemento para ${category.name} | Victu`}
+                                        className={styles.productImg}
+                                        loading="eager"
+                                        fetchpriority="high"
+                                    />
+                                </div>
+                                <div className={styles.productInfoCol}>
+                                    <div className={styles.productBadgeRow}>
+                                        <span className={styles.productBadge}>
+                                            {category.name.toUpperCase()}
+                                            {product.subtitle && ` / ${product.subtitle.toUpperCase()}`}
+                                        </span>
+                                    </div>
+                                    <p className={styles.productSubtitleLabel}>{product.id.toUpperCase()}</p>
+                                    <h3 className={styles.productName}>{product.name}</h3>
+                                    <p className={styles.productDesc}>{product.shortDescription || product.description}</p>
+                                    <ul className={styles.productFeatures}>
+                                        {(product.features || product.specs?.composition || []).map((f, i) => (
+                                            <li key={i} className={styles.productFeature}>
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                                                    <polyline points="20 6 9 17 4 12" />
+                                                </svg>
+                                                {f}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <a
+                                        href={whatsappLink(product.name, category.name)}
+                                        target="_blank" rel="noopener noreferrer"
+                                        className={styles.productBtn}
+                                    >
+                                        {WA_ICON} Consultar por WhatsApp
+                                    </a>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {benefits.length > 0 && (
                 <section className={styles.benefitsStrip}>
@@ -214,7 +712,7 @@ export default function CategoryPage() {
                         {benefits.map((b, i) => (
                             <div key={i} className={styles.benefitCard}>
                                 <div className={styles.benefitIcon}>
-                                    <img src={b.icon} alt={b.title} loading="lazy" width="40" height="40" />
+                                    <img src={b.icon} alt={b.title} loading="lazy" width="60" height="60" />
                                 </div>
                                 <span className={styles.benefitTitle}>{b.title}</span>
                                 <p className={styles.benefitDesc}>{b.desc}</p>
@@ -224,7 +722,7 @@ export default function CategoryPage() {
                 </section>
             )}
 
-            <section className={styles.ctaSection}>
+            <section className={`${styles.ctaSection}${(categorySlug === 'tambo' || categorySlug === 'recria' || categorySlug === 'engorde' || categorySlug === 'cria') ? ` ${styles.ctaSectionDark}` : ''}`}>
                 <span className={styles.ctaLabel}>EQUIPO TÉCNICO VICTU</span>
                 <h2 className={styles.ctaTitle}>Consultá con nuestro equipo técnico</h2>
                 <p className={styles.ctaDesc}>

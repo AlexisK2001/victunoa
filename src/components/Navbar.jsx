@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import { categories } from '../data/categories';
-import { products } from '../data/products';
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -90,9 +89,9 @@ export default function Navbar() {
                         onMouseEnter={handleDropdownEnter}
                         onMouseLeave={handleDropdownLeave}
                     >
-                        <a href="#productos" className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'productos')}>
-                            Productos
+                        <a href="#categorias" className={styles.navLink}
+                            onClick={(e) => handleSmoothScroll(e, 'categorias')}>
+                            Categorías
                             <span className={`${styles.dropdownArrow} ${isDropdownOpen ? styles.dropdownArrowOpen : ''}`}>▾</span>
                         </a>
                         {isDropdownOpen && (
@@ -101,35 +100,22 @@ export default function Navbar() {
                                 onMouseEnter={handleDropdownEnter}
                                 onMouseLeave={handleDropdownLeave}
                             >
-                                <div className={styles.dropdownGrid}>
-                                    {categories.map(cat => {
-                                        const catProducts = products.filter(p => p.category === cat.id);
-                                        return (
-                                            <div key={cat.id} className={styles.dropdownColumn}>
-                                                <Link
-                                                    to={`/${cat.slug}`}
-                                                    className={styles.dropdownCategoryTitle}
-                                                    onClick={() => setIsDropdownOpen(false)}
-                                                >
-                                                    {cat.name}
-                                                </Link>
-                                                <ul className={styles.dropdownProductList}>
-                                                    {catProducts.map(product => (
-                                                        <li key={product.id}>
-                                                            <Link
-                                                                to={`/${cat.slug}#${product.id}`}
-                                                                className={styles.dropdownProductLink}
-                                                                onClick={() => setIsDropdownOpen(false)}
-                                                            >
-                                                                <span className={styles.dropdownProductName}>{product.name}</span>
-                                                                <span className={styles.dropdownProductSubtitle}>{product.subtitle}</span>
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
+                                <div className={styles.dropdownCards}>
+                                    {categories.map(cat => (
+                                        <Link
+                                            key={cat.id}
+                                            to={`/${cat.slug}`}
+                                            className={styles.dropdownCard}
+                                            onClick={() => setIsDropdownOpen(false)}
+                                        >
+                                            <img src={cat.image} alt={cat.name} className={styles.dropdownCardImg} />
+                                            <div className={styles.dropdownCardOverlay} />
+                                            <div className={styles.dropdownCardContent}>
+                                                <span className={styles.dropdownCardName}>{cat.name}</span>
+                                                <span className={styles.dropdownCardDesc}>{cat.description}</span>
                                             </div>
-                                        );
-                                    })}
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
                         )}
@@ -168,8 +154,8 @@ export default function Navbar() {
             {/* Mobile dropdown menu */}
             {isMenuOpen && (
                 <div className={styles.mobileMenu}>
-                    <a href="#productos" className={styles.mobileLink}
-                        onClick={(e) => handleSmoothScroll(e, 'productos')}>Productos</a>
+                    <a href="#categorias" className={styles.mobileLink}
+                        onClick={(e) => handleSmoothScroll(e, 'categorias')}>Categorías</a>
                     <a href="#beneficios" className={styles.mobileLink}
                         onClick={(e) => handleSmoothScroll(e, 'beneficios')}>Beneficios</a>
                     <a href="#galeria" className={styles.mobileLink}
@@ -179,30 +165,17 @@ export default function Navbar() {
                     <a href="https://wa.me/5493816542124" target="_blank" rel="noreferrer"
                         className={styles.mobileCTA}>WhatsApp</a>
                     <div className={styles.mobileCategories}>
-                        {categories.map(cat => {
-                            const catProducts = products.filter(p => p.category === cat.id);
-                            return (
-                                <div key={cat.id} className={styles.mobileCategoryGroup}>
-                                    <Link
-                                        to={`/${cat.slug}`}
-                                        className={styles.mobileCatTitle}
-                                        onClick={() => setIsMenuOpen(false)}
-                                    >
-                                        {cat.name}
-                                    </Link>
-                                    {catProducts.map(product => (
-                                        <Link
-                                            key={product.id}
-                                            to={`/${cat.slug}#${product.id}`}
-                                            className={styles.mobileCatLink}
-                                            onClick={() => setIsMenuOpen(false)}
-                                        >
-                                            {product.name}
-                                        </Link>
-                                    ))}
-                                </div>
-                            );
-                        })}
+                        {categories.map(cat => (
+                            <div key={cat.id} className={styles.mobileCategoryGroup}>
+                                <Link
+                                    to={`/${cat.slug}`}
+                                    className={styles.mobileCatTitle}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {cat.name}
+                                </Link>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}

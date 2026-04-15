@@ -1,3 +1,15 @@
+/* Shimmer sweep — botones tech */
+@keyframes btnShimmer {
+    0%   { transform: skewX(-18deg) translateX(-160%); opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: skewX(-18deg) translateX(360%); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ytCtaBtn::after { display: none; }
+}
+
 .page {
     background-color: #FAFAF7;
     min-height: 100vh;
@@ -9,9 +21,23 @@
    ============================================================ */
 .hero {
     margin-top: 72px;
-    background-color: #FAFAF7;
+    background-color: #2B3A2B;
     padding: 60px 0;
     overflow: hidden;
+    position: relative;
+    /* Dot grid: tech pattern visible on the dark panel */
+    background-image: radial-gradient(rgba(201, 169, 110, 0.10) 1px, transparent 1px);
+    background-size: 26px 26px;
+}
+
+/* Fade the dot grid out toward the right so it doesn't show over the image */
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 45%, #2B3A2B 62%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .heroInner {
@@ -20,12 +46,39 @@
     gap: 48px;
     align-items: center;
     min-height: 500px;
+    position: relative;
+    z-index: 1;
 }
 
 .heroLeft {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: relative;
+}
+
+/* Corner bracket decorations: top-left and bottom-right */
+.heroLeft::before,
+.heroLeft::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-color: rgba(201, 169, 110, 0.45);
+    border-style: solid;
+    pointer-events: none;
+}
+
+.heroLeft::before {
+    top: -12px;
+    left: -12px;
+    border-width: 2px 0 0 2px;
+}
+
+.heroLeft::after {
+    bottom: -12px;
+    right: -12px;
+    border-width: 0 2px 2px 0;
 }
 
 .heroLabel {
@@ -34,23 +87,47 @@
     font-weight: 600;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #6B8C6B;
-    display: block;
+    color: #A8C5A0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    border: 1px solid rgba(168, 197, 160, 0.45);
+    padding: 3px 12px 3px 8px;
+    border-radius: 100px;
+}
+
+/* Dot indicator inside the label pill */
+.heroLabel::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C9A96E;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(201, 169, 110, 0.7);
 }
 
 .heroTitle {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     font-size: clamp(2.2rem, 4vw, 3rem);
-    font-weight: 700;
-    color: #1A1A1A;
+    font-weight: 800;
+    color: #FFFFFF;
     line-height: 1.18;
     margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.heroTitle em {
+    color: #C9A96E;
+    font-style: normal;
+    text-shadow: 0 0 28px rgba(201, 169, 110, 0.35);
 }
 
 .heroSub {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     font-size: 16px;
-    color: #6B6560;
+    color: rgba(255, 255, 255, 0.75);
     line-height: 1.65;
     margin: 0;
     max-width: 440px;
@@ -71,8 +148,45 @@
 .heroRight {
     width: 100%;
     aspect-ratio: 4/3;
-    border-radius: 20px;
+    border-radius: 0;
     overflow: hidden;
+}
+
+/* ── Button overrides for dark hero bg (desktop) ── */
+.heroCtas :global(.btn-primary) {
+    background: #C9A96E;
+    border-color: #C9A96E;
+    color: #1A1A1A;
+}
+
+.heroCtas :global(.btn-secondary) {
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #FFFFFF;
+    background: transparent;
+}
+
+/* Data pills strip */
+.heroDataPills {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 0;
+}
+
+.heroDataPill {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.heroDataPillDot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
 }
 
 .heroImg {
@@ -118,14 +232,19 @@
 .valueItemIcon {
     display: flex;
     align-items: center;
-    color: #6B8C6B;
-    margin-bottom: 2px;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    background: #EEF2EE;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-bottom: 4px;
 }
 
 .valueItemIcon svg,
 .valueItemIcon img {
-    width: 64px;
-    height: 64px;
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
     object-fit: contain;
 }
@@ -156,6 +275,82 @@
 }
 
 /* ============================================================
+   BIOENZYMIX — Technology strip
+   ============================================================ */
+.bioSection {
+    background-color: #1C2A1C;
+    padding: 60px 0;
+    position: relative;
+    /* Circuit-board grid pattern */
+    background-image:
+        linear-gradient(rgba(201, 169, 110, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 169, 110, 0.06) 1px, transparent 1px);
+    background-size: 52px 52px;
+}
+
+.bioInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.bioName {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.bioName span {
+    color: #C9A96E;
+    text-shadow: 0 0 32px rgba(201, 169, 110, 0.4);
+}
+
+.bioSub {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 520px;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.bioFlow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.bioFlowItem {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    padding: 7px 18px;
+    border: 1px solid rgba(201, 169, 110, 0.35);
+    border-radius: 100px;
+}
+
+.bioFlowArrow {
+    color: #C9A96E;
+    font-size: 14px;
+    padding: 0 10px;
+    opacity: 0.65;
+    font-weight: 300;
+}
+
+/* ============================================================
    SHARED SECTION HEADER
    ============================================================ */
 .secHeader {
@@ -172,15 +367,20 @@
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #6B8C6B;
-    display: block;
-    margin-bottom: 10px;
+    display: inline-block;
+    width: fit-content;
+    border: 1px solid rgba(107, 140, 107, 0.45);
+    padding: 4px 14px;
+    border-radius: 100px;
+    margin-bottom: 12px;
 }
 
 .secLabelLight {
-    color: #6B8C6B;
+    color: #A8C5A0;
+    border-color: rgba(168, 197, 160, 0.4);
 }
 
 .secTitle {
@@ -220,27 +420,28 @@
 }
 
 .productCard {
-    background: #FFFFFF;
     border-radius: 16px;
     overflow: hidden;
     text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
-    border: 1px solid #E8E4DC;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: block;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     will-change: transform;
+    position: relative;
+    isolation: isolate;
+    cursor: pointer;
 }
 
 .productCard:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.11);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
 }
 
 .productCardMedia {
     position: relative;
     width: 100%;
-    aspect-ratio: 16/10;
+    aspect-ratio: 3/4;
     overflow: hidden;
 }
 
@@ -248,63 +449,102 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.35s ease;
+    transition: transform 0.4s ease;
+    display: block;
 }
 
 .productCard:hover .productCardMedia img {
-    transform: scale(1.04);
+    transform: scale(1.06);
+}
+
+/* Gradient overlay */
+.productCardOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(12, 20, 12, 0.93) 0%,
+        rgba(12, 20, 12, 0.45) 45%,
+        transparent 72%
+    );
+    transition: background 0.3s ease;
+}
+
+.productCard:hover .productCardOverlay {
+    background: linear-gradient(
+        to top,
+        rgba(12, 20, 12, 0.97) 0%,
+        rgba(12, 20, 12, 0.58) 55%,
+        rgba(12, 20, 12, 0.08) 80%
+    );
 }
 
 .productCardBadge {
     position: absolute;
-    bottom: 12px;
-    left: 12px;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
-    background: rgba(43, 58, 43, 0.85);
+    background: rgba(43, 58, 43, 0.8);
+    backdrop-filter: blur(4px);
     color: #FFFFFF;
     padding: 4px 12px;
     border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .productCardBody {
-    padding: 18px 22px 22px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px 22px;
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 7px;
-    flex: 1;
+    gap: 6px;
 }
 
 .productCardTitle {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #1A1A1A;
+    font-size: 20px;
+    font-weight: 800;
+    color: #FFFFFF;
     margin: 0;
+    letter-spacing: -0.3px;
 }
 
 .productCardDesc {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     font-size: 13px;
-    color: #6B6560;
-    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.5;
     margin: 0;
-    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .productCardLink {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: #6B8C6B;
-    transition: color 0.2s ease;
+    font-size: 12px;
+    font-weight: 700;
+    color: #C9A96E;
+    transition: color 0.2s ease, gap 0.2s ease;
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .productCard:hover .productCardLink {
-    color: #2B3A2B;
+    color: #dfc07a;
 }
 
 /* ============================================================
@@ -313,18 +553,26 @@
 .benefitsSection {
     background-color: #2B3A2B;
     padding: 72px 0;
+    position: relative;
+    /* Subtle dot grid on dark section */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
 
 .benefitsGrid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 40px;
+    position: relative;
+    z-index: 1;
 }
 
 .benefitItem {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    border-left: 2px solid rgba(201, 169, 110, 0.3);
+    padding-left: 20px;
 }
 
 .benefitIcon {
@@ -404,6 +652,8 @@
 
 .statCardDark {
     background: #2B3A2B;
+    border-color: rgba(201, 169, 110, 0.25);
+    border-top: 2px solid #C9A96E;
 }
 
 .statNum {
@@ -412,11 +662,13 @@
     font-weight: 800;
     color: #2B3A2B;
     line-height: 1;
-    letter-spacing: -1px;
+    letter-spacing: -2px;
+    font-variant-numeric: tabular-nums;
 }
 
 .statNumGold {
     color: #C9A96E;
+    text-shadow: 0 0 24px rgba(201, 169, 110, 0.4);
 }
 
 .statLabel {
@@ -486,62 +738,58 @@
     gap: 28px;
 }
 
-/* Row layout with arrows between steps */
+/* Bento grid layout */
 .stepsRow {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: stretch;
 }
 
 .stepArrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 16px;
-    margin-top: 26px;
-    color: #C4BFBA;
-    font-size: 18px;
-    flex-shrink: 0;
+    display: none;
 }
 
 .stepItem {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 14px;
+    align-items: flex-start;
+    text-align: left;
+    gap: 10px;
+    padding: 40px 32px;
+    border-radius: 20px;
+    min-height: 220px;
 }
 
 .stepCircle {
-    width: 52px;
-    height: 52px;
-    background: #2B3A2B;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
+}
+
+.stepNum {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #C9A96E;
-    flex-shrink: 0;
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0 0 6px;
+    letter-spacing: -3px;
+    font-variant-numeric: tabular-nums;
+    /* color comes from inline style */
 }
 
 .stepTitle {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
-    color: #1A1A1A;
     margin: 0;
+    /* color comes from inline style */
 }
 
 .stepText {
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     font-size: 13px;
-    color: #6B6560;
     line-height: 1.65;
     margin: 0;
+    /* color comes from inline style */
 }
 
 /* ============================================================
@@ -822,10 +1070,25 @@
     background: #FFFFFF;
     color: #2B3A2B;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
     flex-shrink: 0;
     outline: none;
     -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    z-index: 0;
+}
+
+.galleryArrow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #2B3A2B;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.25s ease;
+    z-index: -1;
 }
 
 .galleryArrow:focus-visible {
@@ -834,9 +1097,13 @@
 
 @media (hover: hover) and (pointer: fine) {
     .galleryArrow:hover {
-        background: #2B3A2B;
         border-color: #2B3A2B;
         color: #FFFFFF;
+        transform: translateY(-1px);
+    }
+
+    .galleryArrow:hover::before {
+        transform: scaleY(1);
     }
 }
 
@@ -845,9 +1112,17 @@
     .galleryArrow:focus,
     .galleryArrow:active {
         box-shadow: none;
-        background: #FFFFFF;
         border-color: #E0DDD6;
         color: #2B3A2B;
+    }
+
+    .galleryArrow:active::before {
+        transform: scaleY(1);
+    }
+
+    .galleryArrow:active {
+        border-color: #2B3A2B;
+        color: #FFFFFF;
     }
 }
 
@@ -903,11 +1178,24 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease;
     z-index: 2;
     outline: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.galleryFullscreenArrow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(43, 58, 43, 0.85);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.25s ease;
+    z-index: -1;
 }
 
 .galleryFullscreenArrow:focus {
@@ -1042,9 +1330,12 @@
 
 @media (hover: hover) and (pointer: fine) {
     .galleryFullscreenArrow:hover:not(:disabled) {
-        background: rgba(43, 58, 43, 0.85);
         border-color: rgba(201, 169, 110, 0.6);
         transform: translateY(-50%) scale(1.03);
+    }
+
+    .galleryFullscreenArrow:hover:not(:disabled)::before {
+        transform: scaleY(1);
     }
 
     .galleryFullscreenClose:hover {
@@ -1065,15 +1356,17 @@
     .galleryFullscreenClose:focus,
     .galleryFullscreenClose:active {
         box-shadow: none;
-        background: rgba(0, 0, 0, 0.5);
         border-color: rgba(255, 255, 255, 0.3);
         color: #FFFFFF;
         transform: translateY(-50%);
     }
 
+    .galleryFullscreenArrow:active::before {
+        transform: scaleY(1);
+    }
+
     .galleryFullscreenArrow:hover,
     .galleryFullscreenClose:hover {
-        background: rgba(0, 0, 0, 0.5);
         border-color: rgba(255, 255, 255, 0.3);
         color: #FFFFFF;
         transform: translateY(-50%);
@@ -1112,6 +1405,11 @@
 .ctaBanner {
     background-color: #2B3A2B;
     padding: 72px 0;
+    position: relative;
+    background-image:
+        linear-gradient(rgba(201, 169, 110, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 169, 110, 0.05) 1px, transparent 1px);
+    background-size: 52px 52px;
 }
 
 .ctaInner {
@@ -1120,6 +1418,8 @@
     flex-direction: column;
     align-items: center;
     gap: 16px;
+    position: relative;
+    z-index: 1;
 }
 
 .ctaLabel {
@@ -1186,6 +1486,272 @@
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+/* ============================================================
+   STATS — YOUTUBE FEATURED VIDEO
+   ============================================================ */
+.ytFeaturedWrap {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.ytFeaturedLabel {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #6B8C6B;
+    margin: 0;
+}
+
+.ytFeaturedTitle {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 700;
+    color: #1A1A1A;
+    text-align: center;
+    margin: 0;
+}
+
+.ytFeaturedPlayer {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 16/9;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+
+.ytFeaturedThumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.ytFeaturedPlayer:hover .ytFeaturedThumb {
+    transform: scale(1.03);
+}
+
+.ytFeaturedOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+}
+
+.ytFeaturedBadge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #FF0000;
+    color: #fff;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+}
+
+.ytFeaturedPlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    background: rgba(255,0,0,0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ytFeaturedPlayer:hover .ytFeaturedPlay {
+    transform: translate(-50%, -50%) scale(1.08);
+    background: #FF0000;
+}
+
+.ytFeaturedCta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #fff;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 18px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+}
+
+/* ============================================================
+   YOUTUBE VIDEOS SECTION
+   ============================================================ */
+.ytSection {
+    background-color: #FAFAF7;
+    padding: 80px 0;
+}
+
+.ytGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.ytCard {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #1A1A1A;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ytCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+}
+
+.ytThumb {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.ytThumbImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.ytCard:hover .ytThumbImg {
+    transform: scale(1.04);
+}
+
+.ytThumbOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+}
+
+.ytThumbPlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 32px;
+    background: #FF0000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ytInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    background: #fff;
+    flex: 1;
+}
+
+.ytTitle {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.ytLink {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 11px;
+    color: #6B6560;
+}
+
+.ytCta {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.ytCtaBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FF0000;
+    color: #fff;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.ytCtaBtn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #CC0000;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.25s ease;
+    z-index: -1;
+}
+
+.ytCtaBtn:hover {
+    transform: translateY(-1px);
+}
+
+.ytCtaBtn:hover::before {
+    transform: scaleY(1);
+}
+
+.ytCtaBtn::after {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 0;
+    width: 40%;
+    height: 120%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    transform: skewX(-18deg) translateX(-160%);
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.ytCtaBtn:hover::after {
+    animation: btnShimmer 0.55s ease-out forwards;
+}
+
 @media (max-width: 1024px) {
     .benefitsGrid {
         grid-template-columns: repeat(2, 1fr);
@@ -1206,17 +1772,28 @@
        HERO MOBILE — imagen fondo + texto blanco encima
     ──────────────────────────────────────────────────────── */
     .hero {
-        margin-top: 60px;
+        margin-top: 56px;
         padding: 0;
         position: relative;
-        min-height: 520px;
+        min-height: 420px;
         overflow: hidden;
         background-color: #2B3A2B;
+        /* Remove dot pattern on mobile — image is full-bleed bg */
+        background-image: none;
+    }
+
+    .hero::after {
+        display: none;
+    }
+
+    .heroLeft::before,
+    .heroLeft::after {
+        display: none;
     }
 
     .heroInner {
         grid-template-columns: 1fr;
-        min-height: 520px;
+        min-height: 420px;
         gap: 0;
         position: relative;
         z-index: 2;
@@ -1255,8 +1832,13 @@
     .heroLeft {
         position: relative;
         z-index: 2;
-        padding: 80px 20px 60px;
-        gap: 16px;
+        padding: 52px 20px 40px;
+        gap: 14px;
+        /* Circuit grid sobre el área de texto — crea textura tech sin tapar la imagen */
+        background-image:
+            linear-gradient(rgba(201, 169, 110, 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(201, 169, 110, 0.055) 1px, transparent 1px);
+        background-size: 32px 32px;
     }
 
     .heroLabel {
@@ -1275,6 +1857,18 @@
         font-size: 15px;
     }
 
+    /* Data pills: más prominentes en mobile con separador top */
+    .heroDataPills {
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        padding-top: 14px;
+        margin-top: 4px;
+    }
+
+    .heroDataPill {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.65);
+    }
+
     .heroCtas {
         flex-direction: column;
         align-items: stretch;
@@ -1289,11 +1883,11 @@
         color: inherit;
     }
 
-    /* Overrides de botones para el hero oscuro en mobile (usando :global para clases del Button component) */
+    /* Overrides de botones para el hero oscuro en mobile */
     .heroCtas :global(.btn-primary) {
-        background: #2B3A2B;
-        border-color: #2B3A2B;
-        color: #FFFFFF;
+        background: #C9A96E;
+        border-color: #C9A96E;
+        color: #1A1A1A;
         width: 100%;
         justify-content: center;
     }
@@ -1307,6 +1901,22 @@
     }
 
     /* ────────────────────────────────────────────────────────
+       BIOENZYMIX
+    ──────────────────────────────────────────────────────── */
+    .bioSection {
+        padding: 48px 0;
+    }
+
+    .bioFlow {
+        gap: 6px;
+    }
+
+    .bioFlowItem {
+        font-size: 9px;
+        padding: 6px 14px;
+    }
+
+    /* ────────────────────────────────────────────────────────
        VALUE PROPS
     ──────────────────────────────────────────────────────── */
     .valueGrid {
@@ -1315,14 +1925,16 @@
     }
 
     .valueItem {
-        border-left: none;
-        border-top: 1px solid #E0DDD6;
-        padding: 20px 0 0;
+        border-left: 2px solid rgba(201, 169, 110, 0.45);
+        border-top: none;
+        padding: 6px 0 6px 18px;
     }
 
     .valueItem:first-child {
         border-top: none;
-        padding-top: 0;
+        padding-top: 6px;
+        border-left: 2px solid rgba(201, 169, 110, 0.45);
+        padding-left: 18px;
     }
 
     /* ────────────────────────────────────────────────────────
@@ -1334,7 +1946,11 @@
     }
 
     .productCardMedia {
-        aspect-ratio: 16/9;
+        aspect-ratio: 4/3;
+    }
+
+    .productCardTitle {
+        font-size: 18px;
     }
 
     /* ────────────────────────────────────────────────────────
@@ -1352,31 +1968,158 @@
         grid-template-columns: 1fr;
     }
 
+    .testiCard {
+        border-left: 3px solid rgba(201, 169, 110, 0.5);
+        border-top: none;
+        border-right: none;
+        border-bottom: none;
+        background: #FAFAF7;
+        padding: 20px 20px 20px 22px;
+    }
+
     /* ────────────────────────────────────────────────────────
-       PROCESS STEPS
+       PROCESS STEPS — 2+1 layout (first row 2 cards, third full width)
     ──────────────────────────────────────────────────────── */
     .stepsRow {
-        flex-direction: column;
-        align-items: center;
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
 
-    .stepArrow {
-        transform: rotate(90deg);
-        margin: 0;
-        padding: 0;
+    /* Third card spans full width */
+    .stepsRow > *:last-child {
+        grid-column: 1 / -1;
     }
 
     .stepItem {
-        max-width: 280px;
-        width: 100%;
+        min-height: 160px;
+        padding: 28px 24px;
+    }
+
+    .stepNum {
+        font-size: 44px;
     }
 
     /* ────────────────────────────────────────────────────────
-       STATS
+       STATS — 2x2 dashboard grid
     ──────────────────────────────────────────────────────── */
     .statsGrid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .statNum {
+        font-size: 2.4rem;
+    }
+
+    .statCard {
+        padding: 20px 18px;
+    }
+
+    /* ────────────────────────────────────────────────────────
+       YOUTUBE
+    ──────────────────────────────────────────────────────── */
+    .ytFeaturedWrap {
+        margin-top: 32px;
+        gap: 8px;
+    }
+
+    .ytFeaturedTitle {
+        font-size: 1.3rem;
+    }
+
+    .ytFeaturedPlayer {
+        border-radius: 12px;
+    }
+
+    .ytFeaturedPlay {
+        width: 52px;
+        height: 52px;
+        transform: translate(-50%, -50%);
+    }
+
+    .ytFeaturedPlayer:hover .ytFeaturedPlay {
+        transform: translate(-50%, -50%) scale(1.08);
+    }
+
+    .ytFeaturedCta {
+        font-size: 12px;
+        padding: 14px;
+    }
+
+    .ytSection {
+        padding: 48px 0;
+    }
+
+    .ytGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .ytThumbPlay {
+        width: 34px;
+        height: 26px;
+    }
+
+    .ytInfo {
+        padding: 8px 10px;
+        gap: 4px;
+    }
+
+    .ytTitle {
+        font-size: 11px;
+        line-height: 1.35;
+    }
+
+    .ytLink {
+        font-size: 10px;
+    }
+
+    .ytCta {
+        margin-top: 16px;
+    }
+
+    .ytCtaBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* ────────────────────────────────────────────────────────
+       SECTION PADDING OVERRIDES — reducir espacio vertical
+    ──────────────────────────────────────────────────────── */
+    .valueSection {
+        padding: 36px 0;
+    }
+
+    .bioSection {
+        padding: 36px 0;
+    }
+
+    .productsSection {
+        padding: 40px 0;
+    }
+
+    .benefitsSection {
+        padding: 40px 0;
+    }
+
+    .statsSection {
+        padding: 40px 0;
+    }
+
+    .processSection {
+        padding: 40px 0;
+    }
+
+    .testiSection {
+        padding: 40px 0;
+    }
+
+    .ctaBanner {
+        padding: 44px 0;
+    }
+
+    .ytSection {
+        padding: 40px 0;
     }
 }
 
