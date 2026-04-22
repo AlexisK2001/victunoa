@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSEO } from '../hooks/useSEO';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
@@ -47,7 +48,11 @@ const ZONAS_COBERTURA = [
     'Catamarca', 'La Rioja', 'Chaco', 'Formosa',
 ];
 
+const YT_ID = 'WN23lbFxQE4';
+
 export default function SobreVictu() {
+    const [videoActive, setVideoActive] = useState(false);
+
     useSEO({
         title: 'Sobre Victu - Representante Suplefeed NOA y NEA',
         description: 'Conocé quiénes somos en Victu: representantes oficiales de Suplefeed para NOA y NEA. Más de 8 años acompañando productores ganaderos con biosales y soporte técnico en campo.',
@@ -178,13 +183,34 @@ export default function SobreVictu() {
                         </div>
                         <div className={styles.origenVideo}>
                             <div className={styles.videoWrapper}>
-                                <iframe
-                                    src="https://www.youtube.com/embed/WN23lbFxQE4"
-                                    title="Conocé Victu | Biosales para mejor producción, rendimiento y calidad"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                    loading="lazy"
-                                />
+                                {videoActive ? (
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${YT_ID}?autoplay=1`}
+                                        title="Conocé Victu | Biosales para mejor producción, rendimiento y calidad"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
+                                ) : (
+                                    <>
+                                        <img
+                                            src={`https://img.youtube.com/vi/${YT_ID}/hqdefault.jpg`}
+                                            alt="Conocé Victu — video presentación"
+                                            className={styles.videoThumb}
+                                            loading="lazy"
+                                        />
+                                        <button
+                                            className={styles.videoPlayBtn}
+                                            onClick={() => setVideoActive(true)}
+                                            aria-label="Reproducir video"
+                                        >
+                                            <span className={styles.videoPlayIcon}>
+                                                <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                                                    <path d="M8 5v14l11-7z" />
+                                                </svg>
+                                            </span>
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
