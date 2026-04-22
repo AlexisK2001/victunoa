@@ -1,0 +1,907 @@
+/* ── BiosalesGuia ── */
+
+.page {
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+/* ═══════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════ */
+.hero {
+    background-color: #2B3A2B;
+    margin-top: 72px;
+    padding: 5rem 0 4rem;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    background-image: radial-gradient(rgba(201, 169, 110, 0.10) 1px, transparent 1px);
+    background-size: 26px 26px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2B3A2B, #C9A96E, #2B3A2B);
+    z-index: 2;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 50%, #2B3A2B 85%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.heroInner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 760px;
+    position: relative;
+    z-index: 1;
+}
+
+.heroInner::before,
+.heroInner::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-color: #C9A96E;
+    border-style: solid;
+    pointer-events: none;
+}
+
+.heroInner::before {
+    top: -14px;
+    left: -14px;
+    border-width: 2px 0 0 2px;
+}
+
+.heroInner::after {
+    bottom: -14px;
+    right: -14px;
+    border-width: 0 2px 2px 0;
+}
+
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #A8C5A0;
+    border: 1px solid rgba(168, 197, 160, 0.45);
+    padding: 3px 12px 3px 8px;
+    border-radius: 100px;
+    width: fit-content;
+}
+
+.heroBadge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C9A96E;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(201, 169, 110, 0.7);
+}
+
+.heroTitle {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.heroSub {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+    max-width: 620px;
+}
+
+.heroAuthor {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    padding-top: 0.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.heroAuthor strong {
+    color: #C9A96E;
+}
+
+/* ═══════════════════════════════════════
+   SECTIONS
+   ═══════════════════════════════════════ */
+.section {
+    padding: 4rem 0;
+}
+
+.sectionAlt {
+    background: #fff;
+}
+
+.contentBlock {
+    max-width: 760px;
+}
+
+.secTitle {
+    font-size: clamp(1.35rem, 3vw, 1.9rem);
+    font-weight: 700;
+    color: var(--color-dark);
+    margin: 0 0 1.25rem;
+}
+
+.secText {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #4a5a4a;
+    max-width: 760px;
+    margin: 0 0 1rem;
+}
+
+/* ═══════════════════════════════════════
+   DEFINITION LIST
+   ═══════════════════════════════════════ */
+.defList {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.defItem {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: #4a5a4a;
+}
+
+.defIcon {
+    flex-shrink: 0;
+    min-width: 32px;
+    height: 32px;
+    background: #2B3A2B;
+    color: #C9A96E;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════
+   BIOENZYMIX
+   ═══════════════════════════════════════ */
+.bioSection {
+    background-color: #2B3A2B;
+    background-image: radial-gradient(rgba(201, 169, 110, 0.08) 1px, transparent 1px);
+    background-size: 26px 26px;
+    padding: 4rem 0;
+    position: relative;
+}
+
+.bioInner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 760px;
+    position: relative;
+    z-index: 1;
+}
+
+.bioInner::before,
+.bioInner::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: #C9A96E;
+    border-style: solid;
+    pointer-events: none;
+}
+
+.bioInner::before {
+    top: -10px;
+    left: -10px;
+    border-width: 2px 0 0 2px;
+}
+
+.bioInner::after {
+    bottom: -10px;
+    right: -10px;
+    border-width: 0 2px 2px 0;
+}
+
+.bioTitle {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #C9A96E;
+    margin: 0;
+    text-shadow: 0 0 28px rgba(201, 169, 110, 0.35);
+}
+
+.bioTitle span {
+    color: #fff;
+}
+
+.bioSub {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: -0.5rem 0 0;
+}
+
+.bioText {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+}
+
+.bioPoints {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.bioPoint {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+}
+
+.bioPointNum {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #C9A96E;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* ═══════════════════════════════════════
+   COMPARISON TABLE
+   ═══════════════════════════════════════ */
+.tableWrapper {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e8e8e0;
+}
+
+.compTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.compTable th {
+    background: #2B3A2B;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.9rem 1.25rem;
+    text-align: left;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.thBio {
+    color: #C9A96E !important;
+}
+
+.compTable tr:nth-child(even) {
+    background: #fafaf7;
+}
+
+.compTable tr:hover {
+    background: #f0f5f0;
+}
+
+.compTable td {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid #e8e8e0;
+    vertical-align: top;
+    line-height: 1.5;
+}
+
+.compTable tr:last-child td {
+    border-bottom: none;
+}
+
+.tdAspecto {
+    font-weight: 600;
+    color: var(--color-dark);
+    min-width: 180px;
+}
+
+.tdBio {
+    color: #2B3A2B;
+    font-weight: 500;
+}
+
+.tdTrad {
+    color: #7a8a7a;
+}
+
+/* ═══════════════════════════════════════
+   CATEGORÍAS
+   ═══════════════════════════════════════ */
+.catGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.catCard {
+    background: #fff;
+    border: 1px solid #e8e8e0;
+    border-top: 3px solid #C9A96E;
+    border-radius: 12px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.catCard:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+.catTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin: 0;
+}
+
+.catList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.catItem {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #4a5a4a;
+}
+
+.catBullet {
+    color: #C9A96E;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.catLink {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #2B3A2B;
+    text-decoration: none;
+    border-top: 1px solid #e8e8e0;
+    padding-top: 0.75rem;
+    transition: color 0.2s;
+}
+
+.catLink:hover {
+    color: #C9A96E;
+}
+
+/* ═══════════════════════════════════════
+   POR QUÉ VICTU
+   ═══════════════════════════════════════ */
+.victuSection {
+    background-color: #2B3A2B;
+    background-image: radial-gradient(rgba(201, 169, 110, 0.08) 1px, transparent 1px);
+    background-size: 26px 26px;
+    padding: 4rem 0;
+}
+
+.victuInner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.victuTitle {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    color: #C9A96E;
+    margin: 0;
+    text-shadow: 0 0 28px rgba(201, 169, 110, 0.3);
+}
+
+.victuText {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+    max-width: 680px;
+}
+
+.victuCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.victuCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.victuCard:hover {
+    border-color: rgba(201, 169, 110, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.victuCardNum {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #C9A96E;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.victuCardTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+.victuCardText {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+}
+
+.victuCta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.victuCta a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.victuCta :global(.btn-primary) {
+    background: #C9A96E;
+    border-color: #C9A96E;
+    color: #1A1A1A;
+    --btn-fill: #b8954f;
+}
+
+.victuCta :global(.btn-secondary) {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #FFFFFF;
+    --btn-fill: rgba(255, 255, 255, 0.15);
+}
+
+/* ═══════════════════════════════════════
+   FAQ
+   ═══════════════════════════════════════ */
+.faqSection {
+    padding: 4rem 0;
+    background: #fff;
+}
+
+.faqList {
+    max-width: 760px;
+    border: 1px solid #e8e8e0;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+}
+
+.faqItem {
+    border-bottom: 1px solid #e8e8e0;
+    transition: background 0.2s;
+}
+
+.faqItem:last-child {
+    border-bottom: none;
+}
+
+.faqOpen {
+    background: var(--color-bg);
+}
+
+.faqQuestion {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    transition: color 0.2s;
+}
+
+.faqQuestion:hover {
+    color: #C9A96E;
+}
+
+.faqOpen .faqQuestion {
+    color: #C9A96E;
+}
+
+.faqIcon {
+    flex-shrink: 0;
+    color: #C9A96E;
+    transition: transform 0.25s ease;
+}
+
+.faqOpen .faqIcon {
+    transform: rotate(180deg);
+}
+
+.faqAnswer {
+    padding: 0 1.5rem 1.25rem;
+    font-size: 0.97rem;
+    line-height: 1.75;
+    color: #4a5a4a;
+    margin: 0;
+    border-top: 1px solid #f0f0e8;
+}
+
+/* ═══════════════════════════════════════
+   LÍNEA DE PRODUCTOS
+   ═══════════════════════════════════════ */
+.productsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.productCard {
+    background: var(--color-bg);
+    border: 1px solid #e8e8e0;
+    border-left: 3px solid #C9A96E;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.productCard:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.productSystem {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C9A96E;
+}
+
+.productName {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin: 0;
+}
+
+.productDesc {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: #4a5a4a;
+    margin: 0;
+    flex: 1;
+}
+
+.productUso {
+    font-size: 0.8rem;
+    color: #7a8a7a;
+    border-top: 1px solid #e8e8e0;
+    padding-top: 0.6rem;
+    margin: 0;
+}
+
+.productsCta {
+    margin-top: 1.5rem;
+}
+
+/* ═══════════════════════════════════════
+   CTA FINAL
+   ═══════════════════════════════════════ */
+.ctaSection {
+    background: var(--color-gold);
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.ctaSection a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.ctaTitle {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--color-dark);
+    margin: 0 0 0.75rem;
+}
+
+.ctaSub {
+    font-size: 1.05rem;
+    color: rgba(43, 58, 43, 0.8);
+    margin: 0 0 2rem;
+}
+
+/* ═══════════════════════════════════════
+   BREADCRUMB
+   ═══════════════════════════════════════ */
+.breadcrumb {
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+    color: #7a8a7a;
+    background: var(--color-bg);
+    border-top: 1px solid #e8e8e0;
+}
+
+.breadcrumb a {
+    color: var(--color-dark);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (max-width: 768px) {
+    /* ── Hero ── */
+    .hero {
+        margin-top: 56px;
+        padding: 2.5rem 0 2rem;
+        background-image: none;
+    }
+
+    .hero::after {
+        display: none;
+    }
+
+    .heroInner::before,
+    .heroInner::after {
+        display: none;
+    }
+
+    .heroInner {
+        gap: 0.9rem;
+        text-align: center;
+        align-items: center;
+    }
+
+    .heroBadge {
+        align-self: center;
+    }
+
+    .heroTitle {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .heroSub {
+        font-size: 0.93rem;
+        text-align: center;
+    }
+
+    .heroAuthor {
+        text-align: center;
+        font-size: 0.82rem;
+    }
+
+    /* ── Sections ── */
+    .section {
+        padding: 2.5rem 0;
+    }
+
+    .contentBlock {
+        max-width: 100%;
+    }
+
+    .secTitle {
+        text-align: center;
+    }
+
+    .secText {
+        max-width: 100%;
+    }
+
+    /* ── Definition list ── */
+    .defList {
+        gap: 0.85rem;
+    }
+
+    .defItem {
+        gap: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    /* ── Bioenzymix ── */
+    .bioSection {
+        padding: 2.5rem 0;
+    }
+
+    .bioInner {
+        text-align: center;
+        align-items: center;
+    }
+
+    .bioInner::before,
+    .bioInner::after {
+        display: none;
+    }
+
+    .bioTitle {
+        font-size: 1.75rem;
+    }
+
+    .bioText {
+        text-align: left;
+    }
+
+    .bioPoints {
+        grid-template-columns: 1fr;
+    }
+
+    /* ── Comparison table ── */
+    .compTable th,
+    .compTable td {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.82rem;
+    }
+
+    .tdAspecto {
+        min-width: 120px;
+    }
+
+    /* ── Categorías ── */
+    .catGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .catTitle {
+        text-align: center;
+    }
+
+    /* ── Por qué Victu ── */
+    .victuSection {
+        padding: 2.5rem 0;
+    }
+
+    .victuTitle {
+        text-align: center;
+    }
+
+    .victuText {
+        text-align: center;
+    }
+
+    .victuCards {
+        grid-template-columns: 1fr;
+    }
+
+    .victuCta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .victuCta :global(.btn) {
+        width: 100%;
+    }
+
+    /* ── FAQ ── */
+    .faqSection {
+        padding: 2.5rem 0;
+    }
+
+    .faqSection .secTitle {
+        text-align: center;
+    }
+
+    .faqList {
+        margin: 1rem 0 0;
+    }
+
+    .faqQuestion {
+        font-size: 0.95rem;
+        padding: 1rem 1.25rem;
+    }
+
+    .faqAnswer {
+        padding: 0 1.25rem 1rem;
+        font-size: 0.92rem;
+    }
+
+    /* ── Productos ── */
+    .productsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    /* ── CTA ── */
+    .ctaSection {
+        padding: 2.5rem 0;
+    }
+
+    .ctaTitle {
+        font-size: 1.4rem;
+    }
+
+    .ctaSub {
+        font-size: 0.95rem;
+    }
+
+    .ctaSection :global(.btn) {
+        width: 100%;
+        max-width: 320px;
+    }
+}

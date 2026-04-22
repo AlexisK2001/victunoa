@@ -1,0 +1,911 @@
+/* =====================================================
+   GALERÍA — Rediseño técnico-editorial
+   ===================================================== */
+
+.page {
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+/* ── HERO ─────────────────────────────────────────── */
+.hero {
+    background-color: #2B3A2B;
+    margin-top: 72px;
+    padding: 4.5rem 0 3.5rem;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    background-image: radial-gradient(rgba(201, 169, 110, 0.10) 1px, transparent 1px);
+    background-size: 26px 26px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #C9A96E 30%, #C9A96E 70%, transparent);
+    opacity: 0.7;
+}
+
+.heroInner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: relative;
+}
+
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #A8C5A0;
+    border: 1px solid rgba(168, 197, 160, 0.4);
+    padding: 3px 12px 3px 8px;
+    border-radius: 100px;
+    width: fit-content;
+}
+
+.heroBadge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C9A96E;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(201, 169, 110, 0.7);
+}
+
+.heroTitle {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.heroSub {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    max-width: 580px;
+}
+
+/* Hero stats */
+.heroStats {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.25rem;
+    width: fit-content;
+}
+
+.heroStat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 2rem 0 0;
+}
+
+.heroStat:first-child {
+    padding-left: 0;
+}
+
+.heroStatNum {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #C9A96E;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.heroStatLabel {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.heroStatDivider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 0 2rem 0 0;
+    flex-shrink: 0;
+}
+
+/* ── SECTION HEADER (compartido) ─────────────────── */
+.secHeader {
+    margin-bottom: 2.5rem;
+}
+
+.secMeta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+}
+
+.secNum {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #C9A96E;
+    font-variant-numeric: tabular-nums;
+}
+
+.secLabel {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6B8C6B;
+    border: 1px solid rgba(107, 140, 107, 0.4);
+    padding: 3px 12px;
+    border-radius: 100px;
+}
+
+.secTitle {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 8px;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+}
+
+.secSub {
+    font-size: 15px;
+    color: #6B6560;
+    margin: 0;
+    line-height: 1.65;
+    max-width: 520px;
+}
+
+/* Dark section overrides */
+.secTitleDark {
+    color: #fff;
+}
+
+.secSubDark {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.secLabelDark {
+    color: #C9A96E;
+    border-color: rgba(201, 169, 110, 0.35);
+}
+
+/* ── GALLERY SECTION ──────────────────────────────── */
+.gallerySection {
+    padding: 72px 0;
+    background: #fff;
+}
+
+/* Bento masonry grid */
+.galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 210px;
+    gap: 10px;
+}
+
+/* Feature card — hero image */
+.galleryCard:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+/* Tall card */
+.galleryCard:nth-child(6) {
+    grid-row: span 2;
+}
+
+/* Wide card */
+.galleryCard:nth-child(5) {
+    grid-column: span 2;
+}
+
+.galleryCard {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #f4f1ec;
+    cursor: zoom-in;
+    display: block;
+}
+
+.galleryCard:focus-visible {
+    outline: 2px solid #C9A96E;
+    outline-offset: 2px;
+}
+
+.galleryMedia {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.galleryMedia img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.galleryCard:hover .galleryMedia img {
+    transform: scale(1.06);
+}
+
+/* Badge always visible */
+.galleryBadge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(43, 58, 43, 0.88);
+    backdrop-filter: blur(6px);
+    color: #C9A96E;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    z-index: 3;
+    transition: opacity 0.25s ease;
+}
+
+.galleryCard:hover .galleryBadge {
+    opacity: 0;
+}
+
+/* Overlay revealed on hover */
+.galleryOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(20, 30, 20, 0.95) 0%,
+        rgba(20, 30, 20, 0.6) 35%,
+        transparent 65%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 18px 16px;
+    z-index: 2;
+}
+
+.galleryCard:hover .galleryOverlay {
+    opacity: 1;
+}
+
+.galleryOverlayTag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C9A96E;
+    margin-bottom: 6px;
+}
+
+.galleryOverlayTitle {
+    margin: 0 0 5px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+}
+
+.galleryOverlayDesc {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+/* Expand icon */
+.galleryExpandIcon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 3;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.galleryCard:hover .galleryExpandIcon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ── YOUTUBE SECTION ──────────────────────────────── */
+.ytSection {
+    padding: 72px 0 80px;
+    background: #111814;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background texture */
+.ytSection::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(201, 169, 110, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Fade derecho como hint de scroll (mobile) */
+.ytSection::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 100%;
+    background: linear-gradient(to left, #111814 60%, transparent);
+    pointer-events: none;
+    z-index: 2;
+    display: none; /* solo activo en mobile via media query */
+}
+
+.ytSection .secLabel {
+    color: #C9A96E;
+    border-color: rgba(201, 169, 110, 0.3);
+}
+
+.ytSection .secTitle {
+    color: #fff;
+}
+
+.ytSection .secSub {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Shorts grid — portrait format (3 + 3) */
+.ytGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.ytCard {
+    flex: 0 0 calc(25% - 9px); /* 4 columnas en desktop → 4+3 centrado */
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ytCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(201, 169, 110, 0.4);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(201, 169, 110, 0.15);
+}
+
+.ytCard:focus-visible {
+    outline: 2px solid #C9A96E;
+    outline-offset: 2px;
+}
+
+/* Portrait thumbnail for Shorts */
+.ytThumb {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    background: #1a1a1a;
+    flex-shrink: 0;
+}
+
+.ytThumbImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.ytCard:hover .ytThumbImg {
+    transform: scale(1.06);
+}
+
+.ytThumbOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.2) 40%,
+        transparent 70%
+    );
+}
+
+/* Play button */
+.ytThumbPlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ytCard:hover .ytThumbPlay {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(255, 0, 0, 0.75);
+}
+
+/* Short badge */
+.ytShortBadge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #FF0000;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* Card info */
+.ytInfo {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.ytTitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ytLink {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: auto;
+    transition: color 0.2s ease;
+}
+
+.ytCard:hover .ytLink {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── LIGHTBOX ────────────────────────────────────── */
+.lightboxBackdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 15, 10, 0.92);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: lbFadeIn 0.2s ease;
+}
+
+@keyframes lbFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.lightboxContent {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    background: #1a1f1a;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+    animation: lbSlideUp 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes lbSlideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lightboxImg {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    display: block;
+    background: #0d120d;
+}
+
+.lightboxInfo {
+    padding: 16px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.lightboxTag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C9A96E;
+}
+
+.lightboxTitle {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+}
+
+.lightboxDesc {
+    margin: 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.5;
+}
+
+.lightboxClose {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+    z-index: 1001;
+}
+
+.lightboxClose:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.08);
+}
+
+/* ── BREADCRUMB ───────────────────────────────────── */
+.breadcrumb {
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+    color: #7a8a7a;
+    background: var(--color-bg);
+    border-top: 1px solid #e8e8e0;
+}
+
+.breadcrumb a {
+    color: var(--color-dark);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* ── TOUCH OPTIMIZATIONS (todas las pantallas táctiles) ── */
+.galleryCard,
+.ytCard {
+    touch-action: manipulation;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 1024px) {
+    .ytCard {
+        flex: 0 0 calc(33.333% - 8px); /* 3 columnas en tablet */
+    }
+}
+
+/* ── TABLET / MOBILE GRANDE (≤768px) ──────────────── */
+@media (max-width: 768px) {
+    /* Hero */
+    .hero {
+        margin-top: 56px;
+        padding: 2.25rem 0 2rem;
+        background-image: none;
+    }
+
+    .heroTitle {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .heroSub {
+        font-size: 0.9rem;
+        max-width: 100%;
+    }
+
+    /* Stats en fila horizontal compacta */
+    .heroStats {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1rem;
+        margin-top: 0.25rem;
+        width: 100%;
+    }
+
+    .heroStat {
+        flex: 1;
+        padding: 0;
+        align-items: center;
+        text-align: center;
+    }
+
+    .heroStatNum {
+        font-size: 1.25rem;
+    }
+
+    .heroStatLabel {
+        font-size: 9px;
+    }
+
+    .heroStatDivider {
+        width: 1px;
+        height: 28px;
+        margin: 0;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Sección fotos */
+    .gallerySection {
+        padding: 40px 0;
+    }
+
+    .secTitle {
+        font-size: clamp(1.3rem, 5vw, 1.7rem);
+    }
+
+    .secSub {
+        font-size: 14px;
+    }
+
+    /* Resetear TODAS las reglas bento de desktop */
+    .galleryCard:nth-child(1),
+    .galleryCard:nth-child(5),
+    .galleryCard:nth-child(6) {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    /* Grid mobile: 2 columnas, primer card ancho completo */
+    .galleryGrid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 155px;
+        gap: 8px;
+    }
+
+    /* Card 1 → hero ancho completo */
+    .galleryCard:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    /* Card 4 → accent extra tall en 2da col */
+    .galleryCard:nth-child(4) {
+        grid-row: span 2;
+    }
+
+    /* Overlay siempre visible en touch (no hay hover) */
+    .galleryOverlay {
+        opacity: 1;
+        background: linear-gradient(
+            to top,
+            rgba(15, 22, 15, 0.9) 0%,
+            rgba(15, 22, 15, 0.4) 40%,
+            transparent 68%
+        );
+    }
+
+    /* Badge oculto — el overlay ya muestra la info */
+    .galleryBadge {
+        opacity: 0;
+    }
+
+    /* Ícono expandir siempre visible (indicador de tap) */
+    .galleryExpandIcon {
+        opacity: 1;
+        transform: scale(1);
+        width: 28px;
+        height: 28px;
+    }
+
+    .galleryOverlayTitle {
+        font-size: 13px;
+    }
+
+    .galleryOverlayDesc {
+        font-size: 11px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* YouTube — scroll horizontal en mobile */
+    .ytSection {
+        padding: 40px 0 0;
+        overflow: hidden;
+    }
+
+    .ytSection::after {
+        display: block;
+    }
+
+    .ytGrid {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 4px 16px 20px;
+        scrollbar-width: none; /* Firefox */
+        margin: 0 -16px; /* sangra hasta los bordes del container */
+    }
+
+    .ytGrid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .ytCard {
+        flex: 0 0 44vw;
+        scroll-snap-align: start;
+        min-width: 0;
+    }
+
+    .ytTitle {
+        font-size: 11px;
+    }
+
+    .ytInfo {
+        padding: 8px 10px 10px;
+    }
+
+    /* Lightbox mobile → full-screen bottom sheet */
+    .lightboxBackdrop {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .lightboxContent {
+        border-radius: 20px 20px 0 0;
+        max-width: 100%;
+        animation: lbSlideSheet 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    @keyframes lbSlideSheet {
+        from { transform: translateY(100%); opacity: 0.5; }
+        to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    .lightboxImg {
+        max-height: 55vh;
+        object-fit: contain;
+    }
+
+    .lightboxClose {
+        top: auto;
+        bottom: calc(55vh + 88px + 0.75rem);
+        right: 1rem;
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* ── MOBILE PEQUEÑO (≤480px) ──────────────────────── */
+@media (max-width: 480px) {
+    /* Grid 2 col manteniendo jerarquía visual */
+    .galleryGrid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 140px;
+        gap: 6px;
+    }
+
+    /* Card 1 sigue siendo hero full-width */
+    .galleryCard:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    /* Quitar el span doble en pantallas muy chicas */
+    .galleryCard:nth-child(4) {
+        grid-row: span 1;
+    }
+
+    /* Shorts más angostos en pantalla chica → ver más de un vistazo */
+    .ytCard {
+        flex: 0 0 42vw;
+    }
+
+    .ytInfo {
+        padding: 8px;
+    }
+
+    .ytLink {
+        display: none;
+    }
+
+    /* Lightbox imagen más alta en pantallas estrechas */
+    .lightboxImg {
+        max-height: 50vh;
+        object-fit: contain;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .galleryMedia img,
+    .ytThumbImg,
+    .galleryCard,
+    .ytCard,
+    .galleryOverlay,
+    .ytThumbPlay {
+        transition: none;
+    }
+}

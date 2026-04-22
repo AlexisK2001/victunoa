@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
+import { zonas } from '../data/zonas';
 
 import instagramIcon from '../assets/icons/instagram.svg?raw';
 import facebookIcon from '../assets/icons/facebook.svg?raw';
+import youtubeIcon from '../assets/icons/youtube.svg?raw';
 import emailIcon from '../assets/icons/email.svg?raw';
 
 export default function Footer() {
@@ -33,6 +35,14 @@ export default function Footer() {
                             dangerouslySetInnerHTML={{ __html: facebookIcon }}
                         />
                         <a
+                            href="https://www.youtube.com/@VictuNoa"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.socialIcon}
+                            aria-label="YouTube"
+                            dangerouslySetInnerHTML={{ __html: youtubeIcon }}
+                        />
+                        <a
                             href="mailto:faqndosuarez@gmail.com"
                             className={styles.socialIcon}
                             aria-label="Email"
@@ -53,15 +63,28 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Col 3 — Empresa */}
+                {/* Col 3 — Zonas */}
                 <div className={styles.footerCol}>
-                    <h4 className={styles.footerColTitle}>EMPRESA</h4>
+                    <h4 className={styles.footerColTitle}>ZONAS</h4>
                     <ul className={styles.footerLinks}>
-                        <li><a href="#como-trabajamos">Quiénes somos</a></li>
+                        {zonas.map(z => (
+                            <li key={z.slug}>
+                                <Link to={`/zonas/${z.slug}`}>{z.name}</Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
 
-                {/* Col 4 — Contacto */}
+                {/* Col 4 — Empresa */}
+                <div className={styles.footerCol}>
+                    <h4 className={styles.footerColTitle}>EMPRESA</h4>
+                    <ul className={styles.footerLinks}>
+                        <li><Link to="/sobre-victu">Quiénes somos</Link></li>
+                        <li><Link to="/biosales">¿Qué son las biosales?</Link></li>
+                    </ul>
+                </div>
+
+                {/* Col 5 — Contacto */}
                 <div className={styles.footerCol}>
                     <h4 className={styles.footerColTitle}>CONTACTO</h4>
                     <ul className={styles.footerLinks}>

@@ -1,0 +1,515 @@
+/* ── ZonaPage ── */
+
+.page {
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+/* ═══════════════════════════════════════
+   HERO — mismo ADN tecnológico que Home
+   ═══════════════════════════════════════ */
+.hero {
+    background-color: #2B3A2B;
+    margin-top: 72px;
+    padding: 5rem 0 4rem;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    /* Dot grid tech pattern */
+    background-image: radial-gradient(rgba(201, 169, 110, 0.10) 1px, transparent 1px);
+    background-size: 26px 26px;
+}
+
+/* Fade del dot grid hacia la derecha */
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 40%, #2B3A2B 75%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Bottom accent bar — igual que Home */
+.hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2B3A2B, #C9A96E, #2B3A2B);
+    z-index: 2;
+}
+
+.heroInner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 720px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Corchetes dorados — mismo patrón que Home.heroLeft */
+.heroInner::before,
+.heroInner::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-color: #C9A96E;
+    border-style: solid;
+    pointer-events: none;
+}
+
+.heroInner::before {
+    top: -14px;
+    left: -14px;
+    border-width: 2px 0 0 2px;
+}
+
+.heroInner::after {
+    bottom: -14px;
+    right: -14px;
+    border-width: 0 2px 2px 0;
+}
+
+/* Badge / label pill — igual que Home.heroLabel */
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #A8C5A0;
+    border: 1px solid rgba(168, 197, 160, 0.45);
+    padding: 3px 12px 3px 8px;
+    border-radius: 100px;
+    width: fit-content;
+}
+
+/* Dot glowing antes del label */
+.heroBadge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C9A96E;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(201, 169, 110, 0.7);
+}
+
+.heroTitle {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.heroSub {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+    max-width: 580px;
+}
+
+.heroCtas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+/* Quitar estilos de link del wrapper <a> */
+.heroCtas a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Overrides para botones sobre fondo oscuro */
+.heroCtas :global(.btn-primary) {
+    background: #C9A96E;
+    border-color: #C9A96E;
+    color: #1A1A1A;
+    --btn-fill: #b8954f;
+}
+
+.heroCtas :global(.btn-primary):hover {
+    box-shadow: 0 8px 20px rgba(201, 169, 110, 0.35);
+}
+
+.heroCtas :global(.btn-secondary) {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #FFFFFF;
+    --btn-fill: rgba(255, 255, 255, 0.15);
+}
+
+/* ═══════════════════════════════════════
+   SECTIONS
+   ═══════════════════════════════════════ */
+.section {
+    padding: 4rem 0;
+}
+
+.section:nth-child(even) {
+    background: #fff;
+}
+
+.secTitle {
+    font-size: clamp(1.35rem, 3vw, 1.9rem);
+    font-weight: 700;
+    color: var(--color-dark);
+    margin: 0 0 1.25rem;
+}
+
+.secText {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #4a5a4a;
+    max-width: 760px;
+}
+
+/* ═══════════════════════════════════════
+   STATS — dark tech
+   ═══════════════════════════════════════ */
+.statsSection {
+    background-color: #2B3A2B;
+    background-image: radial-gradient(rgba(201, 169, 110, 0.08) 1px, transparent 1px);
+    background-size: 26px 26px;
+    padding: 3rem 0;
+    position: relative;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+    transition: border-color var(--transition-base), background var(--transition-base);
+}
+
+.statCard:hover {
+    border-color: rgba(201, 169, 110, 0.55);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.statNum {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #C9A96E;
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(201, 169, 110, 0.3);
+}
+
+.statLabel {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════
+   PRODUCTOS RECOMENDADOS
+   ═══════════════════════════════════════ */
+.productGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 1.25rem 0 0;
+}
+
+.productCard {
+    background: #fff;
+    border: 1px solid #e8e8e0;
+    border-left: 3px solid var(--color-gold);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.productCard:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.productName {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin: 0;
+}
+
+.productRazon {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #4a5a4a;
+    margin: 0;
+}
+
+.productNote {
+    font-size: 0.83rem;
+    color: #6a7a6a;
+    font-style: italic;
+    margin-top: 1.25rem;
+    padding: 0.75rem 1rem;
+    background: #f0f4f0;
+    border-radius: 8px;
+    border-left: 2px solid #b0c0b0;
+    line-height: 1.6;
+}
+
+.productCta {
+    margin-top: 1.25rem;
+}
+
+/* ═══════════════════════════════════════
+   BIOENZYMIX — tech strip
+   ═══════════════════════════════════════ */
+.bioSection {
+    background-color: #2B3A2B;
+    background-image: radial-gradient(rgba(201, 169, 110, 0.08) 1px, transparent 1px);
+    background-size: 26px 26px;
+    padding: 3.5rem 0;
+    position: relative;
+}
+
+.bioInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.bioTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #C9A96E;
+    margin: 0;
+    text-shadow: 0 0 28px rgba(201, 169, 110, 0.35);
+}
+
+.bioTitle span {
+    color: #fff;
+}
+
+.bioDesc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 600px;
+    margin: 0;
+}
+
+/* ═══════════════════════════════════════
+   TESTIMONIAL
+   ═══════════════════════════════════════ */
+.testiSection {
+    padding: 4rem 0;
+    background: #fff;
+}
+
+.testimonial {
+    border-left: 3px solid #C9A96E;
+    padding: 1.5rem 1.75rem;
+    background: var(--color-bg);
+    border-radius: 0 12px 12px 0;
+    margin: 0;
+    max-width: 680px;
+    box-shadow: var(--shadow-md);
+}
+
+.testiText {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #3a4a3a;
+    font-style: italic;
+    margin: 0 0 1rem;
+}
+
+.testiAuthor {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.testiAuthor strong {
+    font-size: 0.95rem;
+    color: var(--color-dark);
+}
+
+.testiAuthor span {
+    font-size: 0.82rem;
+    color: #7a8a7a;
+}
+
+/* ═══════════════════════════════════════
+   CTA FINAL — gold
+   ═══════════════════════════════════════ */
+.ctaSection {
+    background: var(--color-gold);
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.ctaTitle {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--color-dark);
+    margin: 0 0 0.75rem;
+}
+
+.ctaSub {
+    font-size: 1.05rem;
+    color: rgba(43, 58, 43, 0.8);
+    margin: 0 0 2rem;
+}
+
+/* ═══════════════════════════════════════
+   BREADCRUMB
+   ═══════════════════════════════════════ */
+.breadcrumb {
+    padding: 1rem 1.5rem;
+    font-size: 0.85rem;
+    color: #7a8a7a;
+    background: var(--color-bg);
+    border-top: 1px solid #e8e8e0;
+}
+
+.breadcrumb a {
+    color: var(--color-dark);
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* ── BIBLIOGRAFÍA ── */
+.bibList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.bibItem {
+    font-size: 0.85rem;
+    color: #7a8a7a;
+    line-height: 1.6;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-gold);
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (max-width: 768px) {
+    /* Hero mobile */
+    .hero {
+        margin-top: 56px;
+        padding: 2.75rem 0 2.5rem;
+        background-image: none; /* sin dot grid en mobile — mejor rendimiento */
+    }
+
+    .hero::after {
+        display: none;
+    }
+
+    /* Ocultar corchetes en mobile — sin espacio suficiente */
+    .heroInner::before,
+    .heroInner::after {
+        display: none;
+    }
+
+    .heroInner {
+        gap: 1rem;
+    }
+
+    .heroTitle {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+    }
+
+    .heroSub {
+        font-size: 0.95rem;
+    }
+
+    .heroCtas {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .heroCtas a {
+        display: flex;
+        width: 100%;
+    }
+
+    .heroCtas :global(.btn) {
+        width: 100%;
+    }
+
+    /* Sections más compactas */
+    .section {
+        padding: 2.5rem 0;
+    }
+
+    .statsSection {
+        padding: 2rem 0;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .statCard {
+        padding: 1.25rem 1rem;
+    }
+
+    .statNum {
+        font-size: 1.2rem;
+    }
+
+    .productGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .bioSection {
+        padding: 2.5rem 0;
+    }
+
+    .testiSection {
+        padding: 2.5rem 0;
+    }
+
+    .ctaSection {
+        padding: 2.5rem 0;
+    }
+}
