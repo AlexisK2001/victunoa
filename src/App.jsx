@@ -5,6 +5,10 @@ import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import Home from './pages/Home';
 import CategoryPage from './pages/CategoryPage';
+import ZonaPage from './pages/ZonaPage';
+import SobreVictu from './pages/SobreVictu';
+import BiosalesGuia from './pages/BiosalesGuia';
+import Galeria from './pages/Galeria';
 import './styles/global.css';
 import './App.css';
 
@@ -38,6 +42,10 @@ function App() {
         <main style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/sobre-victu" element={<SobreVictu />} />
+            <Route path="/biosales" element={<BiosalesGuia />} />
+            <Route path="/galeria" element={<Galeria />} />
+            <Route path="/zonas/:zona" element={<ZonaPage />} />
             <Route path="/:categorySlug" element={<CategoryPage />} />
           </Routes>
         </main>

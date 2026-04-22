@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './BottomNav.module.css';
 
 const SCROLL_OFFSET = 72;
-const HOME_SECTION_IDS = ['categorias', 'beneficios', 'galeria', 'contacto'];
-const NAV_SECTION_IDS = ['inicio', 'categorias', 'beneficios', 'galeria', 'contacto'];
+const HOME_SECTION_IDS = ['categorias', 'beneficios'];
+const NAV_SECTION_IDS = ['inicio', 'categorias', 'beneficios', 'galeria'];
 
 const getSectionFromScroll = () => {
     if (typeof window === 'undefined') return 'inicio';
@@ -63,9 +63,19 @@ export default function BottomNav() {
     const location = useLocation();
     const navigate = useNavigate();
     const isHome = location.pathname === '/';
-    const [activeSection, setActiveSection] = useState(() => (isHome ? getSectionFromScroll() : 'categorias'));
+    const isGalleryRoute = location.pathname === '/galeria';
+    const isAboutRoute = location.pathname === '/sobre-victu';
+    const [activeSection, setActiveSection] = useState(() => {
+        if (location.pathname === '/galeria') return 'galeria';
+        return isHome ? getSectionFromScroll() : 'categorias';
+    });
     const [isDragging, setIsDragging] = useState(false);
-    const resolvedActiveSection = isHome || isDragging ? activeSection : 'categorias';
+    const resolvedActiveSection =
+        isGalleryRoute
+            ? 'galeria'
+            : (isAboutRoute
+                ? 'contacto'
+                : ((isHome || isDragging) ? activeSection : 'categorias'));
     const swipeStartRef = useRef(null);
     const swipeSectionRef = useRef(activeSection);
     const pendingSectionRef = useRef(null);
@@ -109,6 +119,12 @@ export default function BottomNav() {
 
     const selectSection = useCallback((sectionId) => {
         setActiveSectionImmediate(sectionId);
+        if (sectionId === 'galeria') {
+            if (location.pathname !== '/galeria') {
+                navigate('/galeria');
+            }
+            return;
+        }
         if (sectionId === 'inicio') {
             if (location.pathname !== '/') {
                 navigate('/');
@@ -343,25 +359,25 @@ export default function BottomNav() {
                 <span>BENEFICIOS</span>
             </a>
 
-            <a
-                href="#galeria"
+            <Link
+                to="/galeria"
                 data-section="galeria"
                 className={`${styles.navItem} ${resolvedActiveSection === 'galeria' ? styles.active : ''}`}
                 onClick={(e) => handleNavClick(e, 'galeria')}
             >
                 <GaleriaIcon />
                 <span>GALERÍA</span>
-            </a>
+            </Link>
 
-            <a
-                href="#contacto"
+            <Link
+                to="/sobre-victu"
                 data-section="contacto"
-                className={`${styles.navItem} ${resolvedActiveSection === 'contacto' ? styles.active : ''}`}
-                onClick={(e) => handleNavClick(e, 'contacto')}
+                className={`${styles.navItem} ${location.pathname === '/sobre-victu' ? styles.active : ''}`}
+                onClick={() => setIsDragging(false)}
             >
                 <ContactoIcon />
-                <span>CONTACTO</span>
-            </a>
+                <span>NOSOTROS</span>
+            </Link>
         </nav>
     );
 }

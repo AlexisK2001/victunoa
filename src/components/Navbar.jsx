@@ -84,6 +84,7 @@ export default function Navbar() {
                 </button>
 
                 <ul className={`${styles.navMenu} ${isMenuOpen ? styles.active : ''}`}>
+                    {/* Categorías */}
                     <li
                         className={styles.navItemDropdown}
                         onMouseEnter={handleDropdownEnter}
@@ -120,6 +121,7 @@ export default function Navbar() {
                             </div>
                         )}
                     </li>
+
                     <li>
                         <a href="#beneficios" className={styles.navLink}
                             onClick={(e) => handleSmoothScroll(e, 'beneficios')}>
@@ -127,16 +129,15 @@ export default function Navbar() {
                         </a>
                     </li>
                     <li>
-                        <a href="#galeria" className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'galeria')}>
+                        <Link to="/galeria" className={styles.navLink}
+                            onClick={() => setIsMenuOpen(false)}>
                             Galería
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="#como-trabajamos" className={styles.navLink}
-                            onClick={(e) => handleSmoothScroll(e, 'como-trabajamos')}>
+                        <Link to="/sobre-victu" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>
                             Nosotros
-                        </a>
+                        </Link>
                     </li>
                     <li>
                         <a
@@ -151,19 +152,20 @@ export default function Navbar() {
                 </ul>
             </div>
 
-            {/* Mobile dropdown menu */}
+            {/* Mobile menu */}
             {isMenuOpen && (
                 <div className={styles.mobileMenu}>
                     <a href="#categorias" className={styles.mobileLink}
                         onClick={(e) => handleSmoothScroll(e, 'categorias')}>Categorías</a>
                     <a href="#beneficios" className={styles.mobileLink}
                         onClick={(e) => handleSmoothScroll(e, 'beneficios')}>Beneficios</a>
-                    <a href="#galeria" className={styles.mobileLink}
-                        onClick={(e) => handleSmoothScroll(e, 'galeria')}>Galería</a>
-                    <a href="#como-trabajamos" className={styles.mobileLink}
-                        onClick={(e) => handleSmoothScroll(e, 'como-trabajamos')}>Nosotros</a>
+                    <Link to="/galeria" className={styles.mobileLink}
+                        onClick={() => setIsMenuOpen(false)}>Galería</Link>
+                    <Link to="/sobre-victu" className={styles.mobileLink}
+                        onClick={() => setIsMenuOpen(false)}>Nosotros</Link>
                     <a href="https://wa.me/5493816542124" target="_blank" rel="noreferrer"
                         className={styles.mobileCTA}>WhatsApp</a>
+
                     <div className={styles.mobileCategories}>
                         {categories.map(cat => (
                             <div key={cat.id} className={styles.mobileCategoryGroup}>
@@ -177,6 +179,7 @@ export default function Navbar() {
                             </div>
                         ))}
                     </div>
+
                 </div>
             )}
         </nav>
