@@ -491,8 +491,7 @@
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
-    background: rgba(43, 58, 43, 0.8);
-    backdrop-filter: blur(4px);
+    background: rgba(43, 58, 43, 0.92);
     color: #FFFFFF;
     padding: 4px 12px;
     border-radius: 100px;
